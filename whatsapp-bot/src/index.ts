@@ -100,7 +100,11 @@ async function connectToWhatsApp() {
                 console.log(`Auto reply ke ${contact.phoneNumber}...`);
                 const draft = await generateAIDraft(prisma, savedMessage.id, contact.id, messageText);
                 if (draft) {
-                  await sock.sendMessage(remoteJid, { text: draft });
+                  if (draft.includes("[Approval Required]")) {
+                    console.log(`Pesan memerlukan approval. Menunda auto-reply.`);
+                  } else {
+                    await sock.sendMessage(remoteJid, { text: draft });
+                  }
                 }
               }
             }
