@@ -16,7 +16,7 @@ services:
       - ./whatsapp-bot/.env
     environment:
       # Paksa Prisma membaca DB dari file mount
-      - DATABASE_URL=file:/app/prisma/dev.db
+      - DATABASE_URL=file:///app/prisma/dev.db
 
   wa-dashboard:
     build: 
@@ -29,4 +29,4 @@ services:
       # Mount folder prisma dari whatsapp-bot ke dashboard agar datanya 100% sama!
       - ./whatsapp-bot/prisma:/app/prisma
     environment:
-      - DATABASE_URL=file:/app/prisma/dev.db
+      - DATABASE_URL=file:///app/prisma/dev.db
