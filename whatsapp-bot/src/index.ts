@@ -74,11 +74,11 @@ async function connectToWhatsApp() {
             const contact = await prisma.contact.upsert({
               where: { phoneNumber },
               update: {
-                ...(pushName && { name: pushName })
+                ...((pushName && !isFromMe) && { name: pushName })
               },
               create: { 
                 phoneNumber,
-                name: pushName
+                name: !isFromMe ? pushName : null
               },
             });
 
