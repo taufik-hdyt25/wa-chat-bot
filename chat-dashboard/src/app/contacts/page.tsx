@@ -56,8 +56,13 @@ export default async function ContactsPage() {
                     {(contact.name || contact.phoneNumber).charAt(0).toUpperCase()}
                   </div>
                   <div>
-                    <h3 className="text-lg font-bold text-white">
+                    <h3 className="text-lg font-bold text-white flex items-center gap-2">
                       {contact.name || contact.phoneNumber}
+                      {contact.name && (
+                        <span className="text-xs font-normal px-2 py-0.5 rounded-full bg-slate-800 text-slate-400 border border-slate-700">
+                          {contact.phoneNumber}
+                        </span>
+                      )}
                     </h3>
                     <p className="text-sm text-slate-400">
                       {contact.messages.length > 0

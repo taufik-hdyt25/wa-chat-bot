@@ -103,7 +103,14 @@ export default async function Home() {
                       {(draft.contact.name || draft.contact.phoneNumber).charAt(0).toUpperCase()}
                     </div>
                     <div>
-                      <h4 className="font-medium text-white">{draft.contact.name || draft.contact.phoneNumber}</h4>
+                      <h4 className="font-medium text-white flex items-center gap-2">
+                        {draft.contact.name || draft.contact.phoneNumber}
+                        {draft.contact.name && (
+                          <span className="text-[10px] font-normal px-2 py-0.5 rounded-full bg-slate-800/50 text-slate-400 border border-slate-700">
+                            {draft.contact.phoneNumber}
+                          </span>
+                        )}
+                      </h4>
                       <p className="text-xs text-slate-500">Just now</p>
                     </div>
                   </div>
