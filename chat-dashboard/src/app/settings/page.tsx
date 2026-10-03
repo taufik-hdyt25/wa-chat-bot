@@ -122,7 +122,7 @@ export default async function SettingsPage() {
             <div className="pt-4 flex items-center justify-between border-t border-slate-800">
               <div>
                 <h4 className="text-white font-medium">Use Slang / Bahasa Gaul</h4>
-                <p className="text-xs text-slate-500 mt-1">Mengizinkan AI menggunakan singkatan spt "yg", "dgn", "bgt".</p>
+                <p className="text-xs text-slate-500 mt-1">Mengizinkan AI menggunakan singkatan spt &quot;yg&quot;, &quot;dgn&quot;, &quot;bgt&quot;.</p>
               </div>
               <label className="relative inline-flex items-center cursor-pointer">
                 <input type="checkbox" name="slangUsage" defaultChecked={userStyle.slangUsage} className="sr-only peer" />
@@ -134,7 +134,7 @@ export default async function SettingsPage() {
             <div className="pt-4 border-t border-slate-800">
               <label className="text-sm font-medium text-slate-300 block mb-2">Custom Instructions (Opsional)</label>
               <p className="text-xs text-slate-500 mb-3">
-                Instruksi spesifik agar bot tidak terdengar kaku. Contoh: <i>"Gunakan kata 'gue' dan 'lu'. Jangan panggil 'Bapak/Ibu'. Jawab sesingkat mungkin tanpa basa-basi."</i>
+                Instruksi spesifik agar bot tidak terdengar kaku. Contoh: <i>&quot;Gunakan kata &apos;gue&apos; dan &apos;lu&apos;. Jangan panggil &apos;Bapak/Ibu&apos;. Jawab sesingkat mungkin tanpa basa-basi.&quot;</i>
               </p>
               <textarea 
                 name="customInstructions" 

@@ -48,7 +48,7 @@ export default async function Home() {
       <main className="max-w-7xl mx-auto px-6 py-12">
         <div className="mb-10">
           <h2 className="text-3xl font-bold text-white mb-2">Welcome Back!</h2>
-          <p className="text-slate-400">Here's what your AI has been doing while you were away.</p>
+          <p className="text-slate-400">Here&apos;s what your AI has been doing while you were away.</p>
         </div>
 
         {/* Stats Grid */}
@@ -107,7 +107,7 @@ export default async function Home() {
                 
                 <div className="bg-slate-900/50 rounded-xl p-4 mb-4 border border-slate-800/50">
                   <p className="text-sm text-slate-400 mb-1">Incoming Message:</p>
-                  <p className="text-white">"{draft.incomingMessage.message}"</p>
+                  <p className="text-white">&quot;{draft.incomingMessage.message}&quot;</p>
                 </div>
 
                 <div className="bg-blue-900/10 rounded-xl p-4 mb-6 border border-blue-500/20 relative">
