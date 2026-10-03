@@ -30,3 +30,5 @@ services:
       - ./whatsapp-bot/prisma:/app/prisma
     environment:
       - DATABASE_URL=file:///app/prisma/dev.db
+      - DASHBOARD_USER=admin
+      - DASHBOARD_PASS=admin123

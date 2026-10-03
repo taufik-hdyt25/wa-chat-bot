@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { revalidatePath } from "next/cache";
 
 export const dynamic = "force-dynamic";
 
@@ -24,6 +25,14 @@ export default async function ContactDetail({ params }: { params: Promise<{ id: 
 
   if (!contact) {
     notFound();
+  }
+
+  async function deleteMessage(formData: FormData) {
+    "use server";
+    const msgId = parseInt(formData.get("messageId") as string);
+    const cId = formData.get("contactId") as string;
+    await prisma.message.delete({ where: { id: msgId } });
+    revalidatePath(`/contacts/${cId}`);
   }
 
   return (
@@ -93,13 +102,26 @@ export default async function ContactDetail({ params }: { params: Promise<{ id: 
             contact.messages.map((msg) => {
               const isMe = msg.direction === "outgoing";
               return (
-                <div key={msg.id} className={`flex flex-col ${isMe ? 'items-end' : 'items-start'}`}>
-                  <div className={`max-w-[80%] rounded-2xl px-5 py-3 shadow-sm ${
+                <div key={msg.id} className={`flex flex-col group ${isMe ? 'items-end' : 'items-start'}`}>
+                  <div className={`max-w-[80%] rounded-2xl px-5 py-3 shadow-sm relative ${
                     isMe 
                       ? 'bg-blue-600 text-white rounded-br-sm' 
                       : 'bg-[#1e293b] text-slate-200 border border-slate-800 rounded-bl-sm'
                   }`}>
                     <p className="text-[15px] leading-relaxed whitespace-pre-wrap">{msg.message}</p>
+                    
+                    {/* Delete button (shows on hover) */}
+                    <div className={`absolute top-1/2 -translate-y-1/2 ${isMe ? 'left-[-40px]' : 'right-[-40px]'} opacity-0 group-hover:opacity-100 transition-opacity`}>
+                      <form action={deleteMessage}>
+                        <input type="hidden" name="messageId" value={msg.id} />
+                        <input type="hidden" name="contactId" value={contact.id} />
+                        <button type="submit" className="p-2 text-slate-500 hover:text-red-400 bg-[#0f172a] rounded-full" title="Hapus pesan ini">
+                          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                          </svg>
+                        </button>
+                      </form>
+                    </div>
                   </div>
                   <span className="text-[11px] text-slate-500 mt-1 px-1">
                     {msg.timestamp.toLocaleString('id-ID', { hour: '2-digit', minute: '2-digit', day: 'numeric', month: 'short' })}
