@@ -104,6 +104,15 @@ async function connectToWhatsApp() {
                     console.log(`Pesan memerlukan approval. Menunda auto-reply.`);
                   } else {
                     await sock.sendMessage(remoteJid, { text: draft });
+                    
+                    // Simpan pesan AI ke database agar muncul di history
+                    await prisma.message.create({
+                      data: {
+                        contactId: contact.id,
+                        direction: "outgoing",
+                        message: draft,
+                      },
+                    });
                   }
                 }
               }
