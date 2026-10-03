@@ -30,8 +30,8 @@ export async function updateContactSettings(contactId: number, formData: FormDat
 
 export async function deleteContact(contactId: number) {
   // Hapus semua relasi terlebih dahulu agar tidak ada error foreign key
-  await prisma.message.deleteMany({ where: { contactId } });
   await prisma.aIDraft.deleteMany({ where: { contactId } });
+  await prisma.message.deleteMany({ where: { contactId } });
   await prisma.memory.deleteMany({ where: { contactId } });
   await prisma.conversation.deleteMany({ where: { contactId } });
   

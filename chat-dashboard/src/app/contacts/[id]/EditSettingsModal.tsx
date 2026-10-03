@@ -76,8 +76,14 @@ export default function EditSettingsModal({ contact }: { contact: { id: number; 
                   onClick={async () => {
                     if (confirm("Yakin ingin menghapus kontak ini beserta seluruh history chatnya?")) {
                       setIsPending(true);
-                      await deleteContact(contact.id);
-                      router.push("/contacts");
+                      try {
+                        await deleteContact(contact.id);
+                        router.push("/contacts");
+                      } catch (error) {
+                        console.error(error);
+                        alert("Gagal menghapus kontak.");
+                        setIsPending(false);
+                      }
                     }
                   }}
                   disabled={isPending}

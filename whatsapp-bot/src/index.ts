@@ -8,6 +8,8 @@ import * as dotenv from "dotenv";
 import { PrismaClient } from "@prisma/client";
 import qrcode from "qrcode-terminal";
 import { generateAIDraft } from "./ai.js";
+import express from "express";
+import cors from "cors";
 
 dotenv.config();
 
@@ -105,6 +107,12 @@ async function connectToWhatsApp() {
                   } else {
                     await sock.sendMessage(remoteJid, { text: draft });
                     
+                    // Update status draft menjadi sent agar tidak muncul di dashboard 'Needs Your Approval'
+                    await prisma.aIDraft.updateMany({
+                      where: { incomingMessageId: savedMessage.id },
+                      data: { status: "sent" },
+                    });
+
                     // Simpan pesan AI ke database agar muncul di history
                     await prisma.message.create({
                       data: {
@@ -123,6 +131,62 @@ async function connectToWhatsApp() {
         }
       }
     }
+  });
+
+  // Setup Express server for API integrations (like broadcast)
+  const app = express();
+  app.use(cors());
+  app.use(express.json());
+
+  app.post('/broadcast', async (req, res) => {
+    try {
+      const { message, contactIds } = req.body;
+      if (!message) {
+        return res.status(400).json({ error: "Message is required" });
+      }
+
+      let targetContacts = [];
+      if (contactIds && contactIds.length > 0) {
+        targetContacts = await prisma.contact.findMany({
+          where: { id: { in: contactIds } }
+        });
+      } else {
+        // Jika tidak ada ID yang dipilih, kirim ke semua kontak
+        targetContacts = await prisma.contact.findMany();
+      }
+
+      let sentCount = 0;
+      for (const contact of targetContacts) {
+        const remoteJid = `${contact.phoneNumber}@s.whatsapp.net`;
+        try {
+          await sock.sendMessage(remoteJid, { text: message });
+          
+          // Simpan pesan ke history
+          await prisma.message.create({
+            data: {
+              contactId: contact.id,
+              direction: "outgoing",
+              message: message,
+            }
+          });
+          sentCount++;
+          // Delay sedikit agar tidak di-banned spam oleh WhatsApp
+          await new Promise(r => setTimeout(r, 1000));
+        } catch (e) {
+          console.error(`Failed to broadcast to ${contact.phoneNumber}:`, e);
+        }
+      }
+
+      res.json({ success: true, sentCount, totalTargets: targetContacts.length });
+    } catch (error: any) {
+      console.error("Broadcast Error:", error);
+      res.status(500).json({ error: error.message || "Internal server error" });
+    }
+  });
+
+  const PORT = process.env.API_PORT || 3001;
+  app.listen(PORT, () => {
+    console.log(`Bot API is running on port ${PORT}`);
   });
 }
 

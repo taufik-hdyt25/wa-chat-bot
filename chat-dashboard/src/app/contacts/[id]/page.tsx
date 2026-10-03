@@ -32,6 +32,7 @@ export default async function ContactDetail({ params }: { params: Promise<{ id: 
     "use server";
     const msgId = parseInt(formData.get("messageId") as string);
     const cId = formData.get("contactId") as string;
+    await prisma.aIDraft.deleteMany({ where: { incomingMessageId: msgId } });
     await prisma.message.delete({ where: { id: msgId } });
     revalidatePath(`/contacts/${cId}`);
   }

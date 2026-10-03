@@ -7,6 +7,8 @@ services:
     container_name: wa-bot
     restart: unless-stopped
     tty: true # Agar QR Code bisa dirender di log docker
+    ports:
+      - "3001:3001"
     volumes:
       # Mount folder prisma agar DB persisten & tersinkronisasi
       - ./whatsapp-bot/prisma:/app/prisma

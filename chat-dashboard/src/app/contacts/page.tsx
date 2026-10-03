@@ -31,6 +31,12 @@ export default async function ContactsPage() {
             <h1 className="text-xl font-bold text-white">
               Contacts & History
             </h1>
+            <Link href="/contacts/broadcast" className="ml-4 px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white rounded-lg text-sm font-medium transition-all shadow-lg shadow-blue-500/20 flex items-center gap-2">
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
+              </svg>
+              Broadcast
+            </Link>
           </div>
           <nav className="flex gap-6 text-sm font-medium">
             <Link href="/" className="text-slate-400 hover:text-white transition-colors">Dashboard</Link>
