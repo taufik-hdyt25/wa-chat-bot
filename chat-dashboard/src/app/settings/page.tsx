@@ -2,6 +2,8 @@ import { prisma } from "@/lib/prisma";
 import Link from "next/link";
 import { revalidatePath } from "next/cache";
 
+export const dynamic = "force-dynamic";
+
 export default async function SettingsPage() {
   // Fetch existing user style (assume ID 1 for personal bot)
   let userStyle = await prisma.userStyle.findFirst();
@@ -22,6 +24,7 @@ export default async function SettingsPage() {
         messageLength: formData.get("messageLength") as string,
         emojiUsage: formData.get("emojiUsage") as string,
         slangUsage: formData.get("slangUsage") === "on",
+        customInstructions: formData.get("customInstructions") as string || null,
       },
     });
 
@@ -125,6 +128,21 @@ export default async function SettingsPage() {
                 <input type="checkbox" name="slangUsage" defaultChecked={userStyle.slangUsage} className="sr-only peer" />
                 <div className="w-11 h-6 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-500"></div>
               </label>
+            </div>
+
+            {/* Custom Instructions */}
+            <div className="pt-4 border-t border-slate-800">
+              <label className="text-sm font-medium text-slate-300 block mb-2">Custom Instructions (Opsional)</label>
+              <p className="text-xs text-slate-500 mb-3">
+                Instruksi spesifik agar bot tidak terdengar kaku. Contoh: <i>"Gunakan kata 'gue' dan 'lu'. Jangan panggil 'Bapak/Ibu'. Jawab sesingkat mungkin tanpa basa-basi."</i>
+              </p>
+              <textarea 
+                name="customInstructions" 
+                defaultValue={userStyle.customInstructions || ""} 
+                rows={4}
+                placeholder="Masukkan instruksi khusus di sini..."
+                className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-blue-500 transition-colors resize-none"
+              ></textarea>
             </div>
 
             {/* Submit Button */}

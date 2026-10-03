@@ -53,6 +53,7 @@ Formality: ${userStyle.formality}
 Message Length: ${userStyle.messageLength}
 Emoji Usage: ${userStyle.emojiUsage}
 Slang Usage: ${userStyle.slangUsage ? "Yes" : "No"}
+${userStyle.customInstructions ? `\nCUSTOM INSTRUCTIONS (CRITICAL - STRICTLY FOLLOW THIS):\n${userStyle.customInstructions}\n` : ""}
 
 CONTACT MEMORY:
 Relationship: ${contact.relationship || "Unknown"}

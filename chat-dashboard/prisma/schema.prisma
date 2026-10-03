@@ -77,5 +77,6 @@ model UserStyle {
   messageLength String   @default("short")
   emojiUsage    String   @default("low")
   slangUsage    Boolean  @default(true)
+  customInstructions String?
   updatedAt     DateTime @updatedAt
 }
