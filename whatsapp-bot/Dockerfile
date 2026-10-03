@@ -16,5 +16,5 @@ COPY . .
 # Generate Prisma Client
 RUN npx prisma generate
 
-# Jalankan bot
-CMD ["npm", "run", "dev"]
+# Jalankan migrasi DB lalu jalankan bot
+CMD ["sh", "-c", "npx prisma db push && npm run dev"]
