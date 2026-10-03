@@ -3,6 +3,7 @@ import Link from "next/link";
 import EditSettingsModal from "./EditSettingsModal";
 import { notFound } from "next/navigation";
 import { revalidatePath } from "next/cache";
+import ScrollToBottom from "./ScrollToBottom";
 
 export const dynamic = "force-dynamic";
 
@@ -151,6 +152,7 @@ export default async function ContactDetail({ params }: { params: Promise<{ id: 
               );
             })
           )}
+          <ScrollToBottom />
         </div>
       </main>
     </div>
