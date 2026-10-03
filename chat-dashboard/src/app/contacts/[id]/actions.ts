@@ -27,3 +27,19 @@ export async function updateContactSettings(contactId: number, formData: FormDat
 
   revalidatePath(`/contacts/${contactId}`);
 }
+
+export async function deleteContact(contactId: number) {
+  // Hapus semua relasi terlebih dahulu agar tidak ada error foreign key
+  await prisma.message.deleteMany({ where: { contactId } });
+  await prisma.aIDraft.deleteMany({ where: { contactId } });
+  await prisma.memory.deleteMany({ where: { contactId } });
+  await prisma.conversation.deleteMany({ where: { contactId } });
+  
+  // Terakhir, hapus kontaknya
+  await prisma.contact.delete({ where: { id: contactId } });
+}
+
+export async function deleteMemory(memoryId: number, contactId: number) {
+  await prisma.memory.delete({ where: { id: memoryId } });
+  revalidatePath(`/contacts/${contactId}`);
+}

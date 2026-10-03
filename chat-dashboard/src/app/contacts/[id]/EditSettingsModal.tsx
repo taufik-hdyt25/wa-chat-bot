@@ -1,11 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { updateContactSettings } from "./actions";
+import { updateContactSettings, deleteContact } from "./actions";
+import { useRouter } from "next/navigation";
 
 export default function EditSettingsModal({ contact }: { contact: any }) {
   const [isOpen, setIsOpen] = useState(false);
   const [isPending, setIsPending] = useState(false);
+  const router = useRouter();
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -68,21 +70,41 @@ export default function EditSettingsModal({ contact }: { contact: any }) {
                 ></textarea>
               </div>
 
-              <div className="flex justify-end gap-3 pt-4">
+              <div className="flex justify-between items-center pt-4 border-t border-slate-800">
                 <button 
                   type="button" 
-                  onClick={() => setIsOpen(false)}
-                  className="px-4 py-2 rounded-lg text-slate-300 hover:bg-slate-800 transition"
-                >
-                  Cancel
-                </button>
-                <button 
-                  type="submit" 
+                  onClick={async () => {
+                    if (confirm("Yakin ingin menghapus kontak ini beserta seluruh history chatnya?")) {
+                      setIsPending(true);
+                      await deleteContact(contact.id);
+                      router.push("/contacts");
+                    }
+                  }}
                   disabled={isPending}
-                  className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg transition disabled:opacity-50"
+                  className="px-4 py-2 rounded-lg text-red-400 hover:bg-red-500/10 transition flex items-center gap-2"
                 >
-                  {isPending ? "Saving..." : "Save Changes"}
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                  </svg>
+                  Delete Contact
                 </button>
+
+                <div className="flex gap-3">
+                  <button 
+                    type="button" 
+                    onClick={() => setIsOpen(false)}
+                    className="px-4 py-2 rounded-lg text-slate-300 hover:bg-slate-800 transition"
+                  >
+                    Cancel
+                  </button>
+                  <button 
+                    type="submit" 
+                    disabled={isPending}
+                    className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg transition disabled:opacity-50"
+                  >
+                    {isPending ? "Saving..." : "Save Changes"}
+                  </button>
+                </div>
               </div>
             </form>
           </div>

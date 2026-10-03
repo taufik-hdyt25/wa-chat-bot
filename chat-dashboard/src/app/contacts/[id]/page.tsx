@@ -36,6 +36,14 @@ export default async function ContactDetail({ params }: { params: Promise<{ id: 
     revalidatePath(`/contacts/${cId}`);
   }
 
+  async function deleteMemoryAction(formData: FormData) {
+    "use server";
+    const memId = parseInt(formData.get("memoryId") as string);
+    const cId = formData.get("contactId") as string;
+    await prisma.memory.delete({ where: { id: memId } });
+    revalidatePath(`/contacts/${cId}`);
+  }
+
   return (
     <div className="min-h-screen bg-[#0f172a] text-slate-200 font-sans flex flex-col">
       {/* Header */}
@@ -84,9 +92,20 @@ export default async function ContactDetail({ params }: { params: Promise<{ id: 
             </div>
             <div>
               <h4 className="text-sm font-semibold text-blue-400 mb-2">AI Memories for this Contact:</h4>
-              <ul className="text-sm text-blue-200/70 space-y-1 list-disc list-inside">
+              <ul className="text-sm text-blue-200/70 space-y-2 list-disc list-inside">
                 {contact.memories.map(m => (
-                  <li key={m.id}>{m.content}</li>
+                  <li key={m.id} className="flex items-center gap-2 group">
+                    <span>{m.content}</span>
+                    <form action={deleteMemoryAction}>
+                      <input type="hidden" name="memoryId" value={m.id} />
+                      <input type="hidden" name="contactId" value={contact.id} />
+                      <button type="submit" className="opacity-0 group-hover:opacity-100 text-blue-400 hover:text-red-400 transition" title="Hapus memori">
+                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                      </button>
+                    </form>
+                  </li>
                 ))}
               </ul>
             </div>
