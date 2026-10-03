@@ -1,9 +1,16 @@
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
+import { revalidatePath } from "next/cache";
 
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
+  async function deleteDraft(formData: FormData) {
+    "use server";
+    const draftId = parseInt(formData.get("draftId") as string);
+    await prisma.aIDraft.delete({ where: { id: draftId } });
+    revalidatePath("/");
+  }
   // Fetch real data from shared SQLite database
   const contactsCount = await prisma.contact.count();
   const messagesCount = await prisma.message.count();
@@ -130,11 +137,14 @@ export default async function Home() {
                   <button className="flex-1 bg-slate-800 hover:bg-slate-700 text-white font-medium py-3 px-4 rounded-xl transition-all border border-slate-700 active:scale-[0.98]">
                     Edit Draft
                   </button>
-                  <button className="flex-none p-3 text-slate-400 hover:text-red-400 hover:bg-red-400/10 rounded-xl transition-colors">
-                    <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                    </svg>
-                  </button>
+                  <form action={deleteDraft}>
+                    <input type="hidden" name="draftId" value={draft.id} />
+                    <button type="submit" className="flex-none p-3 text-slate-400 hover:text-red-400 hover:bg-red-400/10 rounded-xl transition-colors cursor-pointer" title="Hapus Draft">
+                      <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                      </svg>
+                    </button>
+                  </form>
                 </div>
               </div>
             ))}
