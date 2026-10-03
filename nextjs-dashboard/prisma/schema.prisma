@@ -1,0 +1,81 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:../../whatsapp-bot/prisma/dev.db"
+}
+
+model User {
+  id         Int      @id @default(autoincrement())
+  name       String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Contact {
+  id            Int             @id @default(autoincrement())
+  phoneNumber   String          @unique
+  name          String?
+  relationship  String?
+  aiMode        String          @default("suggest_reply") // manual, suggest_reply, auto_reply
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+
+  messages      Message[]
+  conversations Conversation[]
+  memories      Memory[]
+  drafts        AIDraft[]
+}
+
+model Message {
+  id         Int      @id @default(autoincrement())
+  contactId  Int
+  contact    Contact  @relation(fields: [contactId], references: [id])
+  direction  String   // incoming, outgoing
+  message    String
+  timestamp  DateTime @default(now())
+
+  drafts     AIDraft[]
+}
+
+model Conversation {
+  id         Int      @id @default(autoincrement())
+  contactId  Int
+  contact    Contact  @relation(fields: [contactId], references: [id])
+  summary    String
+  updatedAt  DateTime @updatedAt
+}
+
+model Memory {
+  id         Int      @id @default(autoincrement())
+  contactId  Int
+  contact    Contact  @relation(fields: [contactId], references: [id])
+  content    String
+  importance String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model AIDraft {
+  id                Int      @id @default(autoincrement())
+  contactId         Int
+  contact           Contact  @relation(fields: [contactId], references: [id])
+  incomingMessageId Int
+  incomingMessage   Message  @relation(fields: [incomingMessageId], references: [id])
+  draft             String
+  status            String   @default("pending") // pending, approved, rejected, sent
+  createdAt         DateTime @default(now())
+}
+
+model UserStyle {
+  id            Int      @id @default(autoincrement())
+  language      String   @default("id")
+  tone          String   @default("casual")
+  formality     String   @default("low")
+  messageLength String   @default("short")
+  emojiUsage    String   @default("low")
+  slangUsage    Boolean  @default(true)
+  updatedAt     DateTime @updatedAt
+}

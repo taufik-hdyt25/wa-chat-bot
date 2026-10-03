@@ -1,0 +1,113 @@
+import { prisma } from "@/lib/prisma";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+
+export default async function ContactDetail({ params }: { params: Promise<{ id: string }> }) {
+  const resolvedParams = await params;
+  const contactId = parseInt(resolvedParams.id);
+
+  if (isNaN(contactId)) {
+    notFound();
+  }
+
+  const contact = await prisma.contact.findUnique({
+    where: { id: contactId },
+    include: {
+      messages: {
+        orderBy: { timestamp: "asc" },
+      },
+      memories: true,
+    },
+  });
+
+  if (!contact) {
+    notFound();
+  }
+
+  return (
+    <div className="min-h-screen bg-[#0f172a] text-slate-200 font-sans flex flex-col">
+      {/* Header */}
+      <header className="border-b border-slate-800 bg-[#1e293b]/50 backdrop-blur-md sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <Link href="/contacts" className="w-10 h-10 rounded-xl bg-slate-800 flex items-center justify-center hover:bg-slate-700 transition">
+              <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+              </svg>
+            </Link>
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-indigo-500 flex items-center justify-center font-bold text-white shadow-lg">
+                {(contact.name || contact.phoneNumber).charAt(0).toUpperCase()}
+              </div>
+              <div>
+                <h1 className="text-lg font-bold text-white leading-tight">
+                  {contact.name || contact.phoneNumber}
+                </h1>
+                <p className="text-xs text-slate-400">{contact.phoneNumber}</p>
+              </div>
+            </div>
+          </div>
+          <div className="flex items-center gap-3">
+            <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
+              contact.aiMode === 'auto_reply' ? 'bg-green-500/10 text-green-400 border border-green-500/20' : 'bg-yellow-500/10 text-yellow-400 border border-yellow-500/20'
+            }`}>
+              {contact.aiMode.replace('_', ' ').toUpperCase()}
+            </span>
+            <button className="bg-slate-800 hover:bg-slate-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition border border-slate-700">
+              Edit Settings
+            </button>
+          </div>
+        </div>
+      </header>
+
+      {/* Chat Interface */}
+      <main className="flex-1 max-w-5xl mx-auto w-full px-6 py-8 flex flex-col">
+        {/* Memories / Context Panel (Optional but good for AI context) */}
+        {contact.memories.length > 0 && (
+          <div className="mb-8 bg-blue-900/10 border border-blue-500/20 rounded-xl p-4 flex gap-4 items-start">
+            <div className="mt-1">
+              <svg className="w-5 h-5 text-blue-400" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
+              </svg>
+            </div>
+            <div>
+              <h4 className="text-sm font-semibold text-blue-400 mb-2">AI Memories for this Contact:</h4>
+              <ul className="text-sm text-blue-200/70 space-y-1 list-disc list-inside">
+                {contact.memories.map(m => (
+                  <li key={m.id}>{m.content}</li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        )}
+
+        {/* Messages */}
+        <div className="flex-1 space-y-6">
+          {contact.messages.length === 0 ? (
+            <div className="text-center py-20 text-slate-500">
+              Belum ada pesan dengan kontak ini.
+            </div>
+          ) : (
+            contact.messages.map((msg) => {
+              const isMe = msg.direction === "outgoing";
+              return (
+                <div key={msg.id} className={`flex flex-col ${isMe ? 'items-end' : 'items-start'}`}>
+                  <div className={`max-w-[80%] rounded-2xl px-5 py-3 shadow-sm ${
+                    isMe 
+                      ? 'bg-blue-600 text-white rounded-br-sm' 
+                      : 'bg-[#1e293b] text-slate-200 border border-slate-800 rounded-bl-sm'
+                  }`}>
+                    <p className="text-[15px] leading-relaxed whitespace-pre-wrap">{msg.message}</p>
+                  </div>
+                  <span className="text-[11px] text-slate-500 mt-1 px-1">
+                    {msg.timestamp.toLocaleString('id-ID', { hour: '2-digit', minute: '2-digit', day: 'numeric', month: 'short' })}
+                  </span>
+                </div>
+              );
+            })
+          )}
+        </div>
+      </main>
+    </div>
+  );
+}
