@@ -1,0 +1,9 @@
+node_modules/
+.env
+.next/
+dist/
+build/
+*.db
+*.db-journal
+.DS_Store
+auth_info_baileys/

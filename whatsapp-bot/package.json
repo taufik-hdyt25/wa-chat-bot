@@ -1,0 +1,31 @@
+{
+  "name": "whatsapp-bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "tsx src/index.ts",
+    "dev": "tsx watch src/index.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "@google/genai": "^2.27.0",
+    "@whiskeysockets/baileys": "^7.0.0-rc14",
+    "dotenv": "^18.0.5",
+    "groq-sdk": "^1.6.0",
+    "pino": "^10.4.0",
+    "qrcode-terminal": "^0.12.0"
+  },
+  "devDependencies": {
+    "@prisma/client": "^5.22.0",
+    "@types/node": "^26.6.4",
+    "@types/qrcode-terminal": "^0.12.2",
+    "prisma": "^5.22.0",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
+  }
+}
