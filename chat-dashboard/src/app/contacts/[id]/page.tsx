@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
+import EditSettingsModal from "./EditSettingsModal";
 import { notFound } from "next/navigation";
 import { revalidatePath } from "next/cache";
 
@@ -60,13 +61,13 @@ export default async function ContactDetail({ params }: { params: Promise<{ id: 
           </div>
           <div className="flex items-center gap-3">
             <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
-              contact.aiMode === 'auto_reply' ? 'bg-green-500/10 text-green-400 border border-green-500/20' : 'bg-yellow-500/10 text-yellow-400 border border-yellow-500/20'
+              contact.aiMode === 'auto_reply' ? 'bg-green-500/10 text-green-400 border border-green-500/20' : 
+              contact.aiMode === 'manual' ? 'bg-red-500/10 text-red-400 border border-red-500/20' :
+              'bg-yellow-500/10 text-yellow-400 border border-yellow-500/20'
             }`}>
               {contact.aiMode.replace('_', ' ').toUpperCase()}
             </span>
-            <button className="bg-slate-800 hover:bg-slate-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition border border-slate-700">
-              Edit Settings
-            </button>
+            <EditSettingsModal contact={contact} />
           </div>
         </div>
       </header>
