@@ -1,18 +1,32 @@
 version: '3.8'
 
 services:
-  postgres:
-    image: postgres:15
-    container_name: whatsapp_bot_db
-    environment:
-      POSTGRES_USER: thbot
-      POSTGRES_PASSWORD: thbot2599
-      POSTGRES_DB: whatsapp_ai
-    ports:
-      - "5432:5432"
-    volumes:
-      - pgdata:/var/lib/postgresql/data
+  wa-bot:
+    build: 
+      context: ./whatsapp-bot
+    container_name: wa-bot
     restart: unless-stopped
+    tty: true # Agar QR Code bisa dirender di log docker
+    volumes:
+      # Mount folder prisma agar DB persisten & tersinkronisasi
+      - ./whatsapp-bot/prisma:/app/prisma
+      # Mount session WA agar tidak perlu scan ulang setiap direstart
+      - ./whatsapp-bot/auth_info_baileys:/app/auth_info_baileys
+    env_file:
+      - ./whatsapp-bot/.env
+    environment:
+      # Paksa Prisma membaca DB dari file mount
+      - DATABASE_URL=file:./dev.db
 
-volumes:
-  pgdata:
+  wa-dashboard:
+    build: 
+      context: ./chat-dashboard
+    container_name: wa-dashboard
+    restart: unless-stopped
+    ports:
+      - "3333:3000" # Diubah ke port 3333 karena 3000 sudah terpakai
+    volumes:
+      # Mount folder prisma dari whatsapp-bot ke dashboard agar datanya 100% sama!
+      - ./whatsapp-bot/prisma:/app/prisma
+    environment:
+      - DATABASE_URL=file:./dev.db
