@@ -4,7 +4,7 @@ import { useState } from "react";
 import { updateContactSettings, deleteContact } from "./actions";
 import { useRouter } from "next/navigation";
 
-export default function EditSettingsModal({ contact }: { contact: any }) {
+export default function EditSettingsModal({ contact }: { contact: { id: number; aiMode: string; relationship: string | null } }) {
   const [isOpen, setIsOpen] = useState(false);
   const [isPending, setIsPending] = useState(false);
   const router = useRouter();
