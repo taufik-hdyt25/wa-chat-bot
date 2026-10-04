@@ -15,16 +15,19 @@ dotenv.config();
 
 const prisma = new PrismaClient();
 
-async function connectToWhatsApp() {
-  let currentQR: string | null = null;
-  let isConnected = false;
+let currentQR: string | null = null;
+let isConnected = false;
+let globalSock: any = null;
 
+async function connectToWhatsApp() {
   const { state, saveCreds } = await useMultiFileAuthState("auth_info_baileys");
 
   const sock = makeWASocket({
     auth: state,
     browser: ["Personal AI Bot", "Chrome", "1.0.0"],
   });
+  
+  globalSock = sock;
 
   sock.ev.on("creds.update", saveCreds);
 
@@ -170,81 +173,85 @@ async function connectToWhatsApp() {
     }
     console.log(`Sinkronisasi kontak selesai.`);
   });
-
-  // Setup Express server for API integrations (like broadcast)
-  const app = express();
-  app.use(cors());
-  app.use(express.json({ limit: '50mb' }));
-  app.use(express.urlencoded({ limit: '50mb', extended: true }));
-
-  app.post('/broadcast', async (req, res) => {
-    try {
-      const { message, contactIds, media } = req.body;
-      if (!message && !media) {
-        return res.status(400).json({ error: "Message or media is required" });
-      }
-
-      let targetContacts = [];
-      if (contactIds && contactIds.length > 0) {
-        targetContacts = await prisma.contact.findMany({
-          where: { id: { in: contactIds } }
-        });
-      } else {
-        // Jika tidak ada ID yang dipilih, kirim ke semua kontak
-        targetContacts = await prisma.contact.findMany();
-      }
-
-      let sentCount = 0;
-      for (const contact of targetContacts) {
-        const remoteJid = `${contact.phoneNumber}@s.whatsapp.net`;
-        try {
-          if (media && media.data) {
-            const buffer = Buffer.from(media.data, 'base64');
-            if (media.mimetype.startsWith('image/')) {
-              await sock.sendMessage(remoteJid, { image: buffer, caption: message || "" });
-            } else if (media.mimetype.startsWith('video/')) {
-              await sock.sendMessage(remoteJid, { video: buffer, caption: message || "" });
-            } else {
-              await sock.sendMessage(remoteJid, { document: buffer, mimetype: media.mimetype, fileName: media.fileName, caption: message || "" });
-            }
-          } else {
-            await sock.sendMessage(remoteJid, { text: message });
-          }
-          
-          // Simpan pesan ke history
-          await prisma.message.create({
-            data: {
-              contactId: contact.id,
-              direction: "outgoing",
-              message: message ? message : `[Media sent: ${media.fileName || 'file'}]`,
-            }
-          });
-          sentCount++;
-          // Delay sedikit agar tidak di-banned spam oleh WhatsApp
-          await new Promise(r => setTimeout(r, 1000));
-        } catch (e) {
-          console.error(`Failed to broadcast to ${contact.phoneNumber}:`, e);
-        }
-      }
-
-      res.json({ success: true, sentCount, totalTargets: targetContacts.length });
-    } catch (error: any) {
-      console.error("Broadcast Error:", error);
-      res.status(500).json({ error: error.message || "Internal server error" });
-    }
-  });
-
-  app.get('/status', (req, res) => {
-    res.json({
-      connected: isConnected,
-      qr: currentQR
-    });
-  });
-
-  const PORT = process.env.API_PORT || 3001;
-  app.listen(PORT, () => {
-    console.log(`Bot API is running on port ${PORT}`);
-  });
 }
+
+// Setup Express server for API integrations (like broadcast)
+const app = express();
+app.use(cors());
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
+
+app.post('/broadcast', async (req, res) => {
+  try {
+    const { message, contactIds, media } = req.body;
+    if (!message && !media) {
+      return res.status(400).json({ error: "Message or media is required" });
+    }
+
+    if (!globalSock) {
+      return res.status(503).json({ error: "WhatsApp socket not ready" });
+    }
+
+    let targetContacts = [];
+    if (contactIds && contactIds.length > 0) {
+      targetContacts = await prisma.contact.findMany({
+        where: { id: { in: contactIds } }
+      });
+    } else {
+      // Jika tidak ada ID yang dipilih, kirim ke semua kontak
+      targetContacts = await prisma.contact.findMany();
+    }
+
+    let sentCount = 0;
+    for (const contact of targetContacts) {
+      const remoteJid = `${contact.phoneNumber}@s.whatsapp.net`;
+      try {
+        if (media && media.data) {
+          const buffer = Buffer.from(media.data, 'base64');
+          if (media.mimetype.startsWith('image/')) {
+            await globalSock.sendMessage(remoteJid, { image: buffer, caption: message || "" });
+          } else if (media.mimetype.startsWith('video/')) {
+            await globalSock.sendMessage(remoteJid, { video: buffer, caption: message || "" });
+          } else {
+            await globalSock.sendMessage(remoteJid, { document: buffer, mimetype: media.mimetype, fileName: media.fileName, caption: message || "" });
+          }
+        } else {
+          await globalSock.sendMessage(remoteJid, { text: message });
+        }
+        
+        // Simpan pesan ke history
+        await prisma.message.create({
+          data: {
+            contactId: contact.id,
+            direction: "outgoing",
+            message: message ? message : `[Media sent: ${media.fileName || 'file'}]`,
+          }
+        });
+        sentCount++;
+        // Delay sedikit agar tidak di-banned spam oleh WhatsApp
+        await new Promise(r => setTimeout(r, 1000));
+      } catch (e) {
+        console.error(`Failed to broadcast to ${contact.phoneNumber}:`, e);
+      }
+    }
+
+    res.json({ success: true, sentCount, totalTargets: targetContacts.length });
+  } catch (error: any) {
+    console.error("Broadcast Error:", error);
+    res.status(500).json({ error: error.message || "Internal server error" });
+  }
+});
+
+app.get('/status', (req, res) => {
+  res.json({
+    connected: isConnected,
+    qr: currentQR
+  });
+});
+
+const PORT = process.env.API_PORT || 3001;
+app.listen(PORT, () => {
+  console.log(`Bot API is running on port ${PORT}`);
+});
 
 connectToWhatsApp();
