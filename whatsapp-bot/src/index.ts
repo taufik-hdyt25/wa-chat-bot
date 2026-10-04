@@ -52,8 +52,13 @@ async function connectToWhatsApp() {
       if (shouldReconnect) {
         connectToWhatsApp();
       } else {
-        // If logged out, reset QR
-        currentQR = null;
+        // If logged out, delete session and restart
+        console.log("Session invalid or logged out. Resetting...");
+        import("fs").then(fs => {
+          fs.rmSync("auth_info_baileys", { recursive: true, force: true });
+          currentQR = null;
+          connectToWhatsApp();
+        });
       }
     } else if (connection === "open") {
       isConnected = true;
