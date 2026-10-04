@@ -133,6 +133,29 @@ async function connectToWhatsApp() {
     }
   });
 
+  sock.ev.on("contacts.upsert", async (contacts) => {
+    console.log(`Menerima ${contacts.length} kontak dari sinkronisasi WhatsApp...`);
+    for (const contact of contacts) {
+      if (!contact.id || !contact.id.endsWith('@s.whatsapp.net')) continue;
+      
+      const phoneNumber = contact.id.split('@')[0];
+      const name = contact.name || contact.notify || contact.verifiedName || null;
+      
+      if (!name) continue; // Jangan simpan jika tidak ada namanya (kontak anonim/belum disimpan di HP)
+
+      try {
+        await prisma.contact.upsert({
+          where: { phoneNumber },
+          update: { name },
+          create: { phoneNumber, name },
+        });
+      } catch (error) {
+        // Abaikan error duplikat atau minor saat sinkronisasi massal
+      }
+    }
+    console.log(`Sinkronisasi kontak selesai.`);
+  });
+
   // Setup Express server for API integrations (like broadcast)
   const app = express();
   app.use(cors());
