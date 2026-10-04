@@ -79,7 +79,7 @@ Respond ONLY with the exact text you want to send as a reply. Do not use quotes 
         ],
         model: "openai/gpt-oss-120b", // Model GPT Open Source 120B yang super pintar untuk segala bahasa
         temperature: 0.7,
-        max_tokens: 256,
+        max_tokens: 1024,
     });
 
     const draftText = chatCompletion.choices[0]?.message?.content || "";
