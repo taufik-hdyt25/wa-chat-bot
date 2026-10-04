@@ -4,6 +4,7 @@ import EditSettingsModal from "./EditSettingsModal";
 import { notFound } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import ScrollToBottom from "./ScrollToBottom";
+import ChatInput from "./ChatInput";
 
 export const dynamic = "force-dynamic";
 
@@ -43,6 +44,29 @@ export default async function ContactDetail({ params }: { params: Promise<{ id: 
     const memId = parseInt(formData.get("memoryId") as string);
     const cId = formData.get("contactId") as string;
     await prisma.memory.delete({ where: { id: memId } });
+    revalidatePath(`/contacts/${cId}`);
+  }
+
+  async function sendMessage(formData: FormData) {
+    "use server";
+    const msgText = formData.get("message") as string;
+    const cId = parseInt(formData.get("contactId") as string);
+
+    try {
+      const res = await fetch("http://localhost:3001/broadcast", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          message: msgText,
+          contactIds: [cId]
+        })
+      });
+      if (!res.ok) {
+        console.error("Failed to send message, status:", res.status);
+      }
+    } catch (e) {
+      console.error("Failed to send message:", e);
+    }
     revalidatePath(`/contacts/${cId}`);
   }
 
@@ -155,6 +179,9 @@ export default async function ContactDetail({ params }: { params: Promise<{ id: 
           <ScrollToBottom />
         </div>
       </main>
+      
+      {/* Chat Input */}
+      <ChatInput contactId={contact.id} sendMessageAction={sendMessage} />
     </div>
   );
 }
