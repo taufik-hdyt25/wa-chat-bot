@@ -2,9 +2,15 @@
 
 import { useState } from "react";
 import { Textarea } from "@/components/ui/textarea";
+import { AIDraft, Contact, Message } from "@prisma/client";
+
+type DraftWithRelations = AIDraft & {
+  contact: Contact;
+  incomingMessage: Message;
+};
 
 export default function DraftCard({ draft, deleteAction, sendAction }: { 
-  draft: any, 
+  draft: DraftWithRelations, 
   deleteAction: (formData: FormData) => void,
   sendAction: (formData: FormData) => void
 }) {
