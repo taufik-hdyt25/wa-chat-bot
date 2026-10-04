@@ -1,6 +1,9 @@
 "use client";
 
 import { useState, useRef } from "react";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 export default function ChatInput({ contactId, sendMessageAction }: {
   contactId: number;
@@ -22,7 +25,6 @@ export default function ChatInput({ contactId, sendMessageAction }: {
 
     if (selectedFile) {
       const buffer = await selectedFile.arrayBuffer();
-      // Use standard btoa since this is running in browser
       let binary = '';
       const bytes = new Uint8Array(buffer);
       const len = bytes.byteLength;
@@ -36,10 +38,16 @@ export default function ChatInput({ contactId, sendMessageAction }: {
       formData.append("mediaFileName", selectedFile.name);
     }
 
-    await sendMessageAction(formData);
-    setMessage("");
-    setSelectedFile(null);
-    setIsSending(false);
+    try {
+      await sendMessageAction(formData);
+      setMessage("");
+      setSelectedFile(null);
+      toast.success("Message sent successfully!");
+    } catch (err) {
+      toast.error("Failed to send message.");
+    } finally {
+      setIsSending(false);
+    }
   };
 
   return (
@@ -59,33 +67,36 @@ export default function ChatInput({ contactId, sendMessageAction }: {
           </div>
         )}
         <div className="flex gap-3 relative items-center">
-          <button 
+          <Button 
             type="button" 
+            variant="ghost"
+            size="icon"
             onClick={() => fileInputRef.current?.click()}
-            className="text-slate-400 hover:text-blue-400 transition-colors p-2"
+            className="text-slate-400 hover:text-blue-400 hover:bg-slate-800 transition-colors flex-shrink-0"
           >
             <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" />
             </svg>
-          </button>
+          </Button>
           <input 
             type="file" 
             ref={fileInputRef} 
             onChange={(e) => setSelectedFile(e.target.files?.[0] || null)}
             className="hidden"
           />
-          <input 
+          <Input 
             type="text" 
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             placeholder="Tulis pesan..."
-            className="flex-1 bg-slate-900 border border-slate-700 text-white rounded-full px-5 py-3 focus:outline-none focus:border-blue-500 transition-colors"
+            className="flex-1 bg-slate-900 border-slate-700 text-white rounded-full px-5 h-12 focus-visible:ring-blue-500 transition-colors"
             disabled={isSending}
           />
-          <button 
+          <Button 
             type="submit"
+            size="icon"
             disabled={(!message.trim() && !selectedFile) || isSending}
-            className="bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white rounded-full w-12 h-12 flex items-center justify-center flex-shrink-0 transition-colors"
+            className="bg-blue-600 hover:bg-blue-500 text-white rounded-full w-12 h-12 flex-shrink-0 transition-colors shadow-lg shadow-blue-500/20"
           >
             {isSending ? (
               <svg className="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
@@ -97,7 +108,7 @@ export default function ChatInput({ contactId, sendMessageAction }: {
                 <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
               </svg>
             )}
-          </button>
+          </Button>
         </div>
       </form>
     </div>

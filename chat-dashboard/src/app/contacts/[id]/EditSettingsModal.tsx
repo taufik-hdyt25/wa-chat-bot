@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { updateContactSettings, deleteContact } from "./actions";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 import {
   Dialog,
   DialogContent,
@@ -35,25 +36,29 @@ export default function EditSettingsModal({
     e.preventDefault();
     setIsPending(true);
     const formData = new FormData(e.currentTarget);
-    await updateContactSettings(contact.id, formData);
-    setIsPending(false);
-    setIsOpen(false);
+    try {
+      await updateContactSettings(contact.id, formData);
+      toast.success("Contact settings updated!");
+      setIsOpen(false);
+    } catch (err) {
+      toast.error("Failed to update settings.");
+    } finally {
+      setIsPending(false);
+    }
   }
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger
-        render={
-          <Button
-            variant="outline"
-            className="border-slate-700 bg-slate-800 text-white hover:bg-slate-700 hover:text-white"
-          />
-        }
-      >
-        Edit Settings
+      <DialogTrigger asChild>
+        <Button
+          variant="outline"
+          className="border-slate-700 bg-slate-800 text-white hover:bg-slate-700 hover:text-white h-8"
+        >
+          Edit Settings
+        </Button>
       </DialogTrigger>
       
-      <DialogContent className="sm:max-w-[425px] bg-[#1e293b] border-slate-700 text-white">
+      <DialogContent className="sm:max-w-[425px] bg-[#1e293b] border-slate-700 text-white rounded-xl">
         <DialogHeader>
           <DialogTitle>Edit Contact Settings</DialogTitle>
         </DialogHeader>
@@ -62,7 +67,7 @@ export default function EditSettingsModal({
           <div className="space-y-2">
             <label className="text-sm font-medium text-slate-300">AI Response Mode</label>
             <Select name="aiMode" defaultValue={contact.aiMode}>
-              <SelectTrigger className="bg-[#0f172a] border-slate-700 text-white">
+              <SelectTrigger className="bg-[#0f172a] border-slate-700 text-white focus:ring-blue-500">
                 <SelectValue placeholder="Pilih Mode" />
               </SelectTrigger>
               <SelectContent className="bg-[#1e293b] border-slate-700 text-white">
@@ -79,7 +84,7 @@ export default function EditSettingsModal({
               name="relationship"
               defaultValue={contact.relationship || ""}
               placeholder="e.g. Bos, Teman, Keluarga"
-              className="bg-[#0f172a] border-slate-700 text-white"
+              className="bg-[#0f172a] border-slate-700 text-white focus-visible:ring-blue-500"
             />
           </div>
 
@@ -89,7 +94,7 @@ export default function EditSettingsModal({
               name="newMemory"
               rows={2}
               placeholder="e.g. Panggil orang ini dengan sebutan 'Bapak'..."
-              className="bg-[#0f172a] border-slate-700 text-white resize-none"
+              className="bg-[#0f172a] border-slate-700 text-white resize-none focus-visible:ring-blue-500"
             />
           </div>
 
@@ -102,10 +107,11 @@ export default function EditSettingsModal({
                   setIsPending(true);
                   try {
                     await deleteContact(contact.id);
+                    toast.success("Contact deleted successfully");
                     router.push("/contacts");
                   } catch (error) {
                     console.error(error);
-                    alert("Gagal menghapus kontak.");
+                    toast.error("Gagal menghapus kontak.");
                     setIsPending(false);
                   }
                 }

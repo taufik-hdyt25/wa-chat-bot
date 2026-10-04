@@ -1,7 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 import { AIDraft, Contact, Message } from "@prisma/client";
 
 type DraftWithRelations = AIDraft & {
@@ -22,6 +24,8 @@ export default function DraftCard({
   const [draftText, setDraftText] = useState(draft.draft);
   const [isSending, setIsSending] = useState(false);
 
+  const [isDeleting, startDeleteTransition] = useTransition();
+
   const handleSend = async () => {
     setIsSending(true);
     const formData = new FormData();
@@ -29,8 +33,27 @@ export default function DraftCard({
     formData.append("draftText", draftText);
     formData.append("contactId", draft.contact.id.toString());
 
-    await sendAction(formData);
-    setIsSending(false);
+    try {
+      await sendAction(formData);
+      toast.success("Reply sent successfully!");
+    } catch (err) {
+      toast.error("Failed to send reply");
+    } finally {
+      setIsSending(false);
+    }
+  };
+
+  const handleDelete = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    startDeleteTransition(async () => {
+      try {
+        await deleteAction(formData);
+        toast.success("Draft deleted");
+      } catch (err) {
+        toast.error("Failed to delete draft");
+      }
+    });
   };
 
   return (
@@ -94,47 +117,51 @@ export default function DraftCard({
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
         {isEditing ? (
           <>
-            <button
+            <Button
               onClick={handleSend}
               disabled={isSending}
-              className="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-medium py-3 px-4 rounded-xl transition-all shadow-lg shadow-blue-500/20 active:scale-[0.98] disabled:opacity-70"
+              className="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white h-12 rounded-xl transition-all shadow-lg shadow-blue-500/20 active:scale-[0.98]"
             >
               {isSending ? "Sending..." : "Send Edited Reply"}
-            </button>
-            <button
+            </Button>
+            <Button
+              variant="outline"
               onClick={() => {
                 setIsEditing(false);
                 setDraftText(draft.draft); // cancel edit
               }}
-              className="flex-1 bg-slate-800 hover:bg-slate-700 text-white font-medium py-3 px-4 rounded-xl transition-all border border-slate-700 active:scale-[0.98]"
+              className="flex-1 bg-slate-800 hover:bg-slate-700 text-white h-12 rounded-xl transition-all border-slate-700 active:scale-[0.98]"
             >
               Cancel
-            </button>
+            </Button>
           </>
         ) : (
           <>
-            <button
+            <Button
               onClick={handleSend}
               disabled={isSending}
-              className="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-medium py-3 px-4 rounded-xl transition-all shadow-lg shadow-blue-500/20 active:scale-[0.98] disabled:opacity-70"
+              className="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white h-12 rounded-xl transition-all shadow-lg shadow-blue-500/20 active:scale-[0.98]"
             >
               {isSending ? "Sending..." : "Send Reply"}
-            </button>
-            <button
+            </Button>
+            <Button
+              variant="outline"
               onClick={() => setIsEditing(true)}
-              className="flex-1 bg-slate-800 hover:bg-slate-700 text-white font-medium py-3 px-4 rounded-xl transition-all border border-slate-700 active:scale-[0.98]"
+              className="flex-1 bg-slate-800 hover:bg-slate-700 text-white h-12 rounded-xl transition-all border-slate-700 active:scale-[0.98]"
             >
               Edit Draft
-            </button>
-            <form action={deleteAction} className="flex sm:block">
+            </Button>
+            <form onSubmit={handleDelete} className="flex sm:block">
               <input type="hidden" name="draftId" value={draft.id} />
-              <button
+              <Button
                 type="submit"
-                className="flex-1 sm:flex-none p-3 flex justify-center items-center text-slate-400 hover:text-red-400 hover:bg-red-400/10 bg-slate-800/50 sm:bg-transparent rounded-xl transition-colors cursor-pointer border border-slate-800 sm:border-none"
+                disabled={isDeleting}
+                variant="ghost"
+                className="flex-1 sm:flex-none h-12 w-12 p-0 flex justify-center items-center text-slate-400 hover:text-red-400 hover:bg-red-400/10 rounded-xl transition-colors cursor-pointer border-slate-800"
                 title="Hapus Draft"
               >
                 <svg
-                  className="w-6 h-6"
+                  className="w-5 h-5"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -146,7 +173,7 @@ export default function DraftCard({
                     d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
                   />
                 </svg>
-              </button>
+              </Button>
             </form>
           </>
         )}

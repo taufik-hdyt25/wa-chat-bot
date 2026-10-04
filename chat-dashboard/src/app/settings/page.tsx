@@ -3,6 +3,8 @@ import Link from "next/link";
 import { revalidatePath } from "next/cache";
 import ConnectionStatus from "./ConnectionStatus";
 
+import SettingsForm from "./SettingsForm";
+
 export const dynamic = "force-dynamic";
 
 export default async function SettingsPage() {
@@ -65,96 +67,8 @@ export default async function SettingsPage() {
           </p>
         </div>
 
-        <div className="bg-[#1e293b] rounded-2xl border border-slate-800 p-8 shadow-xl">
-          <form action={updateSettings} className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Language */}
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-slate-300">Language</label>
-                <select name="language" defaultValue={userStyle.language} className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-blue-500 transition-colors">
-                  <option value="id">Indonesian</option>
-                  <option value="en">English</option>
-                  <option value="javanese">Javanese</option>
-                  <option value="sundanese">Sundanese</option>
-                </select>
-              </div>
-
-              {/* Tone */}
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-slate-300">Tone</label>
-                <select name="tone" defaultValue={userStyle.tone} className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-blue-500 transition-colors">
-                  <option value="casual">Casual / Santai</option>
-                  <option value="professional">Professional</option>
-                  <option value="friendly">Friendly / Ramah</option>
-                  <option value="sarcastic">Sarcastic / Ketus</option>
-                </select>
-              </div>
-
-              {/* Formality */}
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-slate-300">Formality Level</label>
-                <select name="formality" defaultValue={userStyle.formality} className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-blue-500 transition-colors">
-                  <option value="low">Low (Gue/Lu, Aku/Kamu)</option>
-                  <option value="medium">Medium (Saya/Anda)</option>
-                  <option value="high">High (Bapak/Ibu, Sangat Sopan)</option>
-                </select>
-              </div>
-
-              {/* Message Length */}
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-slate-300">Message Length</label>
-                <select name="messageLength" defaultValue={userStyle.messageLength} className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-blue-500 transition-colors">
-                  <option value="short">Short (To the point)</option>
-                  <option value="medium">Medium (Balanced)</option>
-                  <option value="long">Long (Detailed)</option>
-                </select>
-              </div>
-
-              {/* Emoji Usage */}
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-slate-300">Emoji Usage</label>
-                <select name="emojiUsage" defaultValue={userStyle.emojiUsage} className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-blue-500 transition-colors">
-                  <option value="none">None (Tanpa Emoji)</option>
-                  <option value="low">Low (1-2 Emoji)</option>
-                  <option value="high">High (Banyak Emoji 🔥💯)</option>
-                </select>
-              </div>
-            </div>
-
-            {/* Slang Usage Toggle */}
-            <div className="pt-4 flex items-center justify-between border-t border-slate-800">
-              <div>
-                <h4 className="text-white font-medium">Use Slang / Bahasa Gaul</h4>
-                <p className="text-xs text-slate-500 mt-1">Mengizinkan AI menggunakan singkatan spt &quot;yg&quot;, &quot;dgn&quot;, &quot;bgt&quot;.</p>
-              </div>
-              <label className="relative inline-flex items-center cursor-pointer">
-                <input type="checkbox" name="slangUsage" defaultChecked={userStyle.slangUsage} className="sr-only peer" />
-                <div className="w-11 h-6 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-500"></div>
-              </label>
-            </div>
-
-            {/* Custom Instructions */}
-            <div className="pt-4 border-t border-slate-800">
-              <label className="text-sm font-medium text-slate-300 block mb-2">Custom Instructions (Opsional)</label>
-              <p className="text-xs text-slate-500 mb-3">
-                Instruksi spesifik agar bot tidak terdengar kaku. Contoh: <i>&quot;Gunakan kata &apos;gue&apos; dan &apos;lu&apos;. Jangan panggil &apos;Bapak/Ibu&apos;. Jawab sesingkat mungkin tanpa basa-basi.&quot;</i>
-              </p>
-              <textarea 
-                name="customInstructions" 
-                defaultValue={userStyle.customInstructions || ""} 
-                rows={4}
-                placeholder="Masukkan instruksi khusus di sini..."
-                className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-blue-500 transition-colors resize-none"
-              ></textarea>
-            </div>
-
-            {/* Submit Button */}
-            <div className="pt-6">
-              <button type="submit" className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold py-4 px-8 rounded-xl transition-all shadow-lg shadow-blue-500/25 active:scale-[0.98]">
-                Save AI Configuration
-              </button>
-            </div>
-          </form>
+        <div className="bg-[#1e293b] rounded-3xl border border-slate-800 p-8 shadow-xl">
+          <SettingsForm userStyle={userStyle} updateAction={updateSettings} />
         </div>
       </main>
     </div>

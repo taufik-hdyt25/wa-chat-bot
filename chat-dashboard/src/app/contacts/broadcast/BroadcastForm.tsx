@@ -3,6 +3,7 @@
 import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 
@@ -32,12 +33,20 @@ export default function BroadcastForm({ contacts }: { contacts: any[] }) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!message.trim() && !selectedFile) return alert("Pesan atau file tidak boleh kosong!");
-    if (selectedContacts.length === 0) return alert("Pilih minimal 1 kontak!");
+    if (!message.trim() && !selectedFile) {
+      toast.error("Pesan atau lampiran tidak boleh kosong!");
+      return;
+    }
+    if (selectedContacts.length === 0) {
+      toast.error("Pilih minimal 1 kontak!");
+      return;
+    }
 
     if (!confirm(`Yakin ingin mengirim pesan ke ${selectedContacts.length} kontak?`)) return;
 
     setIsSending(true);
+    const loadingToast = toast.loading("Mengirim broadcast...");
+    
     try {
       const { sendBroadcast } = await import("./actions");
       
@@ -59,14 +68,14 @@ export default function BroadcastForm({ contacts }: { contacts: any[] }) {
       const result = await sendBroadcast(message, selectedContacts, media);
 
       if (result.success) {
-        alert(`Berhasil mengirim broadcast ke ${result.data.sentCount} kontak!`);
+        toast.success(`Berhasil mengirim broadcast ke ${result.data.sentCount} kontak!`, { id: loadingToast });
         router.push("/contacts");
       } else {
-        alert("Gagal: " + result.error);
+        toast.error("Gagal: " + result.error, { id: loadingToast });
       }
     } catch (error) {
       console.error(error);
-      alert("Terjadi kesalahan saat mengirim broadcast.");
+      toast.error("Terjadi kesalahan saat mengirim broadcast.", { id: loadingToast });
     } finally {
       setIsSending(false);
     }
