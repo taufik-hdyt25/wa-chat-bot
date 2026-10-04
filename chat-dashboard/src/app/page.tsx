@@ -61,18 +61,18 @@ export default async function Home() {
     <div className="min-h-screen bg-[#0f172a] text-slate-200 font-sans">
       {/* Header */}
       <header className="border-b border-slate-800 bg-[#1e293b]/50 backdrop-blur-md sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-500 to-indigo-500 flex items-center justify-center shadow-lg shadow-blue-500/20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-0 min-h-20 flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-0">
+          <div className="flex items-center gap-3 w-full sm:w-auto justify-center sm:justify-start">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-500 to-indigo-500 flex flex-shrink-0 items-center justify-center shadow-lg shadow-blue-500/20">
               <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
               </svg>
             </div>
-            <h1 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-400">
+            <h1 className="text-lg sm:text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-400 text-center sm:text-left">
               Personal AI Assistant
             </h1>
           </div>
-          <nav className="flex gap-6 text-sm font-medium">
+          <nav className="flex flex-wrap justify-center gap-4 sm:gap-6 text-sm font-medium w-full sm:w-auto">
             <Link href="/" className="text-blue-400">Dashboard</Link>
             <Link href="/contacts" className="text-slate-400 hover:text-white transition-colors">Conversations</Link>
             <Link href="/settings" className="text-slate-400 hover:text-white transition-colors">Settings</Link>
@@ -81,7 +81,7 @@ export default async function Home() {
       </header>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-6 py-12">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
         <div className="mb-10">
           <h2 className="text-3xl font-bold text-white mb-2">Welcome Back!</h2>
           <p className="text-slate-400">Here&apos;s what your AI has been doing while you were away.</p>

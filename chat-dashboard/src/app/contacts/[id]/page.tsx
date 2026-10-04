@@ -50,26 +50,26 @@ export default async function ContactDetail({ params }: { params: Promise<{ id: 
     <div className="min-h-screen bg-[#0f172a] text-slate-200 font-sans flex flex-col">
       {/* Header */}
       <header className="border-b border-slate-800 bg-[#1e293b]/50 backdrop-blur-md sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <Link href="/contacts" className="w-10 h-10 rounded-xl bg-slate-800 flex items-center justify-center hover:bg-slate-700 transition">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-0 min-h-20 flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-0">
+          <div className="flex items-center gap-4 w-full sm:w-auto justify-start">
+            <Link href="/contacts" className="w-10 h-10 rounded-xl bg-slate-800 flex flex-shrink-0 items-center justify-center hover:bg-slate-700 transition">
               <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
               </svg>
             </Link>
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-indigo-500 flex items-center justify-center font-bold text-white shadow-lg">
+            <div className="flex items-center gap-3 min-w-0">
+              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-indigo-500 flex flex-shrink-0 items-center justify-center font-bold text-white shadow-lg">
                 {(contact.name || contact.phoneNumber).charAt(0).toUpperCase()}
               </div>
-              <div>
-                <h1 className="text-lg font-bold text-white leading-tight">
+              <div className="min-w-0">
+                <h1 className="text-lg font-bold text-white leading-tight truncate">
                   {contact.name || contact.phoneNumber}
                 </h1>
-                <p className="text-xs text-slate-400">{contact.phoneNumber}</p>
+                <p className="text-xs text-slate-400 truncate">{contact.phoneNumber}</p>
               </div>
             </div>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap justify-center sm:justify-end items-center gap-3 w-full sm:w-auto">
             <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
               contact.aiMode === 'auto_reply' ? 'bg-green-500/10 text-green-400 border border-green-500/20' : 
               contact.aiMode === 'manual' ? 'bg-red-500/10 text-red-400 border border-red-500/20' :
@@ -83,7 +83,7 @@ export default async function ContactDetail({ params }: { params: Promise<{ id: 
       </header>
 
       {/* Chat Interface */}
-      <main className="flex-1 max-w-5xl mx-auto w-full px-6 py-8 flex flex-col">
+      <main className="flex-1 max-w-5xl mx-auto w-full px-4 sm:px-6 py-6 sm:py-8 flex flex-col">
         {/* Memories / Context Panel (Optional but good for AI context) */}
         {contact.memories.length > 0 && (
           <div className="mb-8 bg-blue-900/10 border border-blue-500/20 rounded-xl p-4 flex gap-4 items-start">
@@ -125,12 +125,12 @@ export default async function ContactDetail({ params }: { params: Promise<{ id: 
               const isMe = msg.direction === "outgoing";
               return (
                 <div key={msg.id} className={`flex flex-col group ${isMe ? 'items-end' : 'items-start'}`}>
-                  <div className={`max-w-[80%] rounded-2xl px-5 py-3 shadow-sm relative ${
+                  <div className={`max-w-[85%] sm:max-w-[80%] rounded-2xl px-4 sm:px-5 py-3 shadow-sm relative ${
                     isMe 
                       ? 'bg-blue-600 text-white rounded-br-sm' 
                       : 'bg-[#1e293b] text-slate-200 border border-slate-800 rounded-bl-sm'
                   }`}>
-                    <p className="text-[15px] leading-relaxed whitespace-pre-wrap">{msg.message}</p>
+                    <p className="text-[14px] sm:text-[15px] leading-relaxed whitespace-pre-wrap break-words">{msg.message}</p>
                     
                     {/* Delete button (shows on hover) */}
                     <div className={`absolute top-1/2 -translate-y-1/2 ${isMe ? 'left-[-40px]' : 'right-[-40px]'} opacity-0 group-hover:opacity-100 transition-opacity`}>

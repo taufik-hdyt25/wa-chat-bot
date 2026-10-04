@@ -25,16 +25,16 @@ export default function DraftCard({ draft, deleteAction, sendAction }: {
 
   return (
     <div className="bg-[#1e293b] rounded-2xl p-6 border border-slate-800 hover:border-slate-700 transition-colors">
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center font-bold text-blue-400">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0 mb-4">
+        <div className="flex items-center gap-3 max-w-full">
+          <div className="w-10 h-10 rounded-full bg-slate-800 flex-shrink-0 flex items-center justify-center font-bold text-blue-400">
             {(draft.contact.name || draft.contact.phoneNumber).charAt(0).toUpperCase()}
           </div>
-          <div>
-            <h4 className="font-medium text-white flex items-center gap-2">
-              {draft.contact.name || draft.contact.phoneNumber}
+          <div className="min-w-0">
+            <h4 className="font-medium text-white flex flex-wrap items-center gap-2">
+              <span className="truncate">{draft.contact.name || draft.contact.phoneNumber}</span>
               {draft.contact.name && (
-                <span className="text-[10px] font-normal px-2 py-0.5 rounded-full bg-slate-800/50 text-slate-400 border border-slate-700">
+                <span className="text-[10px] font-normal px-2 py-0.5 rounded-full bg-slate-800/50 text-slate-400 border border-slate-700 truncate max-w-full">
                   {draft.contact.phoneNumber}
                 </span>
               )}
@@ -42,7 +42,7 @@ export default function DraftCard({ draft, deleteAction, sendAction }: {
             <p className="text-xs text-slate-500">Just now</p>
           </div>
         </div>
-        <span className="px-3 py-1 bg-yellow-500/10 text-yellow-400 text-xs font-medium rounded-full border border-yellow-500/20">
+        <span className="px-3 py-1 bg-yellow-500/10 text-yellow-400 text-xs font-medium rounded-full border border-yellow-500/20 self-start sm:self-auto flex-shrink-0">
           Draft Pending
         </span>
       </div>
@@ -73,7 +73,7 @@ export default function DraftCard({ draft, deleteAction, sendAction }: {
         )}
       </div>
 
-      <div className="flex items-center gap-3">
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
         {isEditing ? (
           <>
             <button 
@@ -104,9 +104,9 @@ export default function DraftCard({ draft, deleteAction, sendAction }: {
               className="flex-1 bg-slate-800 hover:bg-slate-700 text-white font-medium py-3 px-4 rounded-xl transition-all border border-slate-700 active:scale-[0.98]">
               Edit Draft
             </button>
-            <form action={deleteAction}>
+            <form action={deleteAction} className="flex sm:block">
               <input type="hidden" name="draftId" value={draft.id} />
-              <button type="submit" className="flex-none p-3 text-slate-400 hover:text-red-400 hover:bg-red-400/10 rounded-xl transition-colors cursor-pointer" title="Hapus Draft">
+              <button type="submit" className="flex-1 sm:flex-none p-3 flex justify-center items-center text-slate-400 hover:text-red-400 hover:bg-red-400/10 bg-slate-800/50 sm:bg-transparent rounded-xl transition-colors cursor-pointer border border-slate-800 sm:border-none" title="Hapus Draft">
                 <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                 </svg>
