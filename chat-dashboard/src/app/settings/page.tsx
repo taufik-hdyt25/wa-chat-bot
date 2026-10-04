@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
 import { revalidatePath } from "next/cache";
+import ConnectionStatus from "./ConnectionStatus";
 
 export const dynamic = "force-dynamic";
 
@@ -55,6 +56,8 @@ export default async function SettingsPage() {
 
       {/* Main Content */}
       <main className="max-w-3xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+        <ConnectionStatus />
+
         <div className="mb-10">
           <h2 className="text-2xl font-bold text-white mb-2">Personal Writing Style</h2>
           <p className="text-slate-400 text-sm">

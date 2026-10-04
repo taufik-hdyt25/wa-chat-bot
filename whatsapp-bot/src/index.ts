@@ -16,6 +16,9 @@ dotenv.config();
 const prisma = new PrismaClient();
 
 async function connectToWhatsApp() {
+  let currentQR: string | null = null;
+  let isConnected = false;
+
   const { state, saveCreds } = await useMultiFileAuthState("auth_info_baileys");
 
   const sock = makeWASocket({
@@ -31,9 +34,11 @@ async function connectToWhatsApp() {
     // Jika ada QR Code baru dari Baileys, print ke terminal
     if (qr) {
       qrcode.generate(qr, { small: true });
+      currentQR = qr;
     }
 
     if (connection === "close") {
+      isConnected = false;
       const shouldReconnect =
         (lastDisconnect?.error as Boom)?.output?.statusCode !==
         DisconnectReason.loggedOut;
@@ -46,8 +51,13 @@ async function connectToWhatsApp() {
 
       if (shouldReconnect) {
         connectToWhatsApp();
+      } else {
+        // If logged out, reset QR
+        currentQR = null;
       }
     } else if (connection === "open") {
+      isConnected = true;
+      currentQR = null;
       console.log("opened connection");
     }
   });
@@ -217,6 +227,13 @@ async function connectToWhatsApp() {
       console.error("Broadcast Error:", error);
       res.status(500).json({ error: error.message || "Internal server error" });
     }
+  });
+
+  app.get('/status', (req, res) => {
+    res.json({
+      connected: isConnected,
+      qr: currentQR
+    });
   });
 
   const PORT = process.env.API_PORT || 3001;
