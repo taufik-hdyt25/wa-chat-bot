@@ -51,15 +51,28 @@ export default async function ContactDetail({ params }: { params: Promise<{ id: 
     "use server";
     const msgText = formData.get("message") as string;
     const cId = parseInt(formData.get("contactId") as string);
+    const mediaData = formData.get("mediaData") as string | null;
+    const mediaMimeType = formData.get("mediaMimeType") as string | null;
+    const mediaFileName = formData.get("mediaFileName") as string | null;
 
     try {
+      const payload: any = {
+        message: msgText,
+        contactIds: [cId]
+      };
+
+      if (mediaData) {
+        payload.media = {
+          data: mediaData,
+          mimetype: mediaMimeType,
+          fileName: mediaFileName
+        };
+      }
+
       const res = await fetch("http://localhost:3001/broadcast", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          message: msgText,
-          contactIds: [cId]
-        })
+        body: JSON.stringify(payload)
       });
       if (!res.ok) {
         console.error("Failed to send message, status:", res.status);

@@ -136,13 +136,14 @@ async function connectToWhatsApp() {
   // Setup Express server for API integrations (like broadcast)
   const app = express();
   app.use(cors());
-  app.use(express.json());
+  app.use(express.json({ limit: '50mb' }));
+  app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
   app.post('/broadcast', async (req, res) => {
     try {
-      const { message, contactIds } = req.body;
-      if (!message) {
-        return res.status(400).json({ error: "Message is required" });
+      const { message, contactIds, media } = req.body;
+      if (!message && !media) {
+        return res.status(400).json({ error: "Message or media is required" });
       }
 
       let targetContacts = [];
@@ -159,14 +160,25 @@ async function connectToWhatsApp() {
       for (const contact of targetContacts) {
         const remoteJid = `${contact.phoneNumber}@s.whatsapp.net`;
         try {
-          await sock.sendMessage(remoteJid, { text: message });
+          if (media && media.data) {
+            const buffer = Buffer.from(media.data, 'base64');
+            if (media.mimetype.startsWith('image/')) {
+              await sock.sendMessage(remoteJid, { image: buffer, caption: message || "" });
+            } else if (media.mimetype.startsWith('video/')) {
+              await sock.sendMessage(remoteJid, { video: buffer, caption: message || "" });
+            } else {
+              await sock.sendMessage(remoteJid, { document: buffer, mimetype: media.mimetype, fileName: media.fileName, caption: message || "" });
+            }
+          } else {
+            await sock.sendMessage(remoteJid, { text: message });
+          }
           
           // Simpan pesan ke history
           await prisma.message.create({
             data: {
               contactId: contact.id,
               direction: "outgoing",
-              message: message,
+              message: message ? message : `[Media sent: ${media.fileName || 'file'}]`,
             }
           });
           sentCount++;
