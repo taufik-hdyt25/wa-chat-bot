@@ -49,13 +49,15 @@ export default function EditSettingsModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild>
-        <Button
-          variant="outline"
-          className="border-slate-700 bg-slate-800 text-white hover:bg-slate-700 hover:text-white h-8"
-        >
-          Edit Settings
-        </Button>
+      <DialogTrigger
+        render={
+          <Button
+            variant="outline"
+            className="border-slate-700 bg-slate-800 text-white hover:bg-slate-700 hover:text-white h-8"
+          />
+        }
+      >
+        Edit Settings
       </DialogTrigger>
       
       <DialogContent className="sm:max-w-[425px] bg-[#1e293b] border-slate-700 text-white rounded-xl">
