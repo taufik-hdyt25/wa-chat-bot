@@ -77,7 +77,7 @@ Respond ONLY with the exact text you want to send as a reply. Do not use quotes 
                 content: `CURRENT MESSAGE from ${contact.name || contact.phoneNumber}: ${currentMessage}`
             }
         ],
-        model: "qwen/qwen3.8-27b", // Model Qwen yang dioptimalkan untuk percakapan
+        model: "llama-3.1-70b-versatile", // Model Llama 3.1 70B jauh lebih pintar untuk bahasa daerah dan slang
         temperature: 0.7,
         max_tokens: 256,
     });
