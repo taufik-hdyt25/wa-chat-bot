@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import ScrollToBottom from "./ScrollToBottom";
 import ChatInput from "./ChatInput";
+import AutoRefresh from "./AutoRefresh";
 
 export const dynamic = "force-dynamic";
 
@@ -94,8 +95,12 @@ export default async function ContactDetail({ params }: { params: Promise<{ id: 
 
   // Actions moved outside to prevent 409 action signature mismatch errors
 
+  // Get the latest message ID to pass to AutoRefresh
+  const latestMessageId = contact.messages.length > 0 ? contact.messages[contact.messages.length - 1].id : null;
+
   return (
     <div className="min-h-screen bg-[#f4f7fb] text-slate-700 font-sans flex flex-col">
+      <AutoRefresh contactId={contact.id} latestMessageId={latestMessageId} />
       {/* Header */}
       <header className="border-b border-slate-200 bg-white shadow-sm border border-slate-100/50 backdrop-blur-md sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-0 min-h-20 flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-0">
