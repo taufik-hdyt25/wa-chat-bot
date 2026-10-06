@@ -100,7 +100,8 @@ async function connectToWhatsApp() {
         if (messageText) {
           console.log(`[Message] ${remoteJid} (fromMe: ${isFromMe}): ${messageText}`);
 
-          const phoneNumber = remoteJid.split('@')[0];
+          // Hapus bagian device ID (misal: 6281234:12 -> 6281234)
+          const phoneNumber = remoteJid.split('@')[0].split(':')[0];
 
           try {
             const pushName = msg.pushName || null;
@@ -173,7 +174,7 @@ async function connectToWhatsApp() {
     for (const contact of contacts) {
       if (!contact.id || !contact.id.endsWith('@s.whatsapp.net')) continue;
       
-      const phoneNumber = contact.id.split('@')[0];
+      const phoneNumber = contact.id.split('@')[0].split(':')[0];
       const name = contact.name || contact.notify || contact.verifiedName || null;
       
       if (!name) continue; // Jangan simpan jika tidak ada namanya (kontak anonim/belum disimpan di HP)
