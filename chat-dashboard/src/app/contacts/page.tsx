@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
 import AddContactModal from "./AddContactModal";
-
+import ContactListClient from "./ContactListClient";
 export const dynamic = "force-dynamic";
 
 export default async function ContactsPage() {
@@ -51,60 +51,7 @@ export default async function ContactsPage() {
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
-        <div className="grid gap-4">
-          {contacts.map((contact) => (
-            <Link href={`/contacts/${contact.id}`} key={contact.id} className="block group">
-              <div className="bg-slate-50 shadow-sm rounded-sm p-4 sm:p-6 border border-slate-200 group-hover:border-blue-500/50 group-hover:bg-white shadow-sm border border-slate-100/80 transition-all flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-0">
-                <div className="flex items-center gap-4 max-w-full">
-                  <div className="w-12 h-12 rounded-sm bg-gradient-to-br from-blue-500 to-indigo-500 flex-shrink-0 flex items-center justify-center font-bold text-lg text-slate-900 shadow-lg">
-                    {(contact.name || contact.phoneNumber).charAt(0).toUpperCase()}
-                  </div>
-                  <div className="min-w-0">
-                    <h3 className="text-lg font-bold text-slate-900 flex flex-wrap items-center gap-2">
-                      <span className="truncate">{contact.name || contact.phoneNumber}</span>
-                      {contact.name && (
-                        <span className="text-xs font-normal px-2 py-0.5 rounded-sm bg-slate-100 text-slate-500 border border-slate-200 truncate max-w-full">
-                          {contact.phoneNumber}
-                        </span>
-                      )}
-                    </h3>
-                    <p className="text-sm text-slate-500 line-clamp-1">
-                      {contact.messages.length > 0
-                        ? contact.messages[0].message
-                        : "No messages yet"}
-                    </p>
-                  </div>
-                </div>
-                
-                <div className="flex items-center gap-4 sm:gap-6 self-end sm:self-auto w-full sm:w-auto justify-between sm:justify-end">
-                  <div className="text-right hidden sm:block">
-                    <p className="text-xs font-medium text-slate-500 mb-1">AI Mode</p>
-                    <span className={`px-2 py-1 rounded text-xs font-semibold ${
-                      contact.aiMode === 'auto_reply' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'
-                    }`}>
-                      {contact.aiMode.replace('_', ' ').toUpperCase()}
-                    </span>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-xs font-medium text-slate-500 mb-1">Total Messages</p>
-                    <p className="text-slate-900 font-bold">{contact._count.messages}</p>
-                  </div>
-                  <div className="w-8 h-8 rounded-sm bg-blue-50 flex items-center justify-center group-hover:bg-blue-500/20 group-hover:text-blue-600 transition-colors">
-                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
-                  </div>
-                </div>
-              </div>
-            </Link>
-          ))}
-
-          {contacts.length === 0 && (
-            <div className="text-center py-20 text-slate-500">
-              Belum ada kontak yang tersimpan di database.
-            </div>
-          )}
-        </div>
+        <ContactListClient contacts={contacts} />
       </main>
     </div>
   );
