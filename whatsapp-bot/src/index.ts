@@ -87,13 +87,13 @@ async function connectToWhatsApp() {
     if (m.type === "notify") {
       for (const msg of m.messages) {
         const remoteJid = msg.key.remoteJid;
-        console.log(`[DEBUG] Menerima pesan dari JID: ${remoteJid}`);
+        console.log(`[DEBUG] Menerima pesan dari JID: ${remoteJid}, Participant: ${msg.key.participant || 'N/A'}`);
         
         const userStyle = await prisma.userStyle.findFirst();
         const respondToGroups = userStyle?.respondToGroups || false;
 
         // Abaikan status update. Hanya proses group chat jika respondToGroups aktif.
-        if (!remoteJid || (!remoteJid.endsWith('@s.whatsapp.net') && !remoteJid.endsWith('@g.us'))) continue;
+        if (!remoteJid || remoteJid.includes('status@broadcast')) continue;
         if (remoteJid.endsWith('@g.us') && !respondToGroups) continue;
 
         const isFromMe = msg.key.fromMe || false;
