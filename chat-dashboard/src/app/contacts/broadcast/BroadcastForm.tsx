@@ -50,7 +50,7 @@ export default function BroadcastForm({ contacts }: { contacts: any[] }) {
     try {
       const { sendBroadcast } = await import("./actions");
       
-      let media = undefined;
+      let media: { data: string; mimetype: string; fileName: string } | undefined = undefined;
       if (selectedFile) {
         const buffer = await selectedFile.arrayBuffer();
         let binary = '';
