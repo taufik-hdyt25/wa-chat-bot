@@ -12,7 +12,7 @@ export default function ConnectionStatus() {
   useEffect(() => {
     const fetchStatus = async () => {
       try {
-        const res = await fetch("http://localhost:3001/status");
+        const res = await fetch("/api/status");
         if (res.ok) {
           const data = await res.json();
           setStatus(data);
@@ -101,7 +101,7 @@ export default function ConnectionStatus() {
                   onClick={async () => {
                     const toastId = toast.loading("Restarting connection...");
                     try {
-                      await fetch("http://localhost:3001/restart", { method: "POST" });
+                      await fetch("/api/restart", { method: "POST" });
                       toast.success("Bot restarted!", { id: toastId });
                       setShowQR(true);
                     } catch (e) {
