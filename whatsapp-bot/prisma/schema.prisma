@@ -18,6 +18,7 @@ model Contact {
   id            Int             @id @default(autoincrement())
   phoneNumber   String          @unique
   name          String?
+  profilePictureUrl String?
   relationship  String?
   aiMode        String          @default("auto_reply") // manual, suggest_reply, auto_reply
   createdAt     DateTime        @default(now())

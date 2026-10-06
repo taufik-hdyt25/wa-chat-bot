@@ -111,9 +111,18 @@ export default async function ContactDetail({ params }: { params: Promise<{ id: 
               </svg>
             </Link>
             <div className="flex items-center gap-3 min-w-0">
-              <div className="w-10 h-10 rounded-sm bg-gradient-to-br from-blue-500 to-indigo-500 flex flex-shrink-0 items-center justify-center font-bold text-slate-900 shadow-lg">
-                {(contact.name || contact.phoneNumber).charAt(0).toUpperCase()}
-              </div>
+              {contact.profilePictureUrl ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img 
+                  src={contact.profilePictureUrl} 
+                  alt={contact.name || contact.phoneNumber}
+                  className="w-10 h-10 rounded-sm flex flex-shrink-0 object-cover shadow-lg"
+                />
+              ) : (
+                <div className="w-10 h-10 rounded-sm bg-gradient-to-br from-blue-500 to-indigo-500 flex flex-shrink-0 items-center justify-center font-bold text-slate-900 shadow-lg">
+                  {(contact.name || contact.phoneNumber).charAt(0).toUpperCase()}
+                </div>
+              )}
               <div className="min-w-0">
                 <h1 className="text-lg font-bold text-slate-900 leading-tight truncate">
                   {contact.name || contact.phoneNumber}

@@ -26,9 +26,18 @@ export default function ContactListClient({ contacts }: { contacts: any[] }) {
     <Link href={`/contacts/${contact.id}`} className="block group">
       <div className="bg-slate-50 shadow-sm rounded-sm p-4 sm:p-6 group-hover:border-blue-500/50 group-hover:bg-white border border-slate-100/80 transition-all flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-0">
         <div className="flex items-center gap-4 max-w-full">
-          <div className="w-12 h-12 rounded-sm bg-gradient-to-br from-blue-500 to-indigo-500 flex-shrink-0 flex items-center justify-center font-bold text-lg text-slate-900 shadow-lg">
-            {(contact.name || contact.phoneNumber).charAt(0).toUpperCase()}
-          </div>
+          {contact.profilePictureUrl ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img 
+              src={contact.profilePictureUrl} 
+              alt={contact.name || contact.phoneNumber}
+              className="w-12 h-12 rounded-sm flex-shrink-0 object-cover shadow-lg"
+            />
+          ) : (
+            <div className="w-12 h-12 rounded-sm bg-gradient-to-br from-blue-500 to-indigo-500 flex-shrink-0 flex items-center justify-center font-bold text-lg text-slate-900 shadow-lg">
+              {(contact.name || contact.phoneNumber).charAt(0).toUpperCase()}
+            </div>
+          )}
           <div className="min-w-0">
             <h3 className="text-lg font-bold text-slate-900 flex flex-wrap items-center gap-2">
               <span className="truncate">{contact.name || contact.phoneNumber}</span>

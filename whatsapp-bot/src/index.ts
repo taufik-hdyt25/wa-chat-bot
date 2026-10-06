@@ -151,6 +151,18 @@ async function connectToWhatsApp() {
               }
             }
 
+            // Ambil dan update foto profil secara background agar tidak memblokir antrean pesan
+            sock.profilePictureUrl(msg.key.remoteJid!, 'image').then(async (url) => {
+              if (url && url !== contact.profilePictureUrl) {
+                await prisma.contact.update({
+                  where: { id: contact.id },
+                  data: { profilePictureUrl: url }
+                });
+              }
+            }).catch(() => {
+              // Abaikan jika kontak menyembunyikan foto profilnya
+            });
+
             // 2. Simpan Pesan ke Database
             const savedMessage = await prisma.message.create({
               data: {
