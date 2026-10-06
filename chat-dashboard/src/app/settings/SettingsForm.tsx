@@ -116,10 +116,41 @@ export default function SettingsForm({ userStyle, updateAction }: { userStyle: a
         <Switch name="respondToGroups" defaultChecked={userStyle.respondToGroups} className="data-[state=checked]:bg-blue-600" />
       </div>
 
+      {/* Persona Section */}
+      <div className="pt-4 border-t border-slate-200">
+        <div className="mb-4">
+          <div className="flex items-center gap-2 mb-1">
+            <span className="text-base">🎭</span>
+            <Label className="text-slate-800 font-semibold text-sm">Persona AI (Karakter Kamu)</Label>
+          </div>
+          <p className="text-xs text-slate-500 leading-relaxed">
+            Deskripsikan dirimu sedetail mungkin — cara bicara, kata-kata khas, kebiasaan, dan bagaimana kamu merespons situasi tertentu.
+            Semakin detail, semakin mirip AI dengan kamu.
+          </p>
+          <div className="mt-2 bg-blue-50 border border-blue-100 rounded-sm p-3">
+            <p className="text-xs text-blue-700 font-medium mb-1">Contoh isian yang bagus:</p>
+            <p className="text-xs text-blue-600 italic leading-relaxed">
+              &quot;Saya Taufik, cowok 25 tahun. Saya sering pakai kata &apos;gas&apos;, &apos;bro&apos;, &apos;sip&apos;, &apos;wkwk&apos;. 
+              Kalau diajak janjian saya bilang &apos;ntar konfirmasi dulu ya&apos;. 
+              Kalau ada yang nanya kerjaan, jawab &apos;lagi sibuk, nanti coba tanya lagi&apos;. 
+              Saya tidak suka basa-basi panjang dan lebih suka jawaban singkat tapi jelas.&quot;
+            </p>
+          </div>
+        </div>
+        <Textarea 
+          name="persona" 
+          defaultValue={userStyle.persona || ""} 
+          rows={6}
+          placeholder="Deskripsikan karaktermu di sini: cara bicara, kata-kata khas, kebiasaanmu, bagaimana cara kamu merespons situasi tertentu..."
+          className="resize-none text-sm"
+        />
+      </div>
+
+      {/* Custom Instructions */}
       <div className="pt-4 border-t border-slate-200">
         <Label className="text-slate-600 mb-2 block">Custom Instructions (Opsional)</Label>
         <p className="text-xs text-slate-500 mb-4">
-          Instruksi spesifik agar bot tidak terdengar kaku. Contoh: <i className="text-slate-500">"Gunakan kata 'gue' dan 'lu'. Jangan panggil 'Bapak/Ibu'. Jawab sesingkat mungkin tanpa basa-basi."</i>
+          Instruksi spesifik agar bot tidak terdengar kaku. Contoh: <i className="text-slate-500">&quot;Gunakan kata &apos;gue&apos; dan &apos;lu&apos;. Jangan panggil &apos;Bapak/Ibu&apos;. Jawab sesingkat mungkin tanpa basa-basi.&quot;</i>
         </p>
         <Textarea 
           name="customInstructions" 

@@ -31,35 +31,39 @@ export async function generateAIDraft(
     const recentMessages = await prisma.message.findMany({
       where: { contactId },
       orderBy: { timestamp: "desc" },
-      take: 20, // Naik dari 8 ke 20 untuk konteks lebih panjang
+      take: 20,
     });
 
     // Urutkan secara kronologis (terlama ke terbaru)
     recentMessages.reverse();
 
-    // 4. Susun System Prompt (TANPA menyertakan riwayat chat di sini)
+    // 4. Susun System Prompt dengan Persona sebagai instruksi paling kuat
     const systemPrompt = `You are a personal WhatsApp assistant acting on behalf of the user.
-Your job is to reply to messages naturally, as if you are the user.
-Follow the user's communication style based on the configuration provided.
-Keep replies concise and natural. If the user sends a short greeting like "P", "Ping", or "Halo", just reply casually like "Iya, kenapa?" or according to the user's tone.
-Do not invent facts. Reply in the same language as the incoming message unless instructed otherwise.
+Your job is to reply to messages naturally, AS IF YOU ARE the user — not an AI assistant.
+Never reveal that you are an AI. Never say "as an AI" or similar phrases.
+Reply in the same language as the incoming message unless instructed otherwise.
+Do not invent facts. If unsure, be vague rather than making things up.
 If the conversation involves highly sensitive topics (like transferring money, making promises, or agreeing to contracts), gently decline or say you need to think about it first.
+${(userStyle as any).persona ? `
+=== PERSONA / KARAKTER PENGGUNA (IKUTI INI DENGAN KETAT) ===
+${(userStyle as any).persona}
+=== AKHIR PERSONA ===
+` : ""}
+GAYA BAHASA:
+Bahasa: ${userStyle.language}
+Nada: ${userStyle.tone}
+Formalitas: ${userStyle.formality}
+Panjang Pesan: ${userStyle.messageLength}
+Penggunaan Emoji: ${userStyle.emojiUsage}
+Bahasa Gaul/Slang: ${userStyle.slangUsage ? "Ya" : "Tidak"}
+${userStyle.customInstructions ? `\nINSTRUKSI TAMBAHAN (WAJIB DIIKUTI):\n${userStyle.customInstructions}\n` : ""}
 
-USER WRITING STYLE:
-Language: ${userStyle.language}
-Tone: ${userStyle.tone}
-Formality: ${userStyle.formality}
-Message Length: ${userStyle.messageLength}
-Emoji Usage: ${userStyle.emojiUsage}
-Slang Usage: ${userStyle.slangUsage ? "Yes" : "No"}
-${userStyle.customInstructions ? `\nCUSTOM INSTRUCTIONS (CRITICAL - STRICTLY FOLLOW THIS):\n${userStyle.customInstructions}\n` : ""}
+TENTANG KONTAK INI:
+Nama: ${contact.name || contact.phoneNumber}
+Hubungan: ${contact.relationship || "Tidak diketahui"}
+${contact.memories.length > 0 ? `\nFAKTA YANG DIKETAHUI TENTANG KONTAK INI:\n${contact.memories.map((m) => "- " + m.content).join("\n")}` : ""}
 
-CONTACT INFO:
-Name: ${contact.name || contact.phoneNumber}
-Relationship: ${contact.relationship || "Unknown"}
-${contact.memories.length > 0 ? `\nKNOWN FACTS ABOUT THIS CONTACT:\n${contact.memories.map((m) => "- " + m.content).join("\n")}` : ""}
-
-Respond ONLY with the exact text you want to send as a reply. Do not use quotes or introductory phrases.`;
+Balas HANYA dengan teks pesan yang ingin dikirim. Tanpa tanda kutip, tanpa basa-basi pengantar.`;
 
     // 5. Susun array messages dari riwayat percakapan (format yang lebih dipahami AI)
     const historyMessages: { role: "user" | "assistant"; content: string }[] = recentMessages.map((m) => ({
@@ -74,7 +78,7 @@ Respond ONLY with the exact text you want to send as a reply. Do not use quotes 
           role: "system",
           content: systemPrompt,
         },
-        // Riwayat percakapan dikirim sebagai messages terstruktur (lebih dipahami model)
+        // Riwayat percakapan dikirim sebagai messages terstruktur
         ...historyMessages,
         // Pesan terbaru yang masuk
         {
@@ -83,7 +87,7 @@ Respond ONLY with the exact text you want to send as a reply. Do not use quotes 
         },
       ],
       model: "openai/gpt-oss-120b",
-      temperature: 0.7,
+      temperature: 0.75,
       max_tokens: 1024,
     });
 

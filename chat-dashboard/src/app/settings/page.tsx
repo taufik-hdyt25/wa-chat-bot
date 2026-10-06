@@ -29,6 +29,7 @@ export default async function SettingsPage() {
         slangUsage: formData.get("slangUsage") === "on",
         respondToGroups: formData.get("respondToGroups") === "on",
         customInstructions: formData.get("customInstructions") as string || null,
+        persona: formData.get("persona") as string || null,
       },
     });
 

@@ -79,6 +79,7 @@ model UserStyle {
   emojiUsage    String   @default("low")
   slangUsage    Boolean  @default(true)
   customInstructions String?
+  persona       String?  // Deskripsi karakter/kepribadian pengguna
   respondToGroups Boolean  @default(false)
   updatedAt     DateTime @updatedAt
 }
