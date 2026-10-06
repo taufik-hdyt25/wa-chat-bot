@@ -77,7 +77,7 @@ Respond ONLY with the exact text you want to send as a reply. Do not use quotes 
                 content: `CURRENT MESSAGE from ${contact.name || contact.phoneNumber}: ${currentMessage}`
             }
         ],
-        model: "llama-3.3-70b-versatile", // Menggunakan model Groq yang valid dan terbaru
+        model: "openai/gpt-oss-120b", // Menggunakan model GPT OSS sesuai dukungan API Key kamu
         temperature: 0.7,
         max_tokens: 1024,
     });
