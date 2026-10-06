@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 
 export default function ContactListClient({ contacts }: { contacts: any[] }) {
   const [search, setSearch] = useState("");
+  const [activeTab, setActiveTab] = useState<"recent" | "others">("recent");
 
   const filtered = contacts.filter((c) => 
     (c.name && c.name.toLowerCase().includes(search.toLowerCase())) ||
@@ -85,29 +86,48 @@ export default function ContactListClient({ contacts }: { contacts: any[] }) {
         />
       </div>
 
-      {recentContacts.length > 0 && (
-        <div>
-          <h2 className="text-sm font-bold text-slate-500 uppercase tracking-wider mb-4 px-1">Chat Terbaru</h2>
-          <div className="grid gap-4">
-            {recentContacts.map(c => <ContactCard key={c.id} contact={c} />)}
-          </div>
-        </div>
-      )}
+      <div className="flex bg-slate-100 p-1 rounded-sm w-full max-w-sm mb-2">
+        <button
+          onClick={() => setActiveTab("recent")}
+          className={`flex-1 py-2 px-4 text-sm font-semibold rounded-sm transition-all ${
+            activeTab === "recent"
+              ? "bg-white text-blue-600 shadow-sm"
+              : "text-slate-500 hover:text-slate-700 hover:bg-slate-200/50"
+          }`}
+        >
+          Chat Terbaru ({recentContacts.length})
+        </button>
+        <button
+          onClick={() => setActiveTab("others")}
+          className={`flex-1 py-2 px-4 text-sm font-semibold rounded-sm transition-all ${
+            activeTab === "others"
+              ? "bg-white text-blue-600 shadow-sm"
+              : "text-slate-500 hover:text-slate-700 hover:bg-slate-200/50"
+          }`}
+        >
+          Daftar Kontak ({otherContacts.length})
+        </button>
+      </div>
 
-      {otherContacts.length > 0 && (
-        <div>
-          <h2 className="text-sm font-bold text-slate-500 uppercase tracking-wider mb-4 px-1">Daftar Kontak</h2>
-          <div className="grid gap-4">
-            {otherContacts.map(c => <ContactCard key={c.id} contact={c} />)}
-          </div>
-        </div>
-      )}
-
-      {filtered.length === 0 && (
-        <div className="text-center py-20 text-slate-500">
-          Tidak ada kontak yang ditemukan.
-        </div>
-      )}
+      <div className="grid gap-4">
+        {activeTab === "recent" ? (
+          recentContacts.length > 0 ? (
+            recentContacts.map(c => <ContactCard key={c.id} contact={c} />)
+          ) : (
+            <div className="text-center py-20 text-slate-500">
+              Belum ada chat terbaru yang ditemukan.
+            </div>
+          )
+        ) : (
+          otherContacts.length > 0 ? (
+            otherContacts.map(c => <ContactCard key={c.id} contact={c} />)
+          ) : (
+            <div className="text-center py-20 text-slate-500">
+              Tidak ada kontak tersisa yang ditemukan.
+            </div>
+          )
+        )}
+      </div>
     </div>
   );
 }
