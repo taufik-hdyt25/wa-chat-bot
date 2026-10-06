@@ -126,7 +126,7 @@ export default function SettingsForm({ userStyle, updateAction }: { userStyle: a
           defaultValue={userStyle.customInstructions || ""} 
           rows={4}
           placeholder="Masukkan instruksi khusus di sini..."
-          className="bg-slate-50 border-slate-200 text-slate-900 resize-none rounded-sm focus-visible:ring-blue-500"
+          className="resize-none"
         />
       </div>
 
