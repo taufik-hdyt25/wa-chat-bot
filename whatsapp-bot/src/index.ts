@@ -114,17 +114,42 @@ async function connectToWhatsApp() {
           try {
             const pushName = msg.pushName || null;
 
-            // 1. Cari atau buat Kontak baru, dan update namanya jika tersedia
-            const contact = await prisma.contact.upsert({
-              where: { phoneNumber },
-              update: {
-                ...((pushName && !isFromMe) && { name: pushName })
-              },
-              create: { 
-                phoneNumber,
-                name: !isFromMe ? pushName : null
-              },
-            });
+            let contact = await prisma.contact.findUnique({ where: { phoneNumber } });
+
+            // LOGIKA AUTO-MERGE LID -> HP
+            // Jika pesan datang dari LID (panjang karakter > 14) dan kontaknya belum ada di DB
+            if (!contact && phoneNumber.length > 14 && pushName && !isFromMe) {
+              const existingHPContact = await prisma.contact.findFirst({
+                where: { 
+                  name: pushName,
+                  // Asumsi nomor HP asli diawali dengan 62 atau minimal lebih pendek dari LID
+                  phoneNumber: { not: { startsWith: '24' } } 
+                }
+              });
+
+              if (existingHPContact) {
+                console.log(`[AUTO-MERGE] Menggabungkan pesan LID ${phoneNumber} ke kontak HP ${existingHPContact.phoneNumber} (${pushName})`);
+                contact = existingHPContact;
+              }
+            }
+
+            // Jika masih belum ada, buat baru
+            if (!contact) {
+              contact = await prisma.contact.create({
+                data: {
+                  phoneNumber,
+                  name: !isFromMe ? pushName : null
+                }
+              });
+            } else {
+              // Update nama jika ada perubahan
+              if (pushName && !isFromMe && contact.name !== pushName) {
+                contact = await prisma.contact.update({
+                  where: { id: contact.id },
+                  data: { name: pushName }
+                });
+              }
+            }
 
             // 2. Simpan Pesan ke Database
             const savedMessage = await prisma.message.create({
