@@ -8,6 +8,61 @@ import ChatInput from "./ChatInput";
 
 export const dynamic = "force-dynamic";
 
+async function deleteMessage(formData: FormData) {
+  "use server";
+  const msgId = parseInt(formData.get("messageId") as string);
+  const cId = formData.get("contactId") as string;
+  await prisma.aIDraft.deleteMany({ where: { incomingMessageId: msgId } });
+  await prisma.message.delete({ where: { id: msgId } });
+  revalidatePath(`/contacts/${cId}`);
+}
+
+async function deleteMemoryAction(formData: FormData) {
+  "use server";
+  const memId = parseInt(formData.get("memoryId") as string);
+  const cId = formData.get("contactId") as string;
+  await prisma.memory.delete({ where: { id: memId } });
+  revalidatePath(`/contacts/${cId}`);
+}
+
+async function sendMessage(formData: FormData) {
+  "use server";
+  const msgText = formData.get("message") as string;
+  const cId = parseInt(formData.get("contactId") as string);
+  const mediaData = formData.get("mediaData") as string | null;
+  const mediaMimeType = formData.get("mediaMimeType") as string | null;
+  const mediaFileName = formData.get("mediaFileName") as string | null;
+
+  try {
+    const payload: any = {
+      message: msgText,
+      contactIds: [cId]
+    };
+
+    if (mediaData) {
+      payload.media = {
+        data: mediaData,
+        mimetype: mediaMimeType,
+        fileName: mediaFileName
+      };
+    }
+
+    const res = await fetch("http://localhost:3001/broadcast", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+    if (!res.ok) {
+      console.error("Failed to send message, status:", res.status);
+      throw new Error("Failed to send message. Please ensure whatsapp bot is running.");
+    }
+  } catch (e) {
+    console.error("Failed to send message:", e);
+    throw e;
+  }
+  revalidatePath(`/contacts/${cId}`);
+}
+
 export default async function ContactDetail({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = await params;
   const contactId = parseInt(resolvedParams.id);
@@ -30,60 +85,7 @@ export default async function ContactDetail({ params }: { params: Promise<{ id: 
     notFound();
   }
 
-  async function deleteMessage(formData: FormData) {
-    "use server";
-    const msgId = parseInt(formData.get("messageId") as string);
-    const cId = formData.get("contactId") as string;
-    await prisma.aIDraft.deleteMany({ where: { incomingMessageId: msgId } });
-    await prisma.message.delete({ where: { id: msgId } });
-    revalidatePath(`/contacts/${cId}`);
-  }
-
-  async function deleteMemoryAction(formData: FormData) {
-    "use server";
-    const memId = parseInt(formData.get("memoryId") as string);
-    const cId = formData.get("contactId") as string;
-    await prisma.memory.delete({ where: { id: memId } });
-    revalidatePath(`/contacts/${cId}`);
-  }
-
-  async function sendMessage(formData: FormData) {
-    "use server";
-    const msgText = formData.get("message") as string;
-    const cId = parseInt(formData.get("contactId") as string);
-    const mediaData = formData.get("mediaData") as string | null;
-    const mediaMimeType = formData.get("mediaMimeType") as string | null;
-    const mediaFileName = formData.get("mediaFileName") as string | null;
-
-    try {
-      const payload: any = {
-        message: msgText,
-        contactIds: [cId]
-      };
-
-      if (mediaData) {
-        payload.media = {
-          data: mediaData,
-          mimetype: mediaMimeType,
-          fileName: mediaFileName
-        };
-      }
-
-      const res = await fetch("http://localhost:3001/broadcast", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
-      });
-      if (!res.ok) {
-        console.error("Failed to send message, status:", res.status);
-        throw new Error("Failed to send message. Please ensure whatsapp bot is running.");
-      }
-    } catch (e) {
-      console.error("Failed to send message:", e);
-      throw e;
-    }
-    revalidatePath(`/contacts/${cId}`);
-  }
+  // Actions moved outside to prevent 409 action signature mismatch errors
 
   return (
     <div className="min-h-screen bg-[#f4f7fb] text-slate-700 font-sans flex flex-col">

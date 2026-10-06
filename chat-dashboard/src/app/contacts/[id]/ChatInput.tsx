@@ -89,7 +89,7 @@ export default function ChatInput({ contactId, sendMessageAction }: {
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             placeholder="Tulis pesan..."
-            className="flex-1 bg-slate-900 border-slate-200 text-slate-900 rounded-sm px-5 h-12 focus-visible:ring-blue-500 transition-colors"
+            className="flex-1 bg-white border-slate-200 text-slate-900 rounded-sm px-5 h-12 focus-visible:ring-blue-500 transition-colors"
             disabled={isSending}
           />
           <Button 
