@@ -62,12 +62,17 @@ async function connectToWhatsApp() {
         
         setTimeout(() => {
           import("fs").then(fs => {
-            try {
-              fs.rmSync("auth_info_baileys", { recursive: true, force: true });
-            } catch (e: any) {
-              console.error("Gagal menghapus auth_info_baileys, akan dicoba kembali. Error:", e.message);
-            }
-            connectToWhatsApp();
+            import("path").then(path => {
+              try {
+                const files = fs.readdirSync("auth_info_baileys");
+                for (const file of files) {
+                  fs.rmSync(path.join("auth_info_baileys", file), { recursive: true, force: true });
+                }
+              } catch (e: any) {
+                console.error("Gagal menghapus isi auth_info_baileys, akan dicoba kembali. Error:", e.message);
+              }
+              connectToWhatsApp();
+            });
           });
         }, 2000); // Beri jeda 2 detik agar file dilepas oleh sistem
       }
@@ -268,13 +273,18 @@ app.post('/restart', (req, res) => {
   }
   
   import("fs").then(fs => {
-    try {
-      fs.rmSync("auth_info_baileys", { recursive: true, force: true });
-    } catch (e: any) {
-      console.error("Gagal menghapus auth_info_baileys:", e.message);
-    }
-    connectToWhatsApp();
-    res.json({ success: true, message: "Restarting WhatsApp connection..." });
+    import("path").then(path => {
+      try {
+        const files = fs.readdirSync("auth_info_baileys");
+        for (const file of files) {
+          fs.rmSync(path.join("auth_info_baileys", file), { recursive: true, force: true });
+        }
+      } catch (e: any) {
+        console.error("Gagal menghapus isi auth_info_baileys:", e.message);
+      }
+      connectToWhatsApp();
+      res.json({ success: true, message: "Restarting WhatsApp connection..." });
+    });
   });
 });
 
