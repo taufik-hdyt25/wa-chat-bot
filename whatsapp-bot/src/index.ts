@@ -200,7 +200,7 @@ app.post('/broadcast', async (req, res) => {
       return res.status(503).json({ error: "WhatsApp socket not ready" });
     }
 
-    let targetContacts = [];
+    let targetContacts: any[] = [];
     if (contactIds && contactIds.length > 0) {
       targetContacts = await prisma.contact.findMany({
         where: { id: { in: contactIds } }
