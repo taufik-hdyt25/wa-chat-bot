@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import QRCode from "react-qr-code";
+import { toast } from "sonner";
 
 export default function ConnectionStatus() {
   const [status, setStatus] = useState<{ connected: boolean; qr: string | null } | null>(null);
@@ -95,12 +96,29 @@ export default function ConnectionStatus() {
                 <p className="font-bold text-lg text-white">Not Connected</p>
                 <p className="text-sm text-slate-400 mt-1">Click the button to scan QR code and connect to WhatsApp.</p>
               </div>
-              <button 
-                onClick={() => setShowQR(true)}
-                className="bg-blue-600 hover:bg-blue-500 text-white font-medium py-2.5 px-6 rounded-lg transition-colors shadow-lg shadow-blue-600/20 whitespace-nowrap"
-              >
-                Connect to WhatsApp
-              </button>
+              <div className="flex gap-2">
+                <button 
+                  onClick={async () => {
+                    const toastId = toast.loading("Restarting connection...");
+                    try {
+                      await fetch("http://localhost:3001/restart", { method: "POST" });
+                      toast.success("Bot restarted!", { id: toastId });
+                      setShowQR(true);
+                    } catch (e) {
+                      toast.error("Failed to restart bot", { id: toastId });
+                    }
+                  }}
+                  className="bg-slate-700 hover:bg-slate-600 text-white font-medium py-2.5 px-4 rounded-lg transition-colors whitespace-nowrap"
+                >
+                  Restart
+                </button>
+                <button 
+                  onClick={() => setShowQR(true)}
+                  className="bg-blue-600 hover:bg-blue-500 text-white font-medium py-2.5 px-6 rounded-lg transition-colors shadow-lg shadow-blue-600/20 whitespace-nowrap"
+                >
+                  Connect to WhatsApp
+                </button>
+              </div>
             </div>
           )}
         </div>

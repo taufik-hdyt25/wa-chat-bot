@@ -57,11 +57,19 @@ async function connectToWhatsApp() {
       } else {
         // If logged out, delete session and restart
         console.log("Session invalid or logged out. Resetting...");
-        import("fs").then(fs => {
-          fs.rmSync("auth_info_baileys", { recursive: true, force: true });
-          currentQR = null;
-          connectToWhatsApp();
-        });
+        isConnected = false;
+        currentQR = null;
+        
+        setTimeout(() => {
+          import("fs").then(fs => {
+            try {
+              fs.rmSync("auth_info_baileys", { recursive: true, force: true });
+            } catch (e: any) {
+              console.error("Gagal menghapus auth_info_baileys, akan dicoba kembali. Error:", e.message);
+            }
+            connectToWhatsApp();
+          });
+        }, 2000); // Beri jeda 2 detik agar file dilepas oleh sistem
       }
     } else if (connection === "open") {
       isConnected = true;
@@ -246,6 +254,27 @@ app.get('/status', (req, res) => {
   res.json({
     connected: isConnected,
     qr: currentQR
+  });
+});
+
+app.post('/restart', (req, res) => {
+  console.log("Manual restart requested via API...");
+  isConnected = false;
+  currentQR = null;
+  if (globalSock) {
+    try {
+      globalSock.end(new Error("Manual restart"));
+    } catch (e) {}
+  }
+  
+  import("fs").then(fs => {
+    try {
+      fs.rmSync("auth_info_baileys", { recursive: true, force: true });
+    } catch (e: any) {
+      console.error("Gagal menghapus auth_info_baileys:", e.message);
+    }
+    connectToWhatsApp();
+    res.json({ success: true, message: "Restarting WhatsApp connection..." });
   });
 });
 
