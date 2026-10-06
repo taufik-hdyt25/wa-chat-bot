@@ -25,13 +25,19 @@ async function deleteMemoryAction(formData: FormData) {
   revalidatePath(`/contacts/${cId}`);
 }
 
-async function sendMessage(formData: FormData) {
+async function sendMessage(payloadReq: {
+  message: string;
+  contactId: number;
+  mediaData?: string;
+  mediaMimeType?: string;
+  mediaFileName?: string;
+}) {
   "use server";
-  const msgText = formData.get("message") as string;
-  const cId = parseInt(formData.get("contactId") as string);
-  const mediaData = formData.get("mediaData") as string | null;
-  const mediaMimeType = formData.get("mediaMimeType") as string | null;
-  const mediaFileName = formData.get("mediaFileName") as string | null;
+  const msgText = payloadReq.message;
+  const cId = payloadReq.contactId;
+  const mediaData = payloadReq.mediaData || null;
+  const mediaMimeType = payloadReq.mediaMimeType || null;
+  const mediaFileName = payloadReq.mediaFileName || null;
 
   try {
     const payload: any = {
@@ -47,7 +53,8 @@ async function sendMessage(formData: FormData) {
       };
     }
 
-    const res = await fetch("http://localhost:3001/broadcast", {
+    const botApiUrl = process.env.BOT_API_URL || "http://localhost:3001";
+    const res = await fetch(`${botApiUrl}/broadcast`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload)

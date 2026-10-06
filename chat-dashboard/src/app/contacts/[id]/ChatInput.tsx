@@ -7,7 +7,13 @@ import { Input } from "@/components/ui/input";
 
 export default function ChatInput({ contactId, sendMessageAction }: {
   contactId: number;
-  sendMessageAction: (formData: FormData) => Promise<void>;
+  sendMessageAction: (payload: {
+    message: string;
+    contactId: number;
+    mediaData?: string;
+    mediaMimeType?: string;
+    mediaFileName?: string;
+  }) => Promise<void>;
 }) {
   const [message, setMessage] = useState("");
   const [isSending, setIsSending] = useState(false);
@@ -19,9 +25,8 @@ export default function ChatInput({ contactId, sendMessageAction }: {
     if ((!message.trim() && !selectedFile) || isSending) return;
 
     setIsSending(true);
-    const formData = new FormData();
-    formData.append("message", message);
-    formData.append("contactId", contactId.toString());
+    
+    let mediaData, mediaMimeType, mediaFileName;
 
     if (selectedFile) {
       const buffer = await selectedFile.arrayBuffer();
@@ -31,15 +36,19 @@ export default function ChatInput({ contactId, sendMessageAction }: {
       for (let i = 0; i < len; i++) {
         binary += String.fromCharCode(bytes[i]);
       }
-      const base64 = window.btoa(binary);
-      
-      formData.append("mediaData", base64);
-      formData.append("mediaMimeType", selectedFile.type);
-      formData.append("mediaFileName", selectedFile.name);
+      mediaData = window.btoa(binary);
+      mediaMimeType = selectedFile.type;
+      mediaFileName = selectedFile.name;
     }
 
     try {
-      await sendMessageAction(formData);
+      await sendMessageAction({
+        message,
+        contactId,
+        mediaData,
+        mediaMimeType,
+        mediaFileName
+      });
       setMessage("");
       setSelectedFile(null);
       toast.success("Message sent successfully!");
