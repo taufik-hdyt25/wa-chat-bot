@@ -60,7 +60,6 @@ export default function AddContactModal() {
               id="name" 
               name="name" 
               placeholder="e.g. John Doe" 
-              className="bg-slate-900 border-slate-200 text-slate-900"
             />
           </div>
           
@@ -73,7 +72,6 @@ export default function AddContactModal() {
               name="phoneNumber" 
               placeholder="08123456789" 
               required
-              className="bg-slate-900 border-slate-200 text-slate-900"
             />
             <p className="text-xs text-slate-500">
               The number will automatically be converted to country code format (e.g. 62).
