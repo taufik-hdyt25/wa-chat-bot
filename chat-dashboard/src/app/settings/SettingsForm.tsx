@@ -108,6 +108,14 @@ export default function SettingsForm({ userStyle, updateAction }: { userStyle: a
         <Switch name="slangUsage" defaultChecked={userStyle.slangUsage} className="data-[state=checked]:bg-blue-600" />
       </div>
 
+      <div className="pt-4 flex items-center justify-between border-t border-slate-200">
+        <div>
+          <h4 className="text-slate-900 font-medium text-sm">Respond to Group Chats</h4>
+          <p className="text-xs text-slate-500 mt-1">Jika aktif, bot juga akan merespons pesan di dalam grup WA.</p>
+        </div>
+        <Switch name="respondToGroups" defaultChecked={userStyle.respondToGroups} className="data-[state=checked]:bg-blue-600" />
+      </div>
+
       <div className="pt-4 border-t border-slate-200">
         <Label className="text-slate-600 mb-2 block">Custom Instructions (Opsional)</Label>
         <p className="text-xs text-slate-500 mb-4">

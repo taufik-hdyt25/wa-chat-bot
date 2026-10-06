@@ -27,6 +27,7 @@ export default async function SettingsPage() {
         messageLength: formData.get("messageLength") as string,
         emojiUsage: formData.get("emojiUsage") as string,
         slangUsage: formData.get("slangUsage") === "on",
+        respondToGroups: formData.get("respondToGroups") === "on",
         customInstructions: formData.get("customInstructions") as string || null,
       },
     });

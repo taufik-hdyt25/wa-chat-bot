@@ -87,8 +87,12 @@ async function connectToWhatsApp() {
     if (m.type === "notify") {
       for (const msg of m.messages) {
         const remoteJid = msg.key.remoteJid;
-        // Hanya proses private chat, abaikan group dan status update.
-        if (!remoteJid || remoteJid.includes('@g.us') || remoteJid.includes('status@broadcast')) continue;
+        const userStyle = await prisma.userStyle.findFirst();
+        const respondToGroups = userStyle?.respondToGroups || false;
+
+        // Abaikan status update. Hanya proses group chat jika respondToGroups aktif.
+        if (!remoteJid || remoteJid.includes('status@broadcast')) continue;
+        if (remoteJid.includes('@g.us') && !respondToGroups) continue;
 
         const isFromMe = msg.key.fromMe || false;
         const messageText = msg.message?.conversation || msg.message?.extendedTextMessage?.text;
