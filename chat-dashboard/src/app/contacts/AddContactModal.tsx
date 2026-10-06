@@ -35,7 +35,7 @@ export default function AddContactModal() {
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger 
         render={
-          <Button className="bg-indigo-600 hover:bg-indigo-500 text-white rounded-sm text-xs sm:text-sm font-medium transition-all shadow-lg shadow-indigo-500/20 flex items-center gap-2" />
+          <Button className="bg-indigo-600 hover:bg-indigo-500 text-slate-900 rounded-sm text-xs sm:text-sm font-medium transition-all shadow-lg shadow-indigo-500/20 flex items-center gap-2" />
         }
       >
         <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -43,10 +43,10 @@ export default function AddContactModal() {
         </svg>
         Add Contact
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px] bg-slate-900/50 backdrop-blur-md border-slate-800 text-slate-200">
+      <DialogContent className="sm:max-w-[425px] bg-white shadow-sm border border-slate-100 border-slate-200 text-slate-700">
         <DialogHeader>
-          <DialogTitle className="text-white">Add New Contact</DialogTitle>
-          <DialogDescription className="text-slate-400">
+          <DialogTitle className="text-slate-900">Add New Contact</DialogTitle>
+          <DialogDescription className="text-slate-500">
             Manually add a contact to start messaging. Format number: 0812... or 62812...
           </DialogDescription>
         </DialogHeader>
@@ -60,7 +60,7 @@ export default function AddContactModal() {
               id="name" 
               name="name" 
               placeholder="e.g. John Doe" 
-              className="bg-slate-900 border-slate-700 text-white"
+              className="bg-slate-900 border-slate-200 text-slate-900"
             />
           </div>
           
@@ -73,7 +73,7 @@ export default function AddContactModal() {
               name="phoneNumber" 
               placeholder="08123456789" 
               required
-              className="bg-slate-900 border-slate-700 text-white"
+              className="bg-slate-900 border-slate-200 text-slate-900"
             />
             <p className="text-xs text-slate-500">
               The number will automatically be converted to country code format (e.g. 62).
@@ -85,7 +85,7 @@ export default function AddContactModal() {
               type="button"
               variant="ghost"
               onClick={() => setIsOpen(false)}
-              className="text-slate-300 hover:text-white hover:bg-slate-800"
+              className="text-slate-300 hover:text-slate-900 hover:bg-slate-800"
             >
               Cancel
             </Button>

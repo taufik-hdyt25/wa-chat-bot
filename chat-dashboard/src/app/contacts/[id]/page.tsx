@@ -86,25 +86,25 @@ export default async function ContactDetail({ params }: { params: Promise<{ id: 
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-950/20 to-slate-900 text-slate-200 font-sans flex flex-col">
+    <div className="min-h-screen bg-[#f4f7fb] text-slate-700 font-sans flex flex-col">
       {/* Header */}
-      <header className="border-b border-slate-800 bg-slate-900/50 backdrop-blur-md/50 backdrop-blur-md sticky top-0 z-50">
+      <header className="border-b border-slate-200 bg-white shadow-sm border border-slate-100/50 backdrop-blur-md sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-0 min-h-20 flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-0">
           <div className="flex items-center gap-4 w-full sm:w-auto justify-start">
             <Link href="/contacts" className="w-10 h-10 rounded-sm bg-slate-800 flex flex-shrink-0 items-center justify-center hover:bg-slate-700 transition">
-              <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg className="w-5 h-5 text-slate-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
               </svg>
             </Link>
             <div className="flex items-center gap-3 min-w-0">
-              <div className="w-10 h-10 rounded-sm bg-gradient-to-br from-blue-500 to-indigo-500 flex flex-shrink-0 items-center justify-center font-bold text-white shadow-lg">
+              <div className="w-10 h-10 rounded-sm bg-gradient-to-br from-blue-500 to-indigo-500 flex flex-shrink-0 items-center justify-center font-bold text-slate-900 shadow-lg">
                 {(contact.name || contact.phoneNumber).charAt(0).toUpperCase()}
               </div>
               <div className="min-w-0">
-                <h1 className="text-lg font-bold text-white leading-tight truncate">
+                <h1 className="text-lg font-bold text-slate-900 leading-tight truncate">
                   {contact.name || contact.phoneNumber}
                 </h1>
-                <p className="text-xs text-slate-400 truncate">{contact.phoneNumber}</p>
+                <p className="text-xs text-slate-500 truncate">{contact.phoneNumber}</p>
               </div>
             </div>
           </div>
@@ -166,8 +166,8 @@ export default async function ContactDetail({ params }: { params: Promise<{ id: 
                 <div key={msg.id} className={`flex flex-col group ${isMe ? 'items-end' : 'items-start'}`}>
                   <div className={`max-w-[85%] sm:max-w-[80%] rounded-sm px-4 sm:px-5 py-3 shadow-sm relative ${
                     isMe 
-                      ? 'bg-blue-600 text-white rounded-br-sm' 
-                      : 'bg-slate-900/50 backdrop-blur-md text-slate-200 border border-slate-800 rounded-bl-sm'
+                      ? 'bg-blue-600 text-slate-900 rounded-br-sm' 
+                      : 'bg-white shadow-sm border border-slate-100 text-slate-700 border border-slate-200 rounded-bl-sm'
                   }`}>
                     <p className="text-[14px] sm:text-[15px] leading-relaxed whitespace-pre-wrap break-words">{msg.message}</p>
                     
@@ -176,7 +176,7 @@ export default async function ContactDetail({ params }: { params: Promise<{ id: 
                       <form action={deleteMessage}>
                         <input type="hidden" name="messageId" value={msg.id} />
                         <input type="hidden" name="contactId" value={contact.id} />
-                        <button type="submit" className="p-2 text-slate-500 hover:text-red-400 bg-slate-950/50 backdrop-blur-sm rounded-sm" title="Hapus pesan ini">
+                        <button type="submit" className="p-2 text-slate-500 hover:text-red-400 bg-white border-slate-200 rounded-sm" title="Hapus pesan ini">
                           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                           </svg>

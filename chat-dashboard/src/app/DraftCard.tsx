@@ -57,7 +57,7 @@ export default function DraftCard({
   };
 
   return (
-    <div className="bg-slate-900/50 backdrop-blur-md rounded-sm p-6 border border-slate-800 hover:border-slate-700 transition-colors">
+    <div className="bg-white shadow-sm rounded-sm p-6 border border-slate-200 hover:border-slate-200 transition-colors">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0 mb-4">
         <div className="flex items-center gap-3 max-w-full">
           <div className="w-10 h-10 rounded-sm bg-slate-800 flex-shrink-0 flex items-center justify-center font-bold text-blue-400">
@@ -66,12 +66,12 @@ export default function DraftCard({
               .toUpperCase()}
           </div>
           <div className="min-w-0">
-            <h4 className="font-medium text-white flex flex-wrap items-center gap-2">
+            <h4 className="font-medium text-slate-900 flex flex-wrap items-center gap-2">
               <span className="truncate">
                 {draft.contact.name || draft.contact.phoneNumber}
               </span>
               {draft.contact.name && (
-                <span className="text-[10px] font-normal px-2 py-0.5 rounded-sm bg-slate-800/50 text-slate-400 border border-slate-700 truncate max-w-full">
+                <span className="text-[10px] font-normal px-2 py-0.5 rounded-sm bg-slate-100 text-slate-500 border border-slate-200 truncate max-w-full">
                   {draft.contact.phoneNumber}
                 </span>
               )}
@@ -84,9 +84,9 @@ export default function DraftCard({
         </span>
       </div>
 
-      <div className="bg-slate-900/50 rounded-sm p-4 mb-4 border border-slate-800/50">
-        <p className="text-sm text-slate-400 mb-1">Incoming Message:</p>
-        <p className="text-white">{draft.incomingMessage.message}</p>
+      <div className="bg-slate-50 rounded-sm p-4 mb-4 border border-slate-200">
+        <p className="text-sm text-slate-500 mb-1">Incoming Message:</p>
+        <p className="text-slate-900">{draft.incomingMessage.message}</p>
       </div>
 
       <div className="bg-blue-900/10 rounded-sm p-4 mb-6 border border-blue-500/20 relative">
@@ -107,10 +107,10 @@ export default function DraftCard({
           <Textarea
             value={draftText}
             onChange={(e) => setDraftText(e.target.value)}
-            className="w-full bg-slate-950/50 backdrop-blur-sm text-white border-slate-700 mt-2 min-h-[100px]"
+            className="w-full bg-white border border-slate-200 text-slate-900 mt-2 min-h-[100px]"
           />
         ) : (
-          <p className="text-white text-lg">{draftText}</p>
+          <p className="text-slate-900 text-lg">{draftText}</p>
         )}
       </div>
 
@@ -130,7 +130,7 @@ export default function DraftCard({
                 setIsEditing(false);
                 setDraftText(draft.draft); // cancel edit
               }}
-              className="flex-1 bg-slate-800 hover:bg-slate-700 text-white h-12 rounded-sm transition-all border-slate-700 active:scale-[0.98]"
+              className="flex-1 bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 h-12 rounded-sm transition-all active:scale-[0.98]"
             >
               Cancel
             </Button>
@@ -147,7 +147,7 @@ export default function DraftCard({
             <Button
               variant="outline"
               onClick={() => setIsEditing(true)}
-              className="flex-1 bg-slate-800 hover:bg-slate-700 text-white h-12 rounded-sm transition-all border-slate-700 active:scale-[0.98]"
+              className="flex-1 bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 h-12 rounded-sm transition-all active:scale-[0.98]"
             >
               Edit Draft
             </Button>
@@ -157,7 +157,7 @@ export default function DraftCard({
                 type="submit"
                 disabled={isDeleting}
                 variant="ghost"
-                className="flex-1 sm:flex-none h-12 w-12 p-0 flex justify-center items-center text-slate-400 hover:text-red-400 hover:bg-red-400/10 rounded-sm transition-colors cursor-pointer border-slate-800"
+                className="flex-1 sm:flex-none h-12 w-12 p-0 flex justify-center items-center text-slate-500 hover:text-red-400 hover:bg-red-400/10 rounded-sm transition-colors cursor-pointer border-slate-200"
                 title="Hapus Draft"
               >
                 <svg
