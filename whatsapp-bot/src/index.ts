@@ -91,8 +91,8 @@ async function connectToWhatsApp() {
         const respondToGroups = userStyle?.respondToGroups || false;
 
         // Abaikan status update. Hanya proses group chat jika respondToGroups aktif.
-        if (!remoteJid || remoteJid.includes('status@broadcast')) continue;
-        if (remoteJid.includes('@g.us') && !respondToGroups) continue;
+        if (!remoteJid || (!remoteJid.endsWith('@s.whatsapp.net') && !remoteJid.endsWith('@g.us'))) continue;
+        if (remoteJid.endsWith('@g.us') && !respondToGroups) continue;
 
         const isFromMe = msg.key.fromMe || false;
         const messageText = msg.message?.conversation || msg.message?.extendedTextMessage?.text;
