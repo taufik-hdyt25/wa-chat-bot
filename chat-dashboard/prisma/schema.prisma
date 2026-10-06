@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "sqlite"
-  url      = env("DATABASE_URL")
+  url      = "file:./dev.db"
 }
 
 model User {
@@ -18,8 +18,9 @@ model Contact {
   id            Int             @id @default(autoincrement())
   phoneNumber   String          @unique
   name          String?
+  profilePictureUrl String?
   relationship  String?
-  aiMode        String          @default("suggest_reply") // manual, suggest_reply, auto_reply
+  aiMode        String          @default("auto_reply") // manual, suggest_reply, auto_reply
   createdAt     DateTime        @default(now())
   updatedAt     DateTime        @updatedAt
 
