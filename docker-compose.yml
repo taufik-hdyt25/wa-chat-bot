@@ -34,3 +34,4 @@ services:
       - DATABASE_URL=file:///app/prisma/dev.db
       - DASHBOARD_USER=taufikh2519@gmail.com
       - DASHBOARD_PASS=pohodei
+      - BOT_API_URL=http://wa-bot:3001
