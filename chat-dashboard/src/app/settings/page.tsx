@@ -67,7 +67,7 @@ export default async function SettingsPage() {
           </p>
         </div>
 
-        <div className="bg-white shadow-sm border border-slate-100 rounded-3xl border border-slate-200 p-8 shadow-xl">
+        <div className="bg-slate-50 shadow-sm border border-slate-100 rounded-3xl border border-slate-200 p-8 shadow-xl">
           <SettingsForm userStyle={userStyle} updateAction={updateSettings} />
         </div>
       </main>

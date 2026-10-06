@@ -51,7 +51,7 @@ export default function ChatInput({ contactId, sendMessageAction }: {
   };
 
   return (
-    <div className="bg-white shadow-sm border border-slate-100 border-t border-slate-200 p-4 sticky bottom-0 w-full z-10">
+    <div className="bg-slate-50 shadow-sm border border-slate-100 border-t border-slate-200 p-4 sticky bottom-0 w-full z-10">
       <form onSubmit={handleSubmit} className="max-w-5xl mx-auto flex flex-col gap-2 relative">
         {selectedFile && (
           <div className="flex items-center gap-2 bg-slate-800 w-fit px-3 py-1.5 rounded-sm border border-slate-200">
@@ -96,7 +96,7 @@ export default function ChatInput({ contactId, sendMessageAction }: {
             type="submit"
             size="icon"
             disabled={(!message.trim() && !selectedFile) || isSending}
-            className="bg-blue-600 hover:bg-blue-500 text-slate-900 rounded-sm w-12 h-12 flex-shrink-0 transition-colors shadow-lg shadow-blue-500/20"
+            className="bg-blue-600 hover:bg-blue-500 text-white rounded-sm w-12 h-12 flex-shrink-0 transition-colors shadow-lg shadow-blue-500/20"
           >
             {isSending ? (
               <svg className="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">

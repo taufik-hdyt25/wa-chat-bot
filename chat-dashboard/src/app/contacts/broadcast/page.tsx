@@ -23,7 +23,7 @@ export default async function BroadcastPage() {
       </header>
 
       <main className="flex-1 max-w-4xl mx-auto w-full px-4 sm:px-6 py-6 sm:py-8">
-        <div className="bg-white shadow-sm border border-slate-100 border border-slate-200 rounded-sm p-6 shadow-xl">
+        <div className="bg-slate-50 shadow-sm border border-slate-100 border border-slate-200 rounded-sm p-6 shadow-xl">
           <h2 className="text-lg font-bold text-slate-900 mb-2">Buat Pesan Siaran</h2>
           <p className="text-sm text-slate-500 mb-6">
             Pesan ini akan dikirimkan ke kontak-kontak yang Anda pilih. Harap gunakan fitur ini dengan bijak agar nomor WhatsApp tidak diblokir.

@@ -54,7 +54,7 @@ export default async function ContactsPage() {
         <div className="grid gap-4">
           {contacts.map((contact) => (
             <Link href={`/contacts/${contact.id}`} key={contact.id} className="block group">
-              <div className="bg-white shadow-sm rounded-sm p-4 sm:p-6 border border-slate-200 group-hover:border-blue-500/50 group-hover:bg-white shadow-sm border border-slate-100/80 transition-all flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-0">
+              <div className="bg-slate-50 shadow-sm rounded-sm p-4 sm:p-6 border border-slate-200 group-hover:border-blue-500/50 group-hover:bg-white shadow-sm border border-slate-100/80 transition-all flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-0">
                 <div className="flex items-center gap-4 max-w-full">
                   <div className="w-12 h-12 rounded-sm bg-gradient-to-br from-blue-500 to-indigo-500 flex-shrink-0 flex items-center justify-center font-bold text-lg text-slate-900 shadow-lg">
                     {(contact.name || contact.phoneNumber).charAt(0).toUpperCase()}

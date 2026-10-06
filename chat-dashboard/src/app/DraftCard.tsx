@@ -57,7 +57,7 @@ export default function DraftCard({
   };
 
   return (
-    <div className="bg-white shadow-sm rounded-sm p-6 border border-slate-200 hover:border-slate-200 transition-colors">
+    <div className="bg-slate-50 shadow-sm rounded-sm p-6 border border-slate-200 hover:border-slate-200 transition-colors">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0 mb-4">
         <div className="flex items-center gap-3 max-w-full">
           <div className="w-10 h-10 rounded-sm bg-slate-800 flex-shrink-0 flex items-center justify-center font-bold text-blue-600">
@@ -107,7 +107,7 @@ export default function DraftCard({
           <Textarea
             value={draftText}
             onChange={(e) => setDraftText(e.target.value)}
-            className="w-full bg-white border border-slate-200 text-slate-900 mt-2 min-h-[100px]"
+            className="w-full bg-slate-50 border border-slate-200 text-slate-900 mt-2 min-h-[100px]"
           />
         ) : (
           <p className="text-slate-900 text-lg">{draftText}</p>
@@ -130,7 +130,7 @@ export default function DraftCard({
                 setIsEditing(false);
                 setDraftText(draft.draft); // cancel edit
               }}
-              className="flex-1 bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 h-12 rounded-sm transition-all active:scale-[0.98]"
+              className="flex-1 bg-slate-50 hover:bg-slate-50 text-slate-700 border border-slate-200 h-12 rounded-sm transition-all active:scale-[0.98]"
             >
               Cancel
             </Button>
@@ -147,7 +147,7 @@ export default function DraftCard({
             <Button
               variant="outline"
               onClick={() => setIsEditing(true)}
-              className="flex-1 bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 h-12 rounded-sm transition-all active:scale-[0.98]"
+              className="flex-1 bg-slate-50 hover:bg-slate-50 text-slate-700 border border-slate-200 h-12 rounded-sm transition-all active:scale-[0.98]"
             >
               Edit Draft
             </Button>

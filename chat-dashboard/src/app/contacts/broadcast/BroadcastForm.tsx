@@ -90,7 +90,7 @@ export default function BroadcastForm({ contacts }: { contacts: any[] }) {
           onChange={(e) => setMessage(e.target.value)}
           rows={5}
           placeholder="Halo, promo khusus hari ini..."
-          className="bg-white border-slate-200 border-slate-200 text-slate-900 resize-none"
+          className="bg-slate-50 text-slate-900 resize-none"
         />
       </div>
 
@@ -115,7 +115,7 @@ export default function BroadcastForm({ contacts }: { contacts: any[] }) {
             className="hidden"
           />
           {selectedFile && (
-            <div className="flex items-center gap-2 bg-white border-slate-200 px-3 py-1.5 rounded-sm border border-slate-200">
+            <div className="flex items-center gap-2 bg-slate-50 px-3 py-1.5 rounded-sm border border-slate-200">
               <span className="text-sm text-slate-300 truncate max-w-[200px]">{selectedFile.name}</span>
               <button type="button" onClick={() => setSelectedFile(null)} className="text-slate-500 hover:text-red-600 ml-1">
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -139,7 +139,7 @@ export default function BroadcastForm({ contacts }: { contacts: any[] }) {
           </button>
         </div>
         
-        <div className="bg-white border-slate-200 border border-slate-200 rounded-sm max-h-64 overflow-y-auto p-2">
+        <div className="bg-slate-50 border border-slate-200 rounded-sm max-h-64 overflow-y-auto p-2">
           {contacts.length === 0 ? (
             <p className="text-sm text-slate-500 p-4 text-center">Belum ada kontak tersimpan.</p>
           ) : (

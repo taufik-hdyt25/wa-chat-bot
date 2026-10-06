@@ -166,7 +166,7 @@ export default async function ContactDetail({ params }: { params: Promise<{ id: 
                 <div key={msg.id} className={`flex flex-col group ${isMe ? 'items-end' : 'items-start'}`}>
                   <div className={`max-w-[85%] sm:max-w-[80%] rounded-sm px-4 sm:px-5 py-3 shadow-sm relative ${
                     isMe 
-                      ? 'bg-blue-600 text-slate-900 rounded-br-sm' 
+                      ? 'bg-blue-600 text-white rounded-br-sm' 
                       : 'bg-white shadow-sm border border-slate-100 text-slate-700 border border-slate-200 rounded-bl-sm'
                   }`}>
                     <p className="text-[14px] sm:text-[15px] leading-relaxed whitespace-pre-wrap break-words">{msg.message}</p>

@@ -43,7 +43,7 @@ export default function AddContactModal() {
         </svg>
         Add Contact
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px] bg-white shadow-sm border border-slate-100 border-slate-200 text-slate-700">
+      <DialogContent className="sm:max-w-[425px] bg-slate-50 shadow-sm border border-slate-100 border-slate-200 text-slate-700">
         <DialogHeader>
           <DialogTitle className="text-slate-900">Add New Contact</DialogTitle>
           <DialogDescription className="text-slate-500">

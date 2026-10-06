@@ -98,12 +98,12 @@ export default async function Home() {
 
         {/* Stats Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-          <div className="bg-white shadow-sm rounded-sm p-6 border border-slate-200 relative overflow-hidden group">
+          <div className="bg-slate-50 shadow-sm rounded-sm p-6 border border-slate-200 relative overflow-hidden group">
             <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
             <p className="text-sm font-medium text-slate-500 mb-1">Messages Processed</p>
             <h3 className="text-4xl font-bold text-slate-900">{messagesCount}</h3>
           </div>
-          <div className="bg-white shadow-sm rounded-sm p-6 border border-slate-200 relative overflow-hidden group">
+          <div className="bg-slate-50 shadow-sm rounded-sm p-6 border border-slate-200 relative overflow-hidden group">
             <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
             <p className="text-sm font-medium text-slate-500 mb-1">Active Contacts</p>
             <h3 className="text-4xl font-bold text-slate-900">{contactsCount}</h3>
@@ -128,7 +128,7 @@ export default async function Home() {
         </h3>
         
         {recentDrafts.length === 0 ? (
-          <div className="bg-white shadow-sm rounded-sm p-12 border border-slate-200 text-center">
+          <div className="bg-slate-50 shadow-sm rounded-sm p-12 border border-slate-200 text-center">
             <p className="text-slate-500">All caught up! No pending AI drafts.</p>
           </div>
         ) : (
