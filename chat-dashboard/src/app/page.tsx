@@ -63,8 +63,8 @@ export default async function Home() {
       <header className="border-b border-slate-200 bg-white shadow-sm border border-slate-100/50 backdrop-blur-md sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-0 min-h-20 flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-0">
           <div className="flex items-center gap-3 w-full sm:w-auto justify-center sm:justify-start">
-            <div className="w-10 h-10 rounded-sm bg-gradient-to-tr from-blue-500 to-indigo-500 flex flex-shrink-0 items-center justify-center shadow-lg shadow-blue-500/20">
-              <svg className="w-6 h-6 text-slate-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div className="w-10 h-10 rounded-sm bg-blue-100 flex flex-shrink-0 items-center justify-center">
+              <svg className="w-6 h-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
               </svg>
             </div>

@@ -53,7 +53,7 @@ export default function AddContactModal() {
         
         <form onSubmit={handleSubmit} className="mt-4 flex flex-col gap-4">
           <div className="flex flex-col gap-2">
-            <label htmlFor="name" className="text-sm font-medium text-slate-300">
+            <label htmlFor="name" className="text-sm font-medium text-slate-600">
               Name (Optional)
             </label>
             <Input 
@@ -65,7 +65,7 @@ export default function AddContactModal() {
           </div>
           
           <div className="flex flex-col gap-2">
-            <label htmlFor="phoneNumber" className="text-sm font-medium text-slate-300">
+            <label htmlFor="phoneNumber" className="text-sm font-medium text-slate-600">
               Phone Number <span className="text-red-600">*</span>
             </label>
             <Input 
@@ -85,7 +85,7 @@ export default function AddContactModal() {
               type="button"
               variant="ghost"
               onClick={() => setIsOpen(false)}
-              className="text-slate-300 hover:text-slate-900 hover:bg-slate-800"
+              className="text-slate-600 hover:text-slate-900 hover:bg-slate-100"
             >
               Cancel
             </Button>

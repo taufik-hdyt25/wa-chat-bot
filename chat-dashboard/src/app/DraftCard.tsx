@@ -60,7 +60,7 @@ export default function DraftCard({
     <div className="bg-slate-50 shadow-sm rounded-sm p-6 border border-slate-200 hover:border-slate-200 transition-colors">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0 mb-4">
         <div className="flex items-center gap-3 max-w-full">
-          <div className="w-10 h-10 rounded-sm bg-slate-800 flex-shrink-0 flex items-center justify-center font-bold text-blue-600">
+          <div className="w-10 h-10 rounded-sm bg-blue-100 flex-shrink-0 flex items-center justify-center font-bold text-blue-600">
             {(draft.contact.name || draft.contact.phoneNumber)
               .charAt(0)
               .toUpperCase()}

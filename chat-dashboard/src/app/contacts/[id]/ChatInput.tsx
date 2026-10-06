@@ -54,11 +54,11 @@ export default function ChatInput({ contactId, sendMessageAction }: {
     <div className="bg-slate-50 shadow-sm border border-slate-100 border-t border-slate-200 p-4 sticky bottom-0 w-full z-10">
       <form onSubmit={handleSubmit} className="max-w-5xl mx-auto flex flex-col gap-2 relative">
         {selectedFile && (
-          <div className="flex items-center gap-2 bg-slate-800 w-fit px-3 py-1.5 rounded-sm border border-slate-200">
+          <div className="flex items-center gap-2 bg-slate-100 w-fit px-3 py-1.5 rounded-sm border border-slate-200">
             <svg className="w-4 h-4 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" />
             </svg>
-            <span className="text-xs text-slate-300 truncate max-w-[150px]">{selectedFile.name}</span>
+            <span className="text-xs text-slate-600 truncate max-w-[150px]">{selectedFile.name}</span>
             <button type="button" onClick={() => setSelectedFile(null)} className="text-slate-500 hover:text-red-600 ml-1">
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -72,7 +72,7 @@ export default function ChatInput({ contactId, sendMessageAction }: {
             variant="ghost"
             size="icon"
             onClick={() => fileInputRef.current?.click()}
-            className="text-slate-500 hover:text-blue-600 hover:bg-slate-800 transition-colors flex-shrink-0"
+            className="text-slate-500 hover:text-blue-600 hover:bg-slate-100 transition-colors flex-shrink-0"
           >
             <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" />

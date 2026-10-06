@@ -62,7 +62,7 @@ export default function ConnectionStatus() {
           ) : showQR ? (
             status.qr ? (
               <div className="flex flex-col items-center w-full bg-slate-50 rounded-sm p-8 border border-slate-200">
-                <p className="text-slate-300 mb-6 text-center font-medium">Scan this QR code with your WhatsApp to connect your bot.</p>
+                <p className="text-slate-600 mb-6 text-center font-medium">Scan this QR code with your WhatsApp to connect your bot.</p>
                 <div className="bg-white p-4 rounded-sm shadow-2xl">
                   <QRCode value={status.qr} size={256} />
                 </div>
@@ -75,7 +75,7 @@ export default function ConnectionStatus() {
                 </div>
                 <button 
                   onClick={() => setShowQR(false)} 
-                  className="mt-4 text-sm text-slate-500 hover:text-slate-300 transition"
+                  className="mt-4 text-sm text-slate-500 hover:text-slate-600 transition"
                 >
                   Cancel
                 </button>
@@ -87,7 +87,7 @@ export default function ConnectionStatus() {
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>
                 <p>Generating QR Code...</p>
-                <button onClick={() => setShowQR(false)} className="mt-4 text-sm text-slate-500 hover:text-slate-300">Cancel</button>
+                <button onClick={() => setShowQR(false)} className="mt-4 text-sm text-slate-500 hover:text-slate-600">Cancel</button>
               </div>
             )
           ) : (
@@ -124,7 +124,7 @@ export default function ConnectionStatus() {
         </div>
       ) : (
         <div className="animate-pulse flex flex-col space-y-4">
-          <div className="h-32 bg-slate-800 rounded-sm w-full"></div>
+          <div className="h-32 bg-slate-100 rounded-sm w-full"></div>
         </div>
       )}
     </div>

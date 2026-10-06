@@ -53,7 +53,7 @@ export default function EditSettingsModal({
         render={
           <Button
             variant="outline"
-            className="border-slate-200 bg-slate-800 text-slate-900 hover:bg-slate-700 hover:text-slate-900 h-8"
+            className="border-slate-200 bg-slate-100 text-slate-900 hover:bg-slate-200 hover:text-slate-900 h-8"
           />
         }
       >
@@ -67,12 +67,12 @@ export default function EditSettingsModal({
 
         <form onSubmit={handleSubmit} className="space-y-6 pt-4">
           <div className="space-y-2">
-            <label className="text-sm font-medium text-slate-300">AI Response Mode</label>
+            <label className="text-sm font-medium text-slate-600">AI Response Mode</label>
             <Select name="aiMode" defaultValue={contact.aiMode}>
               <SelectTrigger className="bg-slate-50 text-slate-900 focus:ring-blue-500">
                 <SelectValue placeholder="Pilih Mode" />
               </SelectTrigger>
-              <SelectContent className="bg-slate-50 shadow-sm border border-slate-100 border-slate-200 text-slate-900">
+              <SelectContent className="bg-slate-50 border border-slate-200 text-slate-900 rounded-sm">
                 <SelectItem value="auto_reply">Auto Reply (Bot membalas langsung)</SelectItem>
                 <SelectItem value="suggest_reply">Suggest Reply (Buat draf saja)</SelectItem>
                 <SelectItem value="manual">Manual (Matikan AI untuk kontak ini)</SelectItem>
@@ -81,7 +81,7 @@ export default function EditSettingsModal({
           </div>
 
           <div className="space-y-2">
-            <label className="text-sm font-medium text-slate-300">Relationship / Info</label>
+            <label className="text-sm font-medium text-slate-600">Relationship / Info</label>
             <Input
               name="relationship"
               defaultValue={contact.relationship || ""}
@@ -91,7 +91,7 @@ export default function EditSettingsModal({
           </div>
 
           <div className="space-y-2">
-            <label className="text-sm font-medium text-slate-300">Add New AI Memory (Optional)</label>
+            <label className="text-sm font-medium text-slate-600">Add New AI Memory (Optional)</label>
             <Textarea
               name="newMemory"
               rows={2}
@@ -129,7 +129,7 @@ export default function EditSettingsModal({
                 type="button"
                 variant="ghost"
                 onClick={() => setIsOpen(false)}
-                className="w-full sm:w-auto text-slate-300 hover:text-slate-900 hover:bg-slate-800"
+                className="w-full sm:w-auto text-slate-600 hover:text-slate-900 hover:bg-slate-100"
               >
                 Cancel
               </Button>

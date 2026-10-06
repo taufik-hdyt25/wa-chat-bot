@@ -28,12 +28,12 @@ export default function SettingsForm({ userStyle, updateAction }: { userStyle: a
     <form onSubmit={handleSubmit} className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="space-y-3">
-          <Label className="text-slate-300">Language</Label>
+          <Label className="text-slate-600">Language</Label>
           <Select name="language" defaultValue={userStyle.language}>
-            <SelectTrigger className="w-full bg-slate-900 border-slate-200 text-slate-900 h-12 rounded-sm focus:ring-blue-500">
+            <SelectTrigger className="w-full bg-slate-50 border-slate-200 text-slate-900 h-12 rounded-sm focus:ring-blue-500">
               <SelectValue placeholder="Select language" />
             </SelectTrigger>
-            <SelectContent className="bg-slate-800 border-slate-200 text-slate-900 rounded-sm">
+            <SelectContent className="bg-slate-50 border border-slate-200 text-slate-900 rounded-sm">
               <SelectItem value="id">Indonesian</SelectItem>
               <SelectItem value="en">English</SelectItem>
               <SelectItem value="javanese">Javanese</SelectItem>
@@ -43,12 +43,12 @@ export default function SettingsForm({ userStyle, updateAction }: { userStyle: a
         </div>
         
         <div className="space-y-3">
-          <Label className="text-slate-300">Tone</Label>
+          <Label className="text-slate-600">Tone</Label>
           <Select name="tone" defaultValue={userStyle.tone}>
-            <SelectTrigger className="w-full bg-slate-900 border-slate-200 text-slate-900 h-12 rounded-sm focus:ring-blue-500">
+            <SelectTrigger className="w-full bg-slate-50 border-slate-200 text-slate-900 h-12 rounded-sm focus:ring-blue-500">
               <SelectValue placeholder="Select tone" />
             </SelectTrigger>
-            <SelectContent className="bg-slate-800 border-slate-200 text-slate-900 rounded-sm">
+            <SelectContent className="bg-slate-50 border border-slate-200 text-slate-900 rounded-sm">
               <SelectItem value="casual">Casual / Santai</SelectItem>
               <SelectItem value="professional">Professional</SelectItem>
               <SelectItem value="friendly">Friendly / Ramah</SelectItem>
@@ -58,12 +58,12 @@ export default function SettingsForm({ userStyle, updateAction }: { userStyle: a
         </div>
 
         <div className="space-y-3">
-          <Label className="text-slate-300">Formality Level</Label>
+          <Label className="text-slate-600">Formality Level</Label>
           <Select name="formality" defaultValue={userStyle.formality}>
-            <SelectTrigger className="w-full bg-slate-900 border-slate-200 text-slate-900 h-12 rounded-sm focus:ring-blue-500">
+            <SelectTrigger className="w-full bg-slate-50 border-slate-200 text-slate-900 h-12 rounded-sm focus:ring-blue-500">
               <SelectValue placeholder="Select formality" />
             </SelectTrigger>
-            <SelectContent className="bg-slate-800 border-slate-200 text-slate-900 rounded-sm">
+            <SelectContent className="bg-slate-50 border border-slate-200 text-slate-900 rounded-sm">
               <SelectItem value="low">Low (Gue/Lu, Aku/Kamu)</SelectItem>
               <SelectItem value="medium">Medium (Saya/Anda)</SelectItem>
               <SelectItem value="high">High (Bapak/Ibu, Sangat Sopan)</SelectItem>
@@ -72,12 +72,12 @@ export default function SettingsForm({ userStyle, updateAction }: { userStyle: a
         </div>
 
         <div className="space-y-3">
-          <Label className="text-slate-300">Message Length</Label>
+          <Label className="text-slate-600">Message Length</Label>
           <Select name="messageLength" defaultValue={userStyle.messageLength}>
-            <SelectTrigger className="w-full bg-slate-900 border-slate-200 text-slate-900 h-12 rounded-sm focus:ring-blue-500">
+            <SelectTrigger className="w-full bg-slate-50 border-slate-200 text-slate-900 h-12 rounded-sm focus:ring-blue-500">
               <SelectValue placeholder="Select length" />
             </SelectTrigger>
-            <SelectContent className="bg-slate-800 border-slate-200 text-slate-900 rounded-sm">
+            <SelectContent className="bg-slate-50 border border-slate-200 text-slate-900 rounded-sm">
               <SelectItem value="short">Short (To the point)</SelectItem>
               <SelectItem value="medium">Medium (Balanced)</SelectItem>
               <SelectItem value="long">Long (Detailed)</SelectItem>
@@ -86,12 +86,12 @@ export default function SettingsForm({ userStyle, updateAction }: { userStyle: a
         </div>
 
         <div className="space-y-3">
-          <Label className="text-slate-300">Emoji Usage</Label>
+          <Label className="text-slate-600">Emoji Usage</Label>
           <Select name="emojiUsage" defaultValue={userStyle.emojiUsage}>
-            <SelectTrigger className="w-full bg-slate-900 border-slate-200 text-slate-900 h-12 rounded-sm focus:ring-blue-500">
+            <SelectTrigger className="w-full bg-slate-50 border-slate-200 text-slate-900 h-12 rounded-sm focus:ring-blue-500">
               <SelectValue placeholder="Select emoji usage" />
             </SelectTrigger>
-            <SelectContent className="bg-slate-800 border-slate-200 text-slate-900 rounded-sm">
+            <SelectContent className="bg-slate-50 border border-slate-200 text-slate-900 rounded-sm">
               <SelectItem value="none">None (Tanpa Emoji)</SelectItem>
               <SelectItem value="low">Low (1-2 Emoji)</SelectItem>
               <SelectItem value="high">High (Banyak Emoji 🔥💯)</SelectItem>
@@ -109,7 +109,7 @@ export default function SettingsForm({ userStyle, updateAction }: { userStyle: a
       </div>
 
       <div className="pt-4 border-t border-slate-200">
-        <Label className="text-slate-300 mb-2 block">Custom Instructions (Opsional)</Label>
+        <Label className="text-slate-600 mb-2 block">Custom Instructions (Opsional)</Label>
         <p className="text-xs text-slate-500 mb-4">
           Instruksi spesifik agar bot tidak terdengar kaku. Contoh: <i className="text-slate-500">"Gunakan kata 'gue' dan 'lu'. Jangan panggil 'Bapak/Ibu'. Jawab sesingkat mungkin tanpa basa-basi."</i>
         </p>

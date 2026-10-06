@@ -84,7 +84,7 @@ export default function BroadcastForm({ contacts }: { contacts: any[] }) {
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       <div>
-        <label className="block text-sm font-medium text-slate-300 mb-2">Pesan Broadcast</label>
+        <label className="block text-sm font-medium text-slate-600 mb-2">Pesan Broadcast</label>
         <Textarea
           value={message}
           onChange={(e) => setMessage(e.target.value)}
@@ -95,13 +95,13 @@ export default function BroadcastForm({ contacts }: { contacts: any[] }) {
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-slate-300 mb-2">Lampiran File (Opsional)</label>
+        <label className="block text-sm font-medium text-slate-600 mb-2">Lampiran File (Opsional)</label>
         <div className="flex items-center gap-3">
           <Button 
             type="button" 
             variant="outline"
             onClick={() => fileInputRef.current?.click()}
-            className="border-slate-200 text-slate-300 hover:text-slate-900 hover:bg-slate-800"
+            className="border-slate-200 text-slate-600 hover:text-slate-900 hover:bg-slate-100"
           >
             <svg className="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" />
@@ -116,7 +116,7 @@ export default function BroadcastForm({ contacts }: { contacts: any[] }) {
           />
           {selectedFile && (
             <div className="flex items-center gap-2 bg-slate-50 px-3 py-1.5 rounded-sm border border-slate-200">
-              <span className="text-sm text-slate-300 truncate max-w-[200px]">{selectedFile.name}</span>
+              <span className="text-sm text-slate-600 truncate max-w-[200px]">{selectedFile.name}</span>
               <button type="button" onClick={() => setSelectedFile(null)} className="text-slate-500 hover:text-red-600 ml-1">
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -129,7 +129,7 @@ export default function BroadcastForm({ contacts }: { contacts: any[] }) {
 
       <div>
         <div className="flex items-center justify-between mb-3">
-          <label className="block text-sm font-medium text-slate-300">Pilih Kontak ({selectedContacts.length} dipilih)</label>
+          <label className="block text-sm font-medium text-slate-600">Pilih Kontak ({selectedContacts.length} dipilih)</label>
           <button 
             type="button" 
             onClick={handleSelectAll}
@@ -166,7 +166,7 @@ export default function BroadcastForm({ contacts }: { contacts: any[] }) {
           type="button" 
           variant="ghost"
           onClick={() => router.push("/contacts")}
-          className="text-slate-300 hover:text-slate-900 hover:bg-slate-800"
+          className="text-slate-600 hover:text-slate-900 hover:bg-slate-100"
         >
           Batal
         </Button>
