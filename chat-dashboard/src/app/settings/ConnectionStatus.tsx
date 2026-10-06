@@ -58,6 +58,21 @@ export default function ConnectionStatus() {
                   <p className="text-sm opacity-80">Your bot is active and ready to process messages.</p>
                 </div>
               </div>
+              <button
+                onClick={async () => {
+                  const toastId = toast.loading("Disconnecting from WhatsApp...");
+                  try {
+                    await fetch("/api/restart", { method: "POST" });
+                    toast.success("Disconnected successfully!", { id: toastId });
+                    setShowQR(true);
+                  } catch (e) {
+                    toast.error("Failed to disconnect", { id: toastId });
+                  }
+                }}
+                className="bg-red-100 hover:bg-red-200 text-red-700 font-medium py-2 px-4 rounded-sm transition-colors border border-red-200 text-sm whitespace-nowrap"
+              >
+                Disconnect
+              </button>
             </div>
           ) : showQR ? (
             status.qr ? (
