@@ -108,7 +108,7 @@ export default function ConnectionStatus() {
                       toast.error("Failed to restart bot", { id: toastId });
                     }
                   }}
-                  className="bg-slate-700 hover:bg-slate-600 text-slate-900 font-medium py-2.5 px-4 rounded-sm transition-colors whitespace-nowrap"
+                  className="bg-slate-700 hover:bg-slate-600 text-white font-medium py-2.5 px-4 rounded-sm transition-colors whitespace-nowrap"
                 >
                   Restart
                 </button>
