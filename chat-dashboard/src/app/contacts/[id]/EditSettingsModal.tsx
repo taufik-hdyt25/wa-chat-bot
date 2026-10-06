@@ -60,7 +60,7 @@ export default function EditSettingsModal({
         Edit Settings
       </DialogTrigger>
       
-      <DialogContent className="sm:max-w-[425px] bg-[#1e293b] border-slate-700 text-white rounded-xl">
+      <DialogContent className="sm:max-w-[425px] bg-slate-900/50 backdrop-blur-md border-slate-700 text-white rounded-sm">
         <DialogHeader>
           <DialogTitle>Edit Contact Settings</DialogTitle>
         </DialogHeader>
@@ -69,10 +69,10 @@ export default function EditSettingsModal({
           <div className="space-y-2">
             <label className="text-sm font-medium text-slate-300">AI Response Mode</label>
             <Select name="aiMode" defaultValue={contact.aiMode}>
-              <SelectTrigger className="bg-[#0f172a] border-slate-700 text-white focus:ring-blue-500">
+              <SelectTrigger className="bg-slate-950/50 backdrop-blur-sm border-slate-700 text-white focus:ring-blue-500">
                 <SelectValue placeholder="Pilih Mode" />
               </SelectTrigger>
-              <SelectContent className="bg-[#1e293b] border-slate-700 text-white">
+              <SelectContent className="bg-slate-900/50 backdrop-blur-md border-slate-700 text-white">
                 <SelectItem value="auto_reply">Auto Reply (Bot membalas langsung)</SelectItem>
                 <SelectItem value="suggest_reply">Suggest Reply (Buat draf saja)</SelectItem>
                 <SelectItem value="manual">Manual (Matikan AI untuk kontak ini)</SelectItem>
@@ -86,7 +86,7 @@ export default function EditSettingsModal({
               name="relationship"
               defaultValue={contact.relationship || ""}
               placeholder="e.g. Bos, Teman, Keluarga"
-              className="bg-[#0f172a] border-slate-700 text-white focus-visible:ring-blue-500"
+              className="bg-slate-950/50 backdrop-blur-sm border-slate-700 text-white focus-visible:ring-blue-500"
             />
           </div>
 
@@ -96,7 +96,7 @@ export default function EditSettingsModal({
               name="newMemory"
               rows={2}
               placeholder="e.g. Panggil orang ini dengan sebutan 'Bapak'..."
-              className="bg-[#0f172a] border-slate-700 text-white resize-none focus-visible:ring-blue-500"
+              className="bg-slate-950/50 backdrop-blur-sm border-slate-700 text-white resize-none focus-visible:ring-blue-500"
             />
           </div>
 

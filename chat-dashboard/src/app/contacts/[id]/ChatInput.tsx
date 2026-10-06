@@ -51,10 +51,10 @@ export default function ChatInput({ contactId, sendMessageAction }: {
   };
 
   return (
-    <div className="bg-[#1e293b] border-t border-slate-800 p-4 sticky bottom-0 w-full z-10">
+    <div className="bg-slate-900/50 backdrop-blur-md border-t border-slate-800 p-4 sticky bottom-0 w-full z-10">
       <form onSubmit={handleSubmit} className="max-w-5xl mx-auto flex flex-col gap-2 relative">
         {selectedFile && (
-          <div className="flex items-center gap-2 bg-slate-800 w-fit px-3 py-1.5 rounded-lg border border-slate-700">
+          <div className="flex items-center gap-2 bg-slate-800 w-fit px-3 py-1.5 rounded-sm border border-slate-700">
             <svg className="w-4 h-4 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" />
             </svg>
@@ -89,14 +89,14 @@ export default function ChatInput({ contactId, sendMessageAction }: {
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             placeholder="Tulis pesan..."
-            className="flex-1 bg-slate-900 border-slate-700 text-white rounded-full px-5 h-12 focus-visible:ring-blue-500 transition-colors"
+            className="flex-1 bg-slate-900 border-slate-700 text-white rounded-sm px-5 h-12 focus-visible:ring-blue-500 transition-colors"
             disabled={isSending}
           />
           <Button 
             type="submit"
             size="icon"
             disabled={(!message.trim() && !selectedFile) || isSending}
-            className="bg-blue-600 hover:bg-blue-500 text-white rounded-full w-12 h-12 flex-shrink-0 transition-colors shadow-lg shadow-blue-500/20"
+            className="bg-blue-600 hover:bg-blue-500 text-white rounded-sm w-12 h-12 flex-shrink-0 transition-colors shadow-lg shadow-blue-500/20"
           >
             {isSending ? (
               <svg className="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">

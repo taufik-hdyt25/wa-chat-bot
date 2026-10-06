@@ -35,7 +35,7 @@ export default function AddContactModal() {
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger 
         render={
-          <Button className="bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg text-xs sm:text-sm font-medium transition-all shadow-lg shadow-indigo-500/20 flex items-center gap-2" />
+          <Button className="bg-indigo-600 hover:bg-indigo-500 text-white rounded-sm text-xs sm:text-sm font-medium transition-all shadow-lg shadow-indigo-500/20 flex items-center gap-2" />
         }
       >
         <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -43,7 +43,7 @@ export default function AddContactModal() {
         </svg>
         Add Contact
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px] bg-[#1e293b] border-slate-800 text-slate-200">
+      <DialogContent className="sm:max-w-[425px] bg-slate-900/50 backdrop-blur-md border-slate-800 text-slate-200">
         <DialogHeader>
           <DialogTitle className="text-white">Add New Contact</DialogTitle>
           <DialogDescription className="text-slate-400">

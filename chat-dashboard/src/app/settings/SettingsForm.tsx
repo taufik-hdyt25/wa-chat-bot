@@ -30,10 +30,10 @@ export default function SettingsForm({ userStyle, updateAction }: { userStyle: a
         <div className="space-y-3">
           <Label className="text-slate-300">Language</Label>
           <Select name="language" defaultValue={userStyle.language}>
-            <SelectTrigger className="w-full bg-slate-900 border-slate-700 text-white h-12 rounded-xl focus:ring-blue-500">
+            <SelectTrigger className="w-full bg-slate-900 border-slate-700 text-white h-12 rounded-sm focus:ring-blue-500">
               <SelectValue placeholder="Select language" />
             </SelectTrigger>
-            <SelectContent className="bg-slate-800 border-slate-700 text-white rounded-xl">
+            <SelectContent className="bg-slate-800 border-slate-700 text-white rounded-sm">
               <SelectItem value="id">Indonesian</SelectItem>
               <SelectItem value="en">English</SelectItem>
               <SelectItem value="javanese">Javanese</SelectItem>
@@ -45,10 +45,10 @@ export default function SettingsForm({ userStyle, updateAction }: { userStyle: a
         <div className="space-y-3">
           <Label className="text-slate-300">Tone</Label>
           <Select name="tone" defaultValue={userStyle.tone}>
-            <SelectTrigger className="w-full bg-slate-900 border-slate-700 text-white h-12 rounded-xl focus:ring-blue-500">
+            <SelectTrigger className="w-full bg-slate-900 border-slate-700 text-white h-12 rounded-sm focus:ring-blue-500">
               <SelectValue placeholder="Select tone" />
             </SelectTrigger>
-            <SelectContent className="bg-slate-800 border-slate-700 text-white rounded-xl">
+            <SelectContent className="bg-slate-800 border-slate-700 text-white rounded-sm">
               <SelectItem value="casual">Casual / Santai</SelectItem>
               <SelectItem value="professional">Professional</SelectItem>
               <SelectItem value="friendly">Friendly / Ramah</SelectItem>
@@ -60,10 +60,10 @@ export default function SettingsForm({ userStyle, updateAction }: { userStyle: a
         <div className="space-y-3">
           <Label className="text-slate-300">Formality Level</Label>
           <Select name="formality" defaultValue={userStyle.formality}>
-            <SelectTrigger className="w-full bg-slate-900 border-slate-700 text-white h-12 rounded-xl focus:ring-blue-500">
+            <SelectTrigger className="w-full bg-slate-900 border-slate-700 text-white h-12 rounded-sm focus:ring-blue-500">
               <SelectValue placeholder="Select formality" />
             </SelectTrigger>
-            <SelectContent className="bg-slate-800 border-slate-700 text-white rounded-xl">
+            <SelectContent className="bg-slate-800 border-slate-700 text-white rounded-sm">
               <SelectItem value="low">Low (Gue/Lu, Aku/Kamu)</SelectItem>
               <SelectItem value="medium">Medium (Saya/Anda)</SelectItem>
               <SelectItem value="high">High (Bapak/Ibu, Sangat Sopan)</SelectItem>
@@ -74,10 +74,10 @@ export default function SettingsForm({ userStyle, updateAction }: { userStyle: a
         <div className="space-y-3">
           <Label className="text-slate-300">Message Length</Label>
           <Select name="messageLength" defaultValue={userStyle.messageLength}>
-            <SelectTrigger className="w-full bg-slate-900 border-slate-700 text-white h-12 rounded-xl focus:ring-blue-500">
+            <SelectTrigger className="w-full bg-slate-900 border-slate-700 text-white h-12 rounded-sm focus:ring-blue-500">
               <SelectValue placeholder="Select length" />
             </SelectTrigger>
-            <SelectContent className="bg-slate-800 border-slate-700 text-white rounded-xl">
+            <SelectContent className="bg-slate-800 border-slate-700 text-white rounded-sm">
               <SelectItem value="short">Short (To the point)</SelectItem>
               <SelectItem value="medium">Medium (Balanced)</SelectItem>
               <SelectItem value="long">Long (Detailed)</SelectItem>
@@ -88,10 +88,10 @@ export default function SettingsForm({ userStyle, updateAction }: { userStyle: a
         <div className="space-y-3">
           <Label className="text-slate-300">Emoji Usage</Label>
           <Select name="emojiUsage" defaultValue={userStyle.emojiUsage}>
-            <SelectTrigger className="w-full bg-slate-900 border-slate-700 text-white h-12 rounded-xl focus:ring-blue-500">
+            <SelectTrigger className="w-full bg-slate-900 border-slate-700 text-white h-12 rounded-sm focus:ring-blue-500">
               <SelectValue placeholder="Select emoji usage" />
             </SelectTrigger>
-            <SelectContent className="bg-slate-800 border-slate-700 text-white rounded-xl">
+            <SelectContent className="bg-slate-800 border-slate-700 text-white rounded-sm">
               <SelectItem value="none">None (Tanpa Emoji)</SelectItem>
               <SelectItem value="low">Low (1-2 Emoji)</SelectItem>
               <SelectItem value="high">High (Banyak Emoji 🔥💯)</SelectItem>
@@ -118,7 +118,7 @@ export default function SettingsForm({ userStyle, updateAction }: { userStyle: a
           defaultValue={userStyle.customInstructions || ""} 
           rows={4}
           placeholder="Masukkan instruksi khusus di sini..."
-          className="bg-slate-900 border-slate-700 text-white resize-none rounded-xl focus-visible:ring-blue-500"
+          className="bg-slate-900 border-slate-700 text-white resize-none rounded-sm focus-visible:ring-blue-500"
         />
       </div>
 
@@ -126,7 +126,7 @@ export default function SettingsForm({ userStyle, updateAction }: { userStyle: a
         <Button 
           type="submit" 
           disabled={isPending}
-          className="w-full h-14 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white text-base font-bold rounded-xl transition-all shadow-lg shadow-blue-500/25 active:scale-[0.98]"
+          className="w-full h-14 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white text-base font-bold rounded-sm transition-all shadow-lg shadow-blue-500/25 active:scale-[0.98]"
         >
           {isPending ? "Saving configuration..." : "Save AI Configuration"}
         </Button>

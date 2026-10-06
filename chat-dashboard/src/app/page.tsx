@@ -58,12 +58,12 @@ export default async function Home() {
   });
 
   return (
-    <div className="min-h-screen bg-[#0f172a] text-slate-200 font-sans">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-950/20 to-slate-900 text-slate-200 font-sans">
       {/* Header */}
-      <header className="border-b border-slate-800 bg-[#1e293b]/50 backdrop-blur-md sticky top-0 z-50">
+      <header className="border-b border-slate-800 bg-slate-900/50 backdrop-blur-md/50 backdrop-blur-md sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-0 min-h-20 flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-0">
           <div className="flex items-center gap-3 w-full sm:w-auto justify-center sm:justify-start">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-500 to-indigo-500 flex flex-shrink-0 items-center justify-center shadow-lg shadow-blue-500/20">
+            <div className="w-10 h-10 rounded-sm bg-gradient-to-tr from-blue-500 to-indigo-500 flex flex-shrink-0 items-center justify-center shadow-lg shadow-blue-500/20">
               <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
               </svg>
@@ -89,17 +89,17 @@ export default async function Home() {
 
         {/* Stats Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-          <div className="bg-[#1e293b] rounded-2xl p-6 border border-slate-800 relative overflow-hidden group">
+          <div className="bg-slate-900/50 backdrop-blur-md rounded-sm p-6 border border-slate-800 relative overflow-hidden group">
             <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
             <p className="text-sm font-medium text-slate-400 mb-1">Messages Processed</p>
             <h3 className="text-4xl font-bold text-white">{messagesCount}</h3>
           </div>
-          <div className="bg-[#1e293b] rounded-2xl p-6 border border-slate-800 relative overflow-hidden group">
+          <div className="bg-slate-900/50 backdrop-blur-md rounded-sm p-6 border border-slate-800 relative overflow-hidden group">
             <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
             <p className="text-sm font-medium text-slate-400 mb-1">Active Contacts</p>
             <h3 className="text-4xl font-bold text-white">{contactsCount}</h3>
           </div>
-          <div className="bg-gradient-to-br from-blue-600 to-indigo-600 rounded-2xl p-6 relative overflow-hidden shadow-xl shadow-blue-900/20">
+          <div className="bg-gradient-to-br from-blue-600 to-indigo-600 rounded-sm p-6 relative overflow-hidden shadow-xl shadow-blue-900/20">
             <p className="text-sm font-medium text-blue-100 mb-1">Pending AI Drafts</p>
             <h3 className="text-4xl font-bold text-white">{pendingDraftsCount}</h3>
             <div className="absolute -right-6 -bottom-6 opacity-20">
@@ -119,7 +119,7 @@ export default async function Home() {
         </h3>
         
         {recentDrafts.length === 0 ? (
-          <div className="bg-[#1e293b] rounded-2xl p-12 border border-slate-800 text-center">
+          <div className="bg-slate-900/50 backdrop-blur-md rounded-sm p-12 border border-slate-800 text-center">
             <p className="text-slate-400">All caught up! No pending AI drafts.</p>
           </div>
         ) : (

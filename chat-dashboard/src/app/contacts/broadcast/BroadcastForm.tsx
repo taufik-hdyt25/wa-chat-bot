@@ -90,7 +90,7 @@ export default function BroadcastForm({ contacts }: { contacts: any[] }) {
           onChange={(e) => setMessage(e.target.value)}
           rows={5}
           placeholder="Halo, promo khusus hari ini..."
-          className="bg-[#0f172a] border-slate-700 text-white resize-none"
+          className="bg-slate-950/50 backdrop-blur-sm border-slate-700 text-white resize-none"
         />
       </div>
 
@@ -115,7 +115,7 @@ export default function BroadcastForm({ contacts }: { contacts: any[] }) {
             className="hidden"
           />
           {selectedFile && (
-            <div className="flex items-center gap-2 bg-[#0f172a] px-3 py-1.5 rounded-lg border border-slate-700">
+            <div className="flex items-center gap-2 bg-slate-950/50 backdrop-blur-sm px-3 py-1.5 rounded-sm border border-slate-700">
               <span className="text-sm text-slate-300 truncate max-w-[200px]">{selectedFile.name}</span>
               <button type="button" onClick={() => setSelectedFile(null)} className="text-slate-400 hover:text-red-400 ml-1">
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -139,12 +139,12 @@ export default function BroadcastForm({ contacts }: { contacts: any[] }) {
           </button>
         </div>
         
-        <div className="bg-[#0f172a] border border-slate-700 rounded-lg max-h-64 overflow-y-auto p-2">
+        <div className="bg-slate-950/50 backdrop-blur-sm border border-slate-700 rounded-sm max-h-64 overflow-y-auto p-2">
           {contacts.length === 0 ? (
             <p className="text-sm text-slate-500 p-4 text-center">Belum ada kontak tersimpan.</p>
           ) : (
             contacts.map(contact => (
-              <label key={contact.id} className="flex items-center gap-3 p-3 hover:bg-slate-800/50 rounded-lg cursor-pointer transition">
+              <label key={contact.id} className="flex items-center gap-3 p-3 hover:bg-slate-800/50 rounded-sm cursor-pointer transition">
                 <input 
                   type="checkbox" 
                   checked={selectedContacts.includes(contact.id)}
