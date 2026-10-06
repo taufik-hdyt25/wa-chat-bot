@@ -76,9 +76,11 @@ export default async function ContactDetail({ params }: { params: Promise<{ id: 
       });
       if (!res.ok) {
         console.error("Failed to send message, status:", res.status);
+        throw new Error("Failed to send message. Please ensure whatsapp bot is running.");
       }
     } catch (e) {
       console.error("Failed to send message:", e);
+      throw e;
     }
     revalidatePath(`/contacts/${cId}`);
   }
