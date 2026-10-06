@@ -221,7 +221,8 @@ app.post('/broadcast', async (req, res) => {
 
     let sentCount = 0;
     for (const contact of targetContacts) {
-      const remoteJid = `${contact.phoneNumber}@s.whatsapp.net`;
+      const isGroup = contact.phoneNumber.includes('-') || contact.phoneNumber.length > 15;
+      const remoteJid = isGroup ? `${contact.phoneNumber}@g.us` : `${contact.phoneNumber}@s.whatsapp.net`;
       try {
         if (media && media.data) {
           const buffer = Buffer.from(media.data, 'base64');
