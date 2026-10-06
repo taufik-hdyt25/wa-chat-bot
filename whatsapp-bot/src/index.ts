@@ -87,6 +87,8 @@ async function connectToWhatsApp() {
     if (m.type === "notify") {
       for (const msg of m.messages) {
         const remoteJid = msg.key.remoteJid;
+        console.log(`[DEBUG] Menerima pesan dari JID: ${remoteJid}`);
+        
         const userStyle = await prisma.userStyle.findFirst();
         const respondToGroups = userStyle?.respondToGroups || false;
 
@@ -95,7 +97,13 @@ async function connectToWhatsApp() {
         if (remoteJid.endsWith('@g.us') && !respondToGroups) continue;
 
         const isFromMe = msg.key.fromMe || false;
-        const messageText = msg.message?.conversation || msg.message?.extendedTextMessage?.text;
+        
+        // Ambil teks dari berbagai kemungkinan format pesan WA (biasa, reply, ephemeral)
+        const messageText = 
+          msg.message?.conversation || 
+          msg.message?.extendedTextMessage?.text ||
+          msg.message?.ephemeralMessage?.message?.conversation ||
+          msg.message?.ephemeralMessage?.message?.extendedTextMessage?.text;
 
         if (messageText) {
           console.log(`[Message] ${remoteJid} (fromMe: ${isFromMe}): ${messageText}`);
