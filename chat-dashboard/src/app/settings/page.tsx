@@ -51,7 +51,7 @@ export default async function SettingsPage() {
           <nav className="flex flex-wrap justify-center gap-4 sm:gap-6 text-sm font-medium">
             <Link href="/" className="text-slate-500 hover:text-slate-900 transition-colors">Dashboard</Link>
             <Link href="/contacts" className="text-slate-500 hover:text-slate-900 transition-colors">Conversations</Link>
-            <Link href="/settings" className="text-blue-400">Settings</Link>
+            <Link href="/settings" className="text-blue-600">Settings</Link>
           </nav>
         </div>
       </header>

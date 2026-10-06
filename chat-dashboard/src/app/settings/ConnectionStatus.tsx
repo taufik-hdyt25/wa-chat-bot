@@ -39,14 +39,14 @@ export default function ConnectionStatus() {
       <h2 className="text-xl font-bold text-slate-900 mb-4">WhatsApp Connection</h2>
       
       {error ? (
-        <div className="text-red-400 bg-red-400/10 p-4 rounded-sm">
+        <div className="text-red-600 bg-red-400/10 p-4 rounded-sm">
           <p className="font-medium">Bot backend is offline</p>
           <p className="text-sm mt-1">Please start the bot backend by running `npm run dev` in the whatsapp-bot folder.</p>
         </div>
       ) : status ? (
         <div className="flex flex-col items-center sm:items-start">
           {status.connected ? (
-            <div className="flex items-center justify-between bg-green-500/10 text-green-400 px-6 py-5 rounded-sm border border-green-500/20 w-full">
+            <div className="flex items-center justify-between bg-green-100 text-green-700 px-6 py-5 rounded-sm border border-green-200 w-full">
               <div className="flex items-center gap-4">
                 <div className="bg-green-500/20 p-2 rounded-sm">
                   <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">

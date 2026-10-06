@@ -117,7 +117,7 @@ export default function BroadcastForm({ contacts }: { contacts: any[] }) {
           {selectedFile && (
             <div className="flex items-center gap-2 bg-white border-slate-200 px-3 py-1.5 rounded-sm border border-slate-200">
               <span className="text-sm text-slate-300 truncate max-w-[200px]">{selectedFile.name}</span>
-              <button type="button" onClick={() => setSelectedFile(null)} className="text-slate-500 hover:text-red-400 ml-1">
+              <button type="button" onClick={() => setSelectedFile(null)} className="text-slate-500 hover:text-red-600 ml-1">
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
@@ -133,7 +133,7 @@ export default function BroadcastForm({ contacts }: { contacts: any[] }) {
           <button 
             type="button" 
             onClick={handleSelectAll}
-            className="text-sm text-blue-400 hover:text-blue-300"
+            className="text-sm text-blue-600 hover:text-blue-300"
           >
             {selectedContacts.length === contacts.length ? "Batal Pilih Semua" : "Pilih Semua"}
           </button>

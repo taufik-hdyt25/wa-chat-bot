@@ -66,7 +66,7 @@ export default function AddContactModal() {
           
           <div className="flex flex-col gap-2">
             <label htmlFor="phoneNumber" className="text-sm font-medium text-slate-300">
-              Phone Number <span className="text-red-400">*</span>
+              Phone Number <span className="text-red-600">*</span>
             </label>
             <Input 
               id="phoneNumber" 

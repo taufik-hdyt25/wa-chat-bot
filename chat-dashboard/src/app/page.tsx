@@ -73,7 +73,7 @@ export default async function Home() {
             </h1>
           </div>
           <nav className="flex flex-wrap justify-center gap-4 sm:gap-6 text-sm font-medium w-full sm:w-auto">
-            <Link href="/" className="text-blue-400">Dashboard</Link>
+            <Link href="/" className="text-blue-600">Dashboard</Link>
             <Link href="/contacts" className="text-slate-500 hover:text-slate-900 transition-colors">Conversations</Link>
             <Link href="/settings" className="text-slate-500 hover:text-slate-900 transition-colors">Settings</Link>
           </nav>
@@ -121,7 +121,7 @@ export default async function Home() {
 
         {/* Drafts Section */}
         <h3 className="text-xl font-semibold text-slate-900 mb-6 flex items-center gap-2">
-          <svg className="w-5 h-5 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg className="w-5 h-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
           </svg>
           Needs Your Approval

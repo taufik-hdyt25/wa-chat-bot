@@ -60,7 +60,7 @@ export default function DraftCard({
     <div className="bg-white shadow-sm rounded-sm p-6 border border-slate-200 hover:border-slate-200 transition-colors">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0 mb-4">
         <div className="flex items-center gap-3 max-w-full">
-          <div className="w-10 h-10 rounded-sm bg-slate-800 flex-shrink-0 flex items-center justify-center font-bold text-blue-400">
+          <div className="w-10 h-10 rounded-sm bg-slate-800 flex-shrink-0 flex items-center justify-center font-bold text-blue-600">
             {(draft.contact.name || draft.contact.phoneNumber)
               .charAt(0)
               .toUpperCase()}
@@ -79,7 +79,7 @@ export default function DraftCard({
             <p className="text-xs text-slate-500">Just now</p>
           </div>
         </div>
-        <span className="px-3 py-1 bg-yellow-500/10 text-yellow-400 text-xs font-medium rounded-sm border border-yellow-500/20 self-start sm:self-auto flex-shrink-0">
+        <span className="px-3 py-1 bg-yellow-100 text-yellow-700 text-xs font-medium rounded-sm border border-yellow-200 self-start sm:self-auto flex-shrink-0">
           Draft Pending
         </span>
       </div>
@@ -89,7 +89,7 @@ export default function DraftCard({
         <p className="text-slate-900">{draft.incomingMessage.message}</p>
       </div>
 
-      <div className="bg-blue-900/10 rounded-sm p-4 mb-6 border border-blue-500/20 relative">
+      <div className="bg-blue-50 rounded-sm p-4 mb-6 border border-blue-200 relative">
         <div className="absolute top-0 right-0 p-3">
           <svg
             className="w-5 h-5 text-blue-500/40"
@@ -99,7 +99,7 @@ export default function DraftCard({
             <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
           </svg>
         </div>
-        <p className="text-sm text-blue-400 font-medium mb-1 flex items-center gap-2">
+        <p className="text-sm text-blue-600 font-medium mb-1 flex items-center gap-2">
           <span className="w-2 h-2 rounded-sm bg-blue-500 animate-pulse"></span>
           AI Suggested Reply:
         </p>
@@ -157,7 +157,7 @@ export default function DraftCard({
                 type="submit"
                 disabled={isDeleting}
                 variant="ghost"
-                className="flex-1 sm:flex-none h-12 w-12 p-0 flex justify-center items-center text-slate-500 hover:text-red-400 hover:bg-red-400/10 rounded-sm transition-colors cursor-pointer border-slate-200"
+                className="flex-1 sm:flex-none h-12 w-12 p-0 flex justify-center items-center text-slate-500 hover:text-red-600 hover:bg-red-400/10 rounded-sm transition-colors cursor-pointer border-slate-200"
                 title="Hapus Draft"
               >
                 <svg

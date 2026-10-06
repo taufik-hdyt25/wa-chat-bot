@@ -44,7 +44,7 @@ export default async function ContactsPage() {
           </div>
           <nav className="flex gap-4 sm:gap-6 text-sm font-medium w-full sm:w-auto justify-center sm:justify-end">
             <Link href="/" className="text-slate-500 hover:text-slate-900 transition-colors">Dashboard</Link>
-            <Link href="/contacts" className="text-blue-400">Conversations</Link>
+            <Link href="/contacts" className="text-blue-600">Conversations</Link>
           </nav>
         </div>
       </header>
@@ -80,7 +80,7 @@ export default async function ContactsPage() {
                   <div className="text-right hidden sm:block">
                     <p className="text-xs font-medium text-slate-500 mb-1">AI Mode</p>
                     <span className={`px-2 py-1 rounded text-xs font-semibold ${
-                      contact.aiMode === 'auto_reply' ? 'bg-green-500/10 text-green-400' : 'bg-yellow-500/10 text-yellow-400'
+                      contact.aiMode === 'auto_reply' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'
                     }`}>
                       {contact.aiMode.replace('_', ' ').toUpperCase()}
                     </span>
@@ -89,7 +89,7 @@ export default async function ContactsPage() {
                     <p className="text-xs font-medium text-slate-500 mb-1">Total Messages</p>
                     <p className="text-slate-900 font-bold">{contact._count.messages}</p>
                   </div>
-                  <div className="w-8 h-8 rounded-sm bg-slate-800 flex items-center justify-center group-hover:bg-blue-500/20 group-hover:text-blue-400 transition-colors">
+                  <div className="w-8 h-8 rounded-sm bg-slate-800 flex items-center justify-center group-hover:bg-blue-500/20 group-hover:text-blue-600 transition-colors">
                     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                     </svg>
