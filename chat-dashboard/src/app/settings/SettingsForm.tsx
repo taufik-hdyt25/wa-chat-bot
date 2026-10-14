@@ -1,15 +1,18 @@
 "use client";
 
-import { useTransition } from "react";
+import { useTransition, useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 
 export default function SettingsForm({ userStyle, updateAction }: { userStyle: any, updateAction: (formData: FormData) => Promise<void> }) {
   const [isPending, startTransition] = useTransition();
+  const [minDelay, setMinDelay] = useState<number>(userStyle.replyDelayMin ?? 3);
+  const [maxDelay, setMaxDelay] = useState<number>(userStyle.replyDelayMax ?? 8);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -114,6 +117,132 @@ export default function SettingsForm({ userStyle, updateAction }: { userStyle: a
           <p className="text-xs text-slate-500 mt-1">Jika aktif, bot juga akan merespons pesan di dalam grup WA.</p>
         </div>
         <Switch name="respondToGroups" defaultChecked={userStyle.respondToGroups} className="data-[state=checked]:bg-blue-600" />
+      </div>
+
+      {/* Human-like Reply Delay & Typing Simulation */}
+      <div className="pt-6 border-t border-slate-200">
+        <div className="mb-4">
+          <div className="flex items-center gap-2 mb-1">
+            <span className="text-base">⏳</span>
+            <Label className="text-slate-800 font-semibold text-sm">Durasi & Ritme Balasan (Anti Kelihatan AI)</Label>
+            <span className="bg-amber-100 text-amber-800 text-[10px] font-semibold px-2 py-0.5 rounded-full">Human-like</span>
+          </div>
+          <p className="text-xs text-slate-500 leading-relaxed">
+            Bot akan menunggu jeda acak sebelum membalas agar terkesan manusiawi dan tidak langsung membalas dalam hitungan milidetik.
+          </p>
+        </div>
+
+        {/* Quick Presets */}
+        <div className="mb-4">
+          <Label className="text-xs text-slate-500 mb-2 block font-medium">Pilihan Cepat (Presets):</Label>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+            {[
+              { label: "Instan", desc: "0 dtk (Langsung)", min: 0, max: 0 },
+              { label: "Cepat", desc: "2 - 5 dtk", min: 2, max: 5 },
+              { label: "Alami", desc: "3 - 8 dtk (Disarankan)", min: 3, max: 8, badge: "Rekomendasi" },
+              { label: "Santai", desc: "8 - 18 dtk", min: 8, max: 18 },
+            ].map((preset) => {
+              const isSelected = minDelay === preset.min && maxDelay === preset.max;
+              return (
+                <button
+                  key={preset.label}
+                  type="button"
+                  onClick={() => {
+                    setMinDelay(preset.min);
+                    setMaxDelay(preset.max);
+                  }}
+                  className={`p-2.5 rounded-sm border text-left transition-all relative ${
+                    isSelected
+                      ? "border-blue-500 bg-blue-50 text-blue-900 ring-1 ring-blue-500"
+                      : "border-slate-200 bg-white hover:border-slate-300 text-slate-700"
+                  }`}
+                >
+                  {preset.badge && (
+                    <span className="absolute -top-2 right-1.5 bg-blue-600 text-white text-[9px] font-bold px-1.5 py-0.2 rounded-full">
+                      {preset.badge}
+                    </span>
+                  )}
+                  <div className="font-semibold text-xs">{preset.label}</div>
+                  <div className="text-[11px] text-slate-500 mt-0.5">{preset.desc}</div>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Custom Min / Max Inputs */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-white p-4 rounded-sm border border-slate-200">
+          <div>
+            <Label className="text-xs text-slate-600 font-medium mb-1.5 block">
+              Jeda Minimal (Detik)
+            </Label>
+            <div className="relative">
+              <Input
+                type="number"
+                name="replyDelayMin"
+                min="0"
+                max="120"
+                value={minDelay}
+                onChange={(e) => setMinDelay(Math.max(0, parseInt(e.target.value) || 0))}
+                className="h-10 text-sm pr-12"
+              />
+              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-slate-400 font-medium">detik</span>
+            </div>
+            <p className="text-[11px] text-slate-400 mt-1">Waktu tunggu paling cepat</p>
+          </div>
+
+          <div>
+            <Label className="text-xs text-slate-600 font-medium mb-1.5 block">
+              Jeda Maksimal (Detik)
+            </Label>
+            <div className="relative">
+              <Input
+                type="number"
+                name="replyDelayMax"
+                min="0"
+                max="120"
+                value={maxDelay}
+                onChange={(e) => setMaxDelay(Math.max(0, parseInt(e.target.value) || 0))}
+                className="h-10 text-sm pr-12"
+              />
+              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-slate-400 font-medium">detik</span>
+            </div>
+            <p className="text-[11px] text-slate-400 mt-1">Waktu tunggu paling lambat</p>
+          </div>
+
+          <div className="sm:col-span-2 pt-2 border-t border-slate-100 flex items-center gap-2 text-xs text-slate-600">
+            <span className="text-blue-500">💡</span>
+            <span>
+              {minDelay === 0 && maxDelay === 0 ? (
+                <>AI akan membalas <b>langsung seketika</b> tanpa jeda.</>
+              ) : minDelay === maxDelay ? (
+                <>AI akan selalu membalas setelah jeda tepat <b>{minDelay} detik</b>.</>
+              ) : (
+                <>AI akan membalas secara acak antara <b>{Math.min(minDelay, maxDelay)} s/d {Math.max(minDelay, maxDelay)} detik</b> untuk setiap pesan.</>
+              )}
+            </span>
+          </div>
+        </div>
+
+        {/* Simulate Typing Toggle */}
+        <div className="mt-4 p-4 rounded-sm bg-white border border-slate-200 flex items-center justify-between">
+          <div className="pr-4">
+            <div className="flex items-center gap-2">
+              <h4 className="text-slate-900 font-medium text-sm">Simulasi Mengetik (Typing Indicator)</h4>
+              <span className="bg-emerald-100 text-emerald-800 text-[10px] font-semibold px-1.5 py-0.5 rounded">
+                Sangat Natural
+              </span>
+            </div>
+            <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+              WhatsApp akan menampilkan status <i>&quot;Sedang mengetik...&quot;</i> ke lawan bicara selama jeda waktu berlangsung sebelum pesan terkirim.
+            </p>
+          </div>
+          <Switch 
+            name="simulateTyping" 
+            defaultChecked={userStyle.simulateTyping ?? true} 
+            className="data-[state=checked]:bg-blue-600 flex-shrink-0" 
+          />
+        </div>
       </div>
 
       {/* Persona Section */}

@@ -18,6 +18,12 @@ export default async function SettingsPage() {
   async function updateSettings(formData: FormData) {
     "use server";
     
+    const rawMin = parseInt(formData.get("replyDelayMin") as string, 10);
+    const rawMax = parseInt(formData.get("replyDelayMax") as string, 10);
+    const replyDelayMin = isNaN(rawMin) ? 3 : Math.max(0, rawMin);
+    const replyDelayMax = isNaN(rawMax) ? 8 : Math.max(0, rawMax);
+    const simulateTyping = formData.get("simulateTyping") === "on";
+
     await prisma.userStyle.update({
       where: { id: userStyle!.id },
       data: {
@@ -28,6 +34,9 @@ export default async function SettingsPage() {
         emojiUsage: formData.get("emojiUsage") as string,
         slangUsage: formData.get("slangUsage") === "on",
         respondToGroups: formData.get("respondToGroups") === "on",
+        replyDelayMin: Math.min(replyDelayMin, replyDelayMax),
+        replyDelayMax: Math.max(replyDelayMin, replyDelayMax),
+        simulateTyping: simulateTyping,
         customInstructions: formData.get("customInstructions") as string || null,
         persona: formData.get("persona") as string || null,
       },

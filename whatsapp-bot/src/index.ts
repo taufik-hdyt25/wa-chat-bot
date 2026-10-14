@@ -181,12 +181,54 @@ async function connectToWhatsApp() {
                 await generateAIDraft(prisma, savedMessage.id, contact.id, messageText);
               } else if (contact.aiMode === "auto_reply") {
                 console.log(`Auto reply ke ${contact.phoneNumber}...`);
+                const startTime = Date.now();
+
+                // Ambil konfigurasi gaya dan delay terbaru dari database
+                const currentStyle = await prisma.userStyle.findFirst();
+                const minDelay = currentStyle?.replyDelayMin ?? 3;
+                const maxDelay = currentStyle?.replyDelayMax ?? 8;
+                const shouldSimulateTyping = currentStyle?.simulateTyping ?? true;
+
+                // Tampilkan indikator "sedang mengetik..." di WhatsApp sesegera mungkin
+                if (shouldSimulateTyping) {
+                  try {
+                    await sock.sendPresenceUpdate('composing', remoteJid);
+                  } catch (e) {
+                    console.error("Gagal mengirim presence composing:", e);
+                  }
+                }
+
                 const draft = await generateAIDraft(prisma, savedMessage.id, contact.id, messageText);
                 if (draft) {
                   if (draft.includes("[Approval Required]")) {
                     console.log(`Pesan memerlukan approval. Menunda auto-reply.`);
+                    if (shouldSimulateTyping) {
+                      try {
+                        await sock.sendPresenceUpdate('paused', remoteJid);
+                      } catch (e) {}
+                    }
                   } else {
+                    // Hitung durasi jeda manusiawi secara acak di antara minDelay & maxDelay
+                    const lowerSec = Math.max(0, Math.min(minDelay, maxDelay));
+                    const upperSec = Math.max(lowerSec, Math.max(minDelay, maxDelay));
+                    const randomTargetSec = lowerSec + Math.random() * (upperSec - lowerSec);
+                    const targetMs = randomTargetSec * 1000;
+
+                    const elapsedMs = Date.now() - startTime;
+                    const remainingDelayMs = Math.max(0, targetMs - elapsedMs);
+
+                    if (remainingDelayMs > 0) {
+                      console.log(`[Human Delay] Menunggu jeda natural ${(remainingDelayMs / 1000).toFixed(1)} detik sebelum kirim...`);
+                      await new Promise((r) => setTimeout(r, remainingDelayMs));
+                    }
+
                     await sock.sendMessage(remoteJid, { text: draft });
+
+                    if (shouldSimulateTyping) {
+                      try {
+                        await sock.sendPresenceUpdate('paused', remoteJid);
+                      } catch (e) {}
+                    }
                     
                     // Update status draft menjadi sent agar tidak muncul di dashboard 'Needs Your Approval'
                     await prisma.aIDraft.updateMany({
@@ -202,6 +244,12 @@ async function connectToWhatsApp() {
                         message: draft,
                       },
                     });
+                  }
+                } else {
+                  if (shouldSimulateTyping) {
+                    try {
+                      await sock.sendPresenceUpdate('paused', remoteJid);
+                    } catch (e) {}
                   }
                 }
               }
