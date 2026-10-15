@@ -13,6 +13,7 @@ export default function SettingsForm({ userStyle, updateAction }: { userStyle: a
   const [isPending, startTransition] = useTransition();
   const [minDelay, setMinDelay] = useState<number>(userStyle.replyDelayMin ?? 3);
   const [maxDelay, setMaxDelay] = useState<number>(userStyle.replyDelayMax ?? 8);
+  const [typingDelayBefore, setTypingDelayBefore] = useState<number>(userStyle.typingDelayBefore ?? 2);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -137,10 +138,10 @@ export default function SettingsForm({ userStyle, updateAction }: { userStyle: a
           <Label className="text-xs text-slate-500 mb-2 block font-medium">Pilihan Cepat (Presets):</Label>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
             {[
-              { label: "Instan", desc: "0 dtk (Langsung)", min: 0, max: 0 },
-              { label: "Cepat", desc: "2 - 5 dtk", min: 2, max: 5 },
-              { label: "Alami", desc: "3 - 8 dtk (Disarankan)", min: 3, max: 8, badge: "Rekomendasi" },
-              { label: "Santai", desc: "8 - 18 dtk", min: 8, max: 18 },
+              { label: "Instan", desc: "0 dtk (Langsung)", min: 0, max: 0, typingBefore: 0 },
+              { label: "Cepat", desc: "2 - 5 dtk (Baca 1s)", min: 2, max: 5, typingBefore: 1 },
+              { label: "Alami", desc: "3 - 8 dtk (Baca 2s)", min: 3, max: 8, typingBefore: 2, badge: "Rekomendasi" },
+              { label: "Santai", desc: "8 - 18 dtk (Baca 3s)", min: 8, max: 18, typingBefore: 3 },
             ].map((preset) => {
               const isSelected = minDelay === preset.min && maxDelay === preset.max;
               return (
@@ -150,6 +151,7 @@ export default function SettingsForm({ userStyle, updateAction }: { userStyle: a
                   onClick={() => {
                     setMinDelay(preset.min);
                     setMaxDelay(preset.max);
+                    setTypingDelayBefore(preset.typingBefore);
                   }}
                   className={`p-2.5 rounded-sm border text-left transition-all relative ${
                     isSelected
@@ -174,7 +176,7 @@ export default function SettingsForm({ userStyle, updateAction }: { userStyle: a
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-white p-4 rounded-sm border border-slate-200">
           <div>
             <Label className="text-xs text-slate-600 font-medium mb-1.5 block">
-              Jeda Minimal (Detik)
+              Total Jeda Minimal (Detik)
             </Label>
             <div className="relative">
               <Input
@@ -188,12 +190,12 @@ export default function SettingsForm({ userStyle, updateAction }: { userStyle: a
               />
               <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-slate-400 font-medium">detik</span>
             </div>
-            <p className="text-[11px] text-slate-400 mt-1">Waktu tunggu paling cepat</p>
+            <p className="text-[11px] text-slate-400 mt-1">Waktu tunggu total paling cepat</p>
           </div>
 
           <div>
             <Label className="text-xs text-slate-600 font-medium mb-1.5 block">
-              Jeda Maksimal (Detik)
+              Total Jeda Maksimal (Detik)
             </Label>
             <div className="relative">
               <Input
@@ -207,7 +209,7 @@ export default function SettingsForm({ userStyle, updateAction }: { userStyle: a
               />
               <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-slate-400 font-medium">detik</span>
             </div>
-            <p className="text-[11px] text-slate-400 mt-1">Waktu tunggu paling lambat</p>
+            <p className="text-[11px] text-slate-400 mt-1">Waktu tunggu total paling lambat</p>
           </div>
 
           <div className="sm:col-span-2 pt-2 border-t border-slate-100 flex items-center gap-2 text-xs text-slate-600">
@@ -224,24 +226,57 @@ export default function SettingsForm({ userStyle, updateAction }: { userStyle: a
           </div>
         </div>
 
-        {/* Simulate Typing Toggle */}
-        <div className="mt-4 p-4 rounded-sm bg-white border border-slate-200 flex items-center justify-between">
-          <div className="pr-4">
-            <div className="flex items-center gap-2">
-              <h4 className="text-slate-900 font-medium text-sm">Simulasi Mengetik (Typing Indicator)</h4>
-              <span className="bg-emerald-100 text-emerald-800 text-[10px] font-semibold px-1.5 py-0.5 rounded">
-                Sangat Natural
+        {/* Simulate Typing Toggle & Read Delay */}
+        <div className="mt-4 p-4 rounded-sm bg-white border border-slate-200 space-y-4">
+          <div className="flex items-center justify-between">
+            <div className="pr-4">
+              <div className="flex items-center gap-2">
+                <h4 className="text-slate-900 font-medium text-sm">Simulasi Mengetik (Typing Indicator)</h4>
+                <span className="bg-emerald-100 text-emerald-800 text-[10px] font-semibold px-1.5 py-0.5 rounded">
+                  Sangat Natural
+                </span>
+              </div>
+              <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                WhatsApp akan menampilkan status <i>&quot;Sedang mengetik...&quot;</i> ke lawan bicara sebelum pesan terkirim.
+              </p>
+            </div>
+            <Switch 
+              name="simulateTyping" 
+              defaultChecked={userStyle.simulateTyping ?? true} 
+              className="data-[state=checked]:bg-blue-600 flex-shrink-0" 
+            />
+          </div>
+
+          <div className="pt-3 border-t border-slate-100">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div>
+                <Label className="text-xs text-slate-800 font-semibold block">
+                  Jeda Sebelum Mulai Mengetik (Waktu Baca Notifikasi / Mikir)
+                </Label>
+                <p className="text-[11px] text-slate-500 mt-0.5">
+                  Waktu jeda diam saat pesan baru masuk sebelum status <i>&quot;Sedang mengetik...&quot;</i> muncul (agar tidak langsung mengetik dalam hitungan milidetik).
+                </p>
+              </div>
+              <div className="relative w-full sm:w-36 flex-shrink-0">
+                <Input
+                  type="number"
+                  name="typingDelayBefore"
+                  min="0"
+                  max="30"
+                  value={typingDelayBefore}
+                  onChange={(e) => setTypingDelayBefore(Math.max(0, parseInt(e.target.value) || 0))}
+                  className="h-9 text-sm pr-12"
+                />
+                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-slate-400 font-medium">detik</span>
+              </div>
+            </div>
+            <div className="mt-2.5 text-[11px] text-blue-700 bg-blue-50/80 p-2.5 rounded border border-blue-100 flex items-center gap-2">
+              <span className="text-base">👤</span>
+              <span>
+                Alur natural: <b>Pesan masuk</b> ➔ Jeda diam <b>{typingDelayBefore} dtk</b> (membaca pesan) ➔ Status <b>&quot;Sedang mengetik...&quot;</b> ➔ <b>Pesan terkirim</b>.
               </span>
             </div>
-            <p className="text-xs text-slate-500 mt-1 leading-relaxed">
-              WhatsApp akan menampilkan status <i>&quot;Sedang mengetik...&quot;</i> ke lawan bicara selama jeda waktu berlangsung sebelum pesan terkirim.
-            </p>
           </div>
-          <Switch 
-            name="simulateTyping" 
-            defaultChecked={userStyle.simulateTyping ?? true} 
-            className="data-[state=checked]:bg-blue-600 flex-shrink-0" 
-          />
         </div>
       </div>
 

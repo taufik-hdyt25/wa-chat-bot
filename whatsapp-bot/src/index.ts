@@ -187,18 +187,45 @@ async function connectToWhatsApp() {
                 const currentStyle = await prisma.userStyle.findFirst();
                 const minDelay = currentStyle?.replyDelayMin ?? 3;
                 const maxDelay = currentStyle?.replyDelayMax ?? 8;
+                const typingDelayBefore = currentStyle?.typingDelayBefore ?? 2;
                 const shouldSimulateTyping = currentStyle?.simulateTyping ?? true;
 
-                // Tampilkan indikator "sedang mengetik..." di WhatsApp sesegera mungkin
+                // Hitung total target delay secara acak di antara minDelay & maxDelay
+                const lowerSec = Math.max(0, Math.min(minDelay, maxDelay));
+                const upperSec = Math.max(lowerSec, Math.max(minDelay, maxDelay));
+                const randomTargetSec = lowerSec + Math.random() * (upperSec - lowerSec);
+                const targetMs = randomTargetSec * 1000;
+
+                // Tentukan jeda membaca/diam sebelum status "sedang mengetik..." muncul
+                let readDelayMs = 0;
+                if (targetMs > 0 && typingDelayBefore > 0) {
+                  // Berikan sedikit variasi acak pada jeda membaca (+- 0.3 detik)
+                  const jitter = (Math.random() - 0.5) * 600;
+                  const calculatedReadMs = (typingDelayBefore * 1000) + jitter;
+                  // Batasi jeda baca maksimal 60% dari total delay agar masih ada waktu mengetik
+                  readDelayMs = Math.max(500, Math.min(calculatedReadMs, targetMs * 0.6));
+                }
+
+                // Jalankan pembuatan draft AI secara paralel
+                const draftPromise = generateAIDraft(prisma, savedMessage.id, contact.id, messageText);
+
+                // Tahap 1: Waktu membaca / jeda diam (status tidak langsung mengetik)
+                if (readDelayMs > 0) {
+                  console.log(`[Human Delay] Jeda membaca/mikir ${(readDelayMs / 1000).toFixed(1)} detik sebelum status mengetik...`);
+                  await new Promise((r) => setTimeout(r, readDelayMs));
+                }
+
+                // Tahap 2: Tampilkan indikator "sedang mengetik..." setelah jeda baca
                 if (shouldSimulateTyping) {
                   try {
                     await sock.sendPresenceUpdate('composing', remoteJid);
+                    console.log(`[Presence] Menampilkan status 'Sedang mengetik...' ke ${contact.phoneNumber}`);
                   } catch (e) {
                     console.error("Gagal mengirim presence composing:", e);
                   }
                 }
 
-                const draft = await generateAIDraft(prisma, savedMessage.id, contact.id, messageText);
+                const draft = await draftPromise;
                 if (draft) {
                   if (draft.includes("[Approval Required]")) {
                     console.log(`Pesan memerlukan approval. Menunda auto-reply.`);
@@ -208,17 +235,12 @@ async function connectToWhatsApp() {
                       } catch (e) {}
                     }
                   } else {
-                    // Hitung durasi jeda manusiawi secara acak di antara minDelay & maxDelay
-                    const lowerSec = Math.max(0, Math.min(minDelay, maxDelay));
-                    const upperSec = Math.max(lowerSec, Math.max(minDelay, maxDelay));
-                    const randomTargetSec = lowerSec + Math.random() * (upperSec - lowerSec);
-                    const targetMs = randomTargetSec * 1000;
-
+                    // Tahap 3: Hitung sisa durasi mengetik hingga target total delay terpenuhi
                     const elapsedMs = Date.now() - startTime;
                     const remainingDelayMs = Math.max(0, targetMs - elapsedMs);
 
                     if (remainingDelayMs > 0) {
-                      console.log(`[Human Delay] Menunggu jeda natural ${(remainingDelayMs / 1000).toFixed(1)} detik sebelum kirim...`);
+                      console.log(`[Human Delay] Sedang mengetik... sisa durasi ${(remainingDelayMs / 1000).toFixed(1)} detik sebelum kirim`);
                       await new Promise((r) => setTimeout(r, remainingDelayMs));
                     }
 

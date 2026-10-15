@@ -20,8 +20,10 @@ export default async function SettingsPage() {
     
     const rawMin = parseInt(formData.get("replyDelayMin") as string, 10);
     const rawMax = parseInt(formData.get("replyDelayMax") as string, 10);
+    const rawTypingBefore = parseInt(formData.get("typingDelayBefore") as string, 10);
     const replyDelayMin = isNaN(rawMin) ? 3 : Math.max(0, rawMin);
     const replyDelayMax = isNaN(rawMax) ? 8 : Math.max(0, rawMax);
+    const typingDelayBefore = isNaN(rawTypingBefore) ? 2 : Math.max(0, rawTypingBefore);
     const simulateTyping = formData.get("simulateTyping") === "on";
 
     await prisma.userStyle.update({
@@ -36,6 +38,7 @@ export default async function SettingsPage() {
         respondToGroups: formData.get("respondToGroups") === "on",
         replyDelayMin: Math.min(replyDelayMin, replyDelayMax),
         replyDelayMax: Math.max(replyDelayMin, replyDelayMax),
+        typingDelayBefore: typingDelayBefore,
         simulateTyping: simulateTyping,
         customInstructions: formData.get("customInstructions") as string || null,
         persona: formData.get("persona") as string || null,

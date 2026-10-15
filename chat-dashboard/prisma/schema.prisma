@@ -83,6 +83,7 @@ model UserStyle {
   respondToGroups Boolean  @default(false)
   replyDelayMin   Int      @default(3)   // Minimum delay balas pesan (detik)
   replyDelayMax   Int      @default(8)   // Maksimum delay balas pesan (detik)
+  typingDelayBefore Int    @default(2)   // Jeda membaca sebelum status mengetik muncul (detik)
   simulateTyping  Boolean  @default(true) // Tampilkan status 'sedang mengetik...' di WhatsApp
   updatedAt     DateTime @updatedAt
 }
