@@ -5,6 +5,8 @@ import ConnectionStatus from "./ConnectionStatus";
 
 import SettingsForm from "./SettingsForm";
 
+import { updateSettings } from "./actions";
+
 export const dynamic = "force-dynamic";
 
 export default async function SettingsPage() {
@@ -12,40 +14,6 @@ export default async function SettingsPage() {
   let userStyle = await prisma.userStyle.findFirst();
   if (!userStyle) {
     userStyle = await prisma.userStyle.create({ data: {} });
-  }
-
-  // Server Action to update settings
-  async function updateSettings(formData: FormData) {
-    "use server";
-    
-    const rawMin = parseInt(formData.get("replyDelayMin") as string, 10);
-    const rawMax = parseInt(formData.get("replyDelayMax") as string, 10);
-    const rawTypingBefore = parseInt(formData.get("typingDelayBefore") as string, 10);
-    const replyDelayMin = isNaN(rawMin) ? 3 : Math.max(0, rawMin);
-    const replyDelayMax = isNaN(rawMax) ? 8 : Math.max(0, rawMax);
-    const typingDelayBefore = isNaN(rawTypingBefore) ? 2 : Math.max(0, rawTypingBefore);
-    const simulateTyping = formData.get("simulateTyping") === "on";
-
-    await prisma.userStyle.update({
-      where: { id: userStyle!.id },
-      data: {
-        language: formData.get("language") as string,
-        tone: formData.get("tone") as string,
-        formality: formData.get("formality") as string,
-        messageLength: formData.get("messageLength") as string,
-        emojiUsage: formData.get("emojiUsage") as string,
-        slangUsage: formData.get("slangUsage") === "on",
-        respondToGroups: formData.get("respondToGroups") === "on",
-        replyDelayMin: Math.min(replyDelayMin, replyDelayMax),
-        replyDelayMax: Math.max(replyDelayMin, replyDelayMax),
-        typingDelayBefore: typingDelayBefore,
-        simulateTyping: simulateTyping,
-        customInstructions: formData.get("customInstructions") as string || null,
-        persona: formData.get("persona") as string || null,
-      },
-    });
-
-    revalidatePath("/settings");
   }
 
   return (

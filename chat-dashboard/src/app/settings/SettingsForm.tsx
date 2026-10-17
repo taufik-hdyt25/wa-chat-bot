@@ -8,8 +8,9 @@ import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import { updateSettings } from "./actions";
 
-export default function SettingsForm({ userStyle, updateAction }: { userStyle: any, updateAction: (formData: FormData) => Promise<void> }) {
+export default function SettingsForm({ userStyle, updateAction }: { userStyle: any, updateAction?: (formData: FormData) => Promise<any> }) {
   const [isPending, startTransition] = useTransition();
   const [minDelay, setMinDelay] = useState<number>(userStyle.replyDelayMin ?? 3);
   const [maxDelay, setMaxDelay] = useState<number>(userStyle.replyDelayMax ?? 8);
@@ -20,10 +21,11 @@ export default function SettingsForm({ userStyle, updateAction }: { userStyle: a
     const formData = new FormData(e.currentTarget);
     startTransition(async () => {
       try {
-        await updateAction(formData);
+        const action = updateAction || updateSettings;
+        await action(formData);
         toast.success("AI Configuration saved successfully!");
-      } catch (err) {
-        toast.error("Failed to save configuration.");
+      } catch (err: any) {
+        toast.error(err?.message || "Failed to save configuration.");
       }
     });
   };
