@@ -42,9 +42,10 @@ export default async function ContactsPage() {
               </Link>
             </div>
           </div>
-          <nav className="flex gap-4 sm:gap-6 text-sm font-medium w-full sm:w-auto justify-center sm:justify-end">
+          <nav className="flex items-center gap-4 sm:gap-6 text-sm font-medium w-full sm:w-auto justify-center sm:justify-end">
             <Link href="/" className="text-slate-500 hover:text-slate-900 transition-colors">Dashboard</Link>
             <Link href="/contacts" className="text-blue-600">Conversations</Link>
+            <a href="/api/auth/logout" className="text-rose-600 hover:text-rose-700 transition-colors text-xs font-bold px-2.5 py-1 rounded-lg bg-rose-50 border border-rose-200/60">Keluar</a>
           </nav>
         </div>
       </header>

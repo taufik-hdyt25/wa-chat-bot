@@ -30,10 +30,11 @@ export default async function SettingsPage() {
             </div>
             <h1 className="text-lg sm:text-xl font-bold text-slate-900">AI Configuration</h1>
           </div>
-          <nav className="flex flex-wrap justify-center gap-4 sm:gap-6 text-sm font-medium">
+          <nav className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-sm font-medium">
             <Link href="/" className="text-slate-500 hover:text-slate-900 transition-colors">Dashboard</Link>
             <Link href="/contacts" className="text-slate-500 hover:text-slate-900 transition-colors">Conversations</Link>
             <Link href="/settings" className="text-blue-600">Settings</Link>
+            <a href="/api/auth/logout" className="text-rose-600 hover:text-rose-700 transition-colors text-xs font-bold px-2.5 py-1 rounded-lg bg-rose-50 border border-rose-200/60">Keluar</a>
           </nav>
         </div>
       </header>
