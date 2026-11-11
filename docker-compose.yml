@@ -8,7 +8,7 @@ services:
     restart: unless-stopped
     tty: true # Agar QR Code bisa dirender di log docker
     ports:
-      - "3001:3001"
+      - "127.0.0.1:3001:3001"
     volumes:
       # Mount folder prisma agar DB persisten & tersinkronisasi
       - ./whatsapp-bot/prisma:/app/prisma
@@ -26,12 +26,14 @@ services:
     container_name: wa-dashboard
     restart: unless-stopped
     ports:
-      - "3333:3000" # Diubah ke port 3333 karena 3000 sudah terpakai
+      - "127.0.0.1:3333:3000" # Diubah ke port 3333 karena 3000 sudah terpakai
     volumes:
       # Mount folder prisma dari whatsapp-bot ke dashboard agar datanya 100% sama!
       - ./whatsapp-bot/prisma:/app/prisma
+    env_file:
+      - .env
     environment:
       - DATABASE_URL=file:///app/prisma/dev.db
-      - DASHBOARD_USER=taufikh2519@gmail.com
-      - DASHBOARD_PASS=pohodei
+      - DASHBOARD_USER=${DASHBOARD_USER}
+      - DASHBOARD_PASS=${DASHBOARD_PASS}
       - BOT_API_URL=http://wa-bot:3001
